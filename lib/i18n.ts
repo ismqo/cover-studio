@@ -1,0 +1,285 @@
+export type Locale = "en" | "es";
+
+export const STORAGE_KEY = "cover-locale";
+
+export const dictionaries = {
+  en: {
+    nav: {
+      main: "Main navigation",
+      home: "Cover Studio home",
+      more: "More",
+      settings: "Settings",
+      appearance: "Appearance",
+      language: "Language",
+      light: "Light",
+      dark: "Dark",
+      english: "English",
+      spanish: "Español",
+    },
+    landing: {
+      titleLead: "For the love",
+      titleRest: "of your playlists.",
+      body: "You found the perfect songs.",
+      bodyRest: "Now give them the perfect cover.",
+      cta: "Create your cover",
+      caption: "YOUR MUSIC. YOUR ARTWORK. 2026 Cover Studio.",
+      play: "Play cover animation",
+      pause: "Pause cover animation",
+    },
+    editor: {
+      caption: "YOUR MUSIC. YOUR ARTWORK. 2026 Cover Studio.",
+      livePreview: "LIVE PREVIEW",
+      coverPreview: "Cover preview",
+      coverPreviewNamed: (title: string) => `${title} cover preview`,
+      resetCover: "Reset cover",
+      download: "Download cover",
+      exporting: "Exporting…",
+      coverSettings: "Cover settings",
+      coverStyle: "Cover style",
+      original: "Original",
+      originalHint: "Color & gradients",
+      essentials: "Essentials",
+      essentialsHint: "Photo & title band",
+      titleBand: "Title band",
+      typography: "Typography",
+      title: "Title",
+      bigTitle: "Title",
+      bigTitleSize: "Title size",
+      bigTitleWeight: "Title weight",
+      subtitle: "Subtitle",
+      subtitleSize: "Subtitle size",
+      subtitleWeight: "Subtitle weight",
+      sampleTitle: "Title",
+      sampleSubtitle: "Subtitle",
+      sampleEssentials: "Essentials",
+      footer: "Description",
+      sampleFooter: "Description",
+      titleAlignment: "Title alignment",
+      titlePosition: "Title group vertical position",
+      normal: "Normal",
+      bold: "Bold",
+      left: "Left",
+      center: "Center",
+      textAndLogo: "Text & logo",
+      bandColor: "Band color",
+      titleSize: "Title size",
+      bandHeight: "Band height",
+      yourPhoto: "Your photo",
+      uploadPhoto: "Upload cover photo",
+      openingPhoto: "Opening photo…",
+      replacePhoto: "Replace your photo",
+      addPhoto: "Add your favorite photo",
+      dropPhoto: "Drop an image or click to browse",
+      photoTypes: "JPG, PNG, WebP · up to 20 MB",
+      removePhoto: "Remove photo",
+      photoFrame: "Photo frame",
+      resetPhotoFrame: "Reset photo frame",
+      sideMargin: "Side & bottom margin",
+      includeTopMargin: "Include top margin",
+      roundedCorners: "Rounded corners",
+      photoTreatment: "Photo treatment",
+      resetPhotoTreatment: "Reset brightness and contrast",
+      brightness: "Brightness",
+      contrast: "Contrast",
+      originalTreatment: "Original",
+      mono: "Mono",
+      duotone: "Duotone",
+      duotoneColor: (color: string) => `Duotone ${color}`,
+      customDuotone: "Custom duotone color",
+      zoom: "Zoom",
+      horizontal: "Horizontal position",
+      vertical: "Vertical position",
+      photoHelp: "Add a photo to apply treatments and adjust its crop.",
+      appleLogo: "Apple Music logo",
+      showLogo: "Show logo",
+      bottomCornerHint: "Set photo margin and rounded corners to 0% to use a bottom corner",
+      bottomCornerHelp: "Bottom corners require photo margin and rounded corners to be 0%.",
+      background: "Background",
+      gradient: "Gradient",
+      color: "Color",
+      custom: "Custom",
+      picture: "Picture",
+      backgroundColor: "Background color",
+      gradientN: (n: number) => `Gradient ${n}`,
+      colorN: (n: number) => `Color ${n}`,
+      dismiss: "Dismiss notification",
+      thereYouGo: "There you go!",
+      corners: {
+        "top-left": "Top left",
+        "top-right": "Top right",
+        "bottom-left": "Bottom left",
+        "bottom-right": "Bottom right",
+      },
+      errors: {
+        fileType: "Choose a JPG, PNG, or WebP image.",
+        fileSize: "Please choose an image smaller than 20 MB.",
+        photoTooLarge: "This photo is too large. Resize it to under 60 megapixels first.",
+        exportFailed: "Export failed. Please try again.",
+        reset: "Cover reset.",
+      },
+    },
+  },
+  es: {
+    nav: {
+      main: "Navegación principal",
+      home: "Inicio de Cover Studio",
+      more: "Más",
+      settings: "Ajustes",
+      appearance: "Apariencia",
+      language: "Idioma",
+      light: "Claro",
+      dark: "Oscuro",
+      english: "English",
+      spanish: "Español",
+    },
+    landing: {
+      titleLead: "Por el amor",
+      titleRest: "a tus playlists.",
+      body: "Encontraste las canciones perfectas.",
+      bodyRest: "Ahora dales el cover perfecto.",
+      cta: "Crea tu cover",
+      caption: "YOUR MUSIC. YOUR ARTWORK. 2026 Cover Studio.",
+      play: "Reproducir animación del cover",
+      pause: "Pausar animación del cover",
+    },
+    editor: {
+      caption: "YOUR MUSIC. YOUR ARTWORK. 2026 Cover Studio.",
+      livePreview: "LIVE PREVIEW",
+      coverPreview: "Vista previa del cover",
+      coverPreviewNamed: (title: string) => `Vista previa de ${title}`,
+      resetCover: "Restablecer cover",
+      download: "Descargar tu cover",
+      exporting: "Exportando…",
+      coverSettings: "Ajustes del cover",
+      coverStyle: "Estilo de cover",
+      original: "Original",
+      originalHint: "Color y degradados",
+      essentials: "Imprescindibles",
+      essentialsHint: "Foto y banda de título",
+      titleBand: "Banda de título",
+      typography: "Tipografía",
+      title: "Título",
+      bigTitle: "Título",
+      bigTitleSize: "Tamaño del título",
+      bigTitleWeight: "Peso del título",
+      subtitle: "Subtítulo",
+      subtitleSize: "Tamaño del subtítulo",
+      subtitleWeight: "Peso del subtítulo",
+      sampleTitle: "Título",
+      sampleSubtitle: "Subtítulo",
+      sampleEssentials: "Imprescindibles",
+      footer: "Descripción",
+      sampleFooter: "Descripción",
+      titleAlignment: "Alineación del título",
+      titlePosition: "Posición vertical del título",
+      normal: "Normal",
+      bold: "Negrita",
+      left: "Izquierda",
+      center: "Centro",
+      textAndLogo: "Texto y logo",
+      bandColor: "Color de la banda",
+      titleSize: "Tamaño del título",
+      bandHeight: "Alto de la banda",
+      yourPhoto: "Tu foto",
+      uploadPhoto: "Subir foto del cover",
+      openingPhoto: "Abriendo foto…",
+      replacePhoto: "Reemplazar tu foto",
+      addPhoto: "Añade tu foto favorita",
+      dropPhoto: "Suelta una imagen o haz clic para buscar",
+      photoTypes: "JPG, PNG, WebP · hasta 20 MB",
+      removePhoto: "Quitar foto",
+      photoFrame: "Marco de la foto",
+      resetPhotoFrame: "Restablecer marco",
+      sideMargin: "Margen lateral e inferior",
+      includeTopMargin: "Incluir margen superior",
+      roundedCorners: "Esquinas redondeadas",
+      photoTreatment: "Tratamiento de la foto",
+      resetPhotoTreatment: "Restablecer brillo y contraste",
+      brightness: "Brillo",
+      contrast: "Contraste",
+      originalTreatment: "Original",
+      mono: "Mono",
+      duotone: "Duotono",
+      duotoneColor: (color: string) => `Duotono ${color}`,
+      customDuotone: "Color de duotono personalizado",
+      zoom: "Zoom",
+      horizontal: "Posición horizontal",
+      vertical: "Posición vertical",
+      photoHelp: "Añade una foto para aplicar tratamientos y ajustar el recorte.",
+      appleLogo: "Logo de Apple Music",
+      showLogo: "Mostrar logo",
+      bottomCornerHint: "Pon el margen y las esquinas redondeadas en 0% para usar una esquina inferior",
+      bottomCornerHelp: "Las esquinas inferiores requieren margen y esquinas redondeadas en 0%.",
+      background: "Fondo",
+      gradient: "Degradado",
+      color: "Color",
+      custom: "Personalizado",
+      picture: "Foto",
+      backgroundColor: "Color de fondo",
+      gradientN: (n: number) => `Degradado ${n}`,
+      colorN: (n: number) => `Color ${n}`,
+      dismiss: "Cerrar aviso",
+      thereYouGo: "¡Ahí la tienes!",
+      corners: {
+        "top-left": "Arriba izq.",
+        "top-right": "Arriba der.",
+        "bottom-left": "Abajo izq.",
+        "bottom-right": "Abajo der.",
+      },
+      errors: {
+        fileType: "Elige una imagen JPG, PNG o WebP.",
+        fileSize: "Elige una imagen de menos de 20 MB.",
+        photoTooLarge: "Esta foto es demasiado grande. Redúcela a menos de 60 megapíxeles.",
+        exportFailed: "No se pudo exportar. Inténtalo de nuevo.",
+        reset: "Cover restablecido.",
+      },
+    },
+  },
+} as const;
+
+export type Dictionary = (typeof dictionaries)[Locale];
+export type NoticeKey = keyof Dictionary["editor"]["errors"];
+
+export function isLocale(value: string | null | undefined): value is Locale {
+  return value === "en" || value === "es";
+}
+
+export function applyLocale(locale: Locale, persist = true) {
+  document.documentElement.lang = locale;
+  document.documentElement.dataset.locale = locale;
+  if (!persist) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, locale);
+  } catch {
+    /* Private browsing can block storage; the choice still applies for this visit. */
+  }
+}
+
+export function localizeCoverSamples<T extends { title: string; subtitle: string; footer: string; essentialsTitle: string }>(settings: T, locale: Locale): T {
+  const samples = dictionaries[locale].editor;
+  const titles = new Set(["Big Title", "Title", "Título", "Titulo"]);
+  const subtitles = new Set(["Sub Title", "Subtitle", "Subtítulo", "Subtitulo"]);
+  const footers = new Set(["Footer", "Description", "Descripción", "Descripcion", "Pie"]);
+  const essentials = new Set(["Essentials", "Imprescindibles"]);
+  return {
+    ...settings,
+    title: titles.has(settings.title) ? samples.sampleTitle : settings.title,
+    subtitle: subtitles.has(settings.subtitle) ? samples.sampleSubtitle : settings.subtitle,
+    footer: footers.has(settings.footer) ? samples.sampleFooter : settings.footer,
+    essentialsTitle: essentials.has(settings.essentialsTitle) ? samples.sampleEssentials : settings.essentialsTitle,
+  };
+}
+
+export function detectLocale(): Locale {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (isLocale(stored)) return stored;
+  } catch {
+    /* Ignore storage errors and fall back to the browser language. */
+  }
+  try {
+    return navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+  } catch {
+    return "en";
+  }
+}
