@@ -70,3 +70,19 @@
 .heroContent p{font-size:23px}
 .heroCta{font-size:18px}
 @media(max-width:650px){.heroContent p{font-size:19px}.heroCta{font-size:17px}}
+
+/* Same glass as the editor's dark theme (see the glass system at the end of globals.css). */
+.landing{--glass-panel:rgba(16,16,20,.5);--glass-fill:rgba(255,255,255,.08);--glass-line:rgba(255,255,255,.14);--glass-blur:blur(40px) saturate(1.5);
+  --glass-sheen:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 55%,rgba(255,255,255,.06));--glass-highlight:inset 0 1px 0 rgba(255,255,255,.22)}
+/* The navbar's glass itself is drawn by the shared .liquid-nav::after layer in globals.css. */
+html body .landing .navbar.navbar:global(.liquid-nav){border-radius:20px}
+html body .landing .navbar.navbar:global(.liquid-nav)::before{display:none}
+html body .landing .heroCta.heroCta,
+html body .landing .motionButton.motionButton,
+html body .landing :global(.nav-menu-trigger){
+  color:#fff;background:var(--glass-sheen),var(--glass-fill);border:1px solid var(--glass-line);
+  box-shadow:var(--glass-highlight);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+}
+html body .landing :is(.heroCta.heroCta,.motionButton.motionButton,:global(.nav-menu-trigger)):hover{background:var(--glass-sheen),var(--glass-line)}
+@media(forced-colors:active){html body .landing .heroCta.heroCta{background:ButtonFace;color:ButtonText;border-color:ButtonText}}

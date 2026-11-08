@@ -19,9 +19,16 @@ npm start
 
 ## Features
 
-- Original layout with title, subtitle, footer, and gradient/color/custom backgrounds.
-- Apple Music logo toggle, all four corner positions, and custom text/logo color.
+- Original layout with title, subtitle, footer, and gradient/color/solid/photo backgrounds.
+- Apple Music logo toggle, classic or new logo style, all four corner positions, and custom text/logo color.
+- Every color setting offers basic color swatches plus a multicolor swatch that opens a custom color picker.
 - Essentials layout with an adjustable title band, solid color or original pattern.
+- Platform picker: Apple Music (Original, Essentials) or Spotify (Original, This Is, Band) cover styles, each with its own logo.
+- Spotify titles wrap across lines, with top/bottom position, left/right alignment, size, and band/accent colors.
+- Spotify Original style: a title over a full-cover photo, with the same gradient/color/solid/photo background options as Apple's Original, defaulting to photo.
+- Spotify Original and Band styles: title only or title & subtitle, with separate title and subtitle sizes; Band also has a photo frame (side margin, margin next to the band, rounded corners) and can color the logo like the band.
+- Spotify This Is style: adjustable heading ("THIS IS") size.
+- Spotify title font: standard (SF Pro Bold) or a wide brutalist face (Archivo Expanded Black).
 - Local JPG, PNG, and WebP upload, zoom and horizontal/vertical crop controls.
 - Original, monochrome, or customizable duotone photo treatment.
 - Full-resolution 1200 × 1200 PNG download, using the same renderer as the preview.
@@ -40,4 +47,4 @@ Photos are processed locally in the browser, with no upload service, analytics, 
 
 ## License
 
-The source code is released under the [MIT License](LICENSE). Third-party assets, such as the SF Pro fonts and the Apple Music logo, remain the property of their respective owners and are not covered by this license.
+The source code is released under the [MIT License](LICENSE). Third-party assets, such as the SF Pro fonts and the Apple Music and Spotify logos, remain the property of their respective owners and are not covered by this license. Archivo is licensed under the SIL Open Font License 1.1 (see `public/assets/fonts/Archivo-OFL.txt`).
