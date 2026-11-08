@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff"/><stop offset=".5" stop-color="#edf0f5"/><stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="disc" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff" stop-opacity=".92"/><stop offset=".5" stop-color="#e3e8ef" stop-opacity=".72"/><stop offset="1" stop-color="#fff" stop-opacity=".9"/>
+    </linearGradient>
+  </defs>
+  <path d="M99 29A49 49 0 1 0 99 99" fill="none" stroke="#788393" stroke-opacity=".55" stroke-width="15" stroke-linecap="round"/>
+  <path d="M99 29A49 49 0 1 0 99 99" fill="none" stroke="url(#rim)" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="64" cy="64" r="34" fill="url(#disc)" stroke="#788393" stroke-opacity=".55" stroke-width="1.5"/>
+  <circle cx="64" cy="64" r="11" fill="#fff" fill-opacity=".75" stroke="#788393" stroke-opacity=".55" stroke-width="1.5"/>
+  <circle cx="64" cy="64" r="3" fill="#7e8998" fill-opacity=".8"/>
+  <path d="M40 40a34 34 0 0 1 48 0" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="4" stroke-linecap="round"/>
+</svg>

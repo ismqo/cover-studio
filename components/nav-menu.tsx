@@ -2,15 +2,16 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Ellipsis } from "lucide-react";
-import { ThemeSwitch } from "@/components/theme-switch";
 import { useI18n } from "@/components/locale-provider";
 import type { Locale } from "@/lib/i18n";
+import { useDragSwitch } from "@/components/drag-switch";
 
 export function NavMenu() {
   const { t, locale, setLocale } = useI18n();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const menuId = useId();
+  const localeDrag = useDragSwitch<HTMLDivElement>(locale === "es", value => setLocale(value ? "es" : "en"));
 
   useEffect(() => {
     if (!open) return;
@@ -53,12 +54,8 @@ export function NavMenu() {
       {open && (
         <div className="nav-menu-panel" id={menuId} role="dialog" aria-label={t.nav.settings}>
           <div className="nav-menu-row">
-            <span className="nav-menu-label">{t.nav.appearance}</span>
-            <ThemeSwitch />
-          </div>
-          <div className="nav-menu-row">
             <span className="nav-menu-label" id={`${menuId}-lang`}>{t.nav.language}</span>
-            <div className="locale-switch" role="radiogroup" aria-labelledby={`${menuId}-lang`}>
+            <div className="locale-switch" role="radiogroup" aria-labelledby={`${menuId}-lang`} {...localeDrag}>
               <span className="locale-switch-thumb" />
               <button type="button" role="radio" aria-checked={locale === "en"} aria-label={t.nav.english} onClick={() => chooseLocale("en")}>EN</button>
               <button type="button" role="radio" aria-checked={locale === "es"} aria-label={t.nav.spanish} onClick={() => chooseLocale("es")}>ES</button>

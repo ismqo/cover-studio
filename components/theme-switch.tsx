@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useState, type KeyboardEvent } from "react";
 import { useI18n } from "@/components/locale-provider";
+import { useDragSwitch } from "@/components/drag-switch";
 
 export type Theme = "light" | "dark";
 
@@ -34,6 +35,7 @@ export function applyTheme(theme: Theme, persist = true) {
 export function ThemeSwitch() {
   const { t } = useI18n();
   const [theme, setTheme] = useState<Theme>("light");
+  const drag = useDragSwitch<HTMLDivElement>(theme === "dark", value => choose(value ? "dark" : "light"));
 
   useLayoutEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -60,7 +62,7 @@ export function ThemeSwitch() {
   }
 
   return (
-    <div className="theme-switch" role="radiogroup" aria-label={t.nav.appearance} onKeyDown={onKeyDown}>
+    <div className="theme-switch" role="radiogroup" aria-label={t.nav.appearance} onKeyDown={onKeyDown} {...drag}>
       <span className="theme-switch-thumb" />
       <button type="button" role="radio" aria-checked={theme === "light"} aria-label={t.nav.light} onClick={() => choose("light")}>
         <SunIcon />

@@ -139,9 +139,9 @@ export default function Landing() {
   }
 
   return <div className={`${styles.landing} ${departing ? styles.departing : ""} ${phase === "blank" || phase === "zoom" ? styles.blank : ""} ${phase === "zoom" ? styles.zooming : ""}`}>
-    <header className={styles.navbar}>
+    <header className={`${styles.navbar} liquid-nav liquid-nav--landing`}>
       <nav aria-label={t.nav.main}>
-        <Link href="/" className={styles.wordmark} aria-label={t.nav.home}><span className="brand-mark"><img src="/assets/brand/cover-icon.png" alt=""/></span>Cover<span className="studio-label">STUDIO</span></Link>
+        <Link href="/" className={styles.wordmark} aria-label={t.nav.home}>Cover<span className="studio-label">STUDIO</span></Link>
         <div className={styles.navActions}><NavMenu /></div>
       </nav>
     </header>
@@ -151,7 +151,7 @@ export default function Landing() {
       <CoverWall empty/>
       <div className={styles.shade}/>
       <section className={styles.heroContent} aria-labelledby="hero-title">
-        <div className={styles.heroBrand}><span className="brand-mark brand-mark-hero"><img src="/assets/brand/cover-icon.png" alt=""/></span>Cover Studio</div>
+        <div className={styles.heroBrand}>Cover Studio</div>
         <h1 id="hero-title">{t.landing.titleLead}<br/>{t.landing.titleRest}</h1>
         <p>{t.landing.body}<br className={styles.mobileBreak}/> {t.landing.bodyRest}</p>
         <a href="/editor" className={styles.heroCta} onClick={openEditor}>{t.landing.cta}</a>

@@ -21,8 +21,8 @@
 .heroBrand{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;font-size:32px;line-height:1;letter-spacing:-1.5px;font-weight:600;margin-bottom:32px}
 .heroContent h1{font-size:clamp(60px,7.6vw,108px);line-height:.98;letter-spacing:-.02em;font-weight:600;margin:0;text-wrap:balance}
 .heroContent p{font-size:22px;line-height:1.45;letter-spacing:-.3px;color:#e2dde7;margin:28px auto 30px;white-space:nowrap}
-.heroCta{display:inline-flex;align-items:center;justify-content:center;gap:13px;padding:17px 29px;border-radius:30px;background:#fff;color:#17141c;font-size:17px;font-weight:600;transition:transform .2s,background .2s;box-shadow:0 8px 32px #0004}
-.heroCta:hover{transform:translateY(-2px);background:#e8e8ed}
+.heroCta{display:inline-flex;align-items:center;justify-content:center;gap:13px;padding:17px 29px;border-radius:30px;background:#fff;color:#17141c;font-size:17px;font-weight:600;transition:transform .2s,filter .2s;box-shadow:0 8px 32px #0004}
+.heroCta:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .freeNote{display:block;font-size:12px;color:#ada6b7;margin-top:17px;letter-spacing:.2px}
 .mobileBreak{display:none}
 .bottomBar{position:absolute;bottom:28px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -33,7 +33,7 @@
 @media(max-width:650px){
  .landing{--tile:185px;--tile-gap:14px}
  .navbar{height:60px}.navbar nav{padding:0 20px}.wordmark{font-size:23px}.navActions>span{display:none}
- .hero{height:calc(100svh - 60px);min-height:660px}.heroContent{padding:45px 22px 90px}.heroBrand{font-size:27px;margin-bottom:28px}.heroBrand :global(.brand-mark-hero){width:120px;height:120px;flex-basis:120px}
+ .hero{height:calc(100svh - 60px);min-height:660px}.heroContent{padding:45px 22px 90px}.heroBrand{font-size:27px;margin-bottom:28px}
  .heroContent h1{font-size:clamp(48px,12vw,72px);letter-spacing:-.01em}.heroContent p{font-size:18px;line-height:1.45;margin:25px 0 28px;white-space:normal}.mobileBreak{display:block}
  .heroCta{font-size:16px;padding:16px 26px}.wall{inset:-10% -125%;transform:rotate(-10deg)}.shade{background:radial-gradient(ellipse at center,#090610ed 12%,#090610c9 35%,#09061050 75%),linear-gradient(0deg,#09070e,transparent 25%)}
  .bottomBar{left:22px;right:22px;bottom:24px}.bottomBar>span{font-size:8px;letter-spacing:1.8px}
@@ -51,3 +51,22 @@
 .zooming .wall{opacity:0;transition:opacity .7s ease}
 .zoomCover{position:fixed;z-index:40;border-radius:10px;background:#2a2a31;box-shadow:0 24px 70px #000a;pointer-events:none;transform-origin:center;transition:transform .9s cubic-bezier(.65,0,.2,1),background-color .9s ease}
 .zoomCoverOn{background:var(--page)}
+
+/* Floating glass keeps the artwork visible through the navigation. */
+.navbar{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:min(1064px,calc(100% - 56px));height:64px;border:1px solid rgba(255,255,255,.3);border-radius:999px;background:linear-gradient(135deg,rgba(255,255,255,.38),rgba(255,255,255,.22) 48%,rgba(180,200,255,.3));color:#fff;box-shadow:inset 0 1px 1px rgba(255,255,255,.48),inset 0 -1px 2px rgba(255,255,255,.12),0 14px 40px rgba(0,0,0,.28);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+.navbar nav{padding:0 18px 0 24px}
+.navbar :global(.studio-label){color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.35)}
+.hero{height:100dvh}
+.heroCta{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(226,231,255,.8));box-shadow:inset 0 1px 1px #fff,0 12px 38px #0006}
+.motionButton{background:rgba(255,255,255,.12);box-shadow:inset 0 1px 1px #ffffff70;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+@media(max-width:650px){.navbar{top:12px;width:calc(100% - 24px);height:58px}.navbar nav{padding:0 14px 0 18px}.hero{height:100svh}}
+
+/* Match the floating navigation without filtering the cover artwork. */
+.heroCta{color:#fff;border:1px solid #ffffff80;background:linear-gradient(120deg,rgba(255,255,255,.24),rgba(226,235,255,.12) 48%,rgba(180,205,255,.2));box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -2px 5px #ffffff29,0 12px 38px #0006;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
+.motionButton{border-color:#ffffff70;background:linear-gradient(135deg,#ffffff38,#c7d9ff1c);box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -1px 4px #ffffff20,0 5px 18px #0004;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){.heroCta,.motionButton{backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%)}}
+@media(forced-colors:active){.heroCta,.motionButton{background:ButtonFace;color:ButtonText;border-color:ButtonText;backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+.heroContent p{font-size:23px}
+.heroCta{font-size:18px}
+@media(max-width:650px){.heroContent p{font-size:19px}.heroCta{font-size:17px}}

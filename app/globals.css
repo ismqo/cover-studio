@@ -49,9 +49,6 @@ html,body{height:100%;overflow:hidden}
 
 /* Shared product navigation and Apple Music–inspired studio surfaces. */
 .studio-label{display:inline-flex;color:var(--label);border:1px solid var(--label-line);border-radius:20px;padding:5px 8px;font-size:9px;line-height:1;letter-spacing:1.5px;font-weight:500;margin-left:6px}
-.brand-mark{width:31px;height:31px;flex:0 0 31px;display:block}
-.brand-mark img{display:block;width:100%;height:100%;object-fit:contain}
-.brand-mark-hero{width:144px;height:144px;flex-basis:144px;filter:drop-shadow(0 10px 14px #0005)}
 .app-shell{max-width:none;width:100%;padding:0;background:var(--page);color:#1d1d1f;color-scheme:light;--line:#e5e5e9;--muted:#6e6e73;--text:#1d1d1f;--accent:#fa233b;--panel:#fff}
 .app-shell .app-header{height:64px;background:var(--nav-bg);color:var(--nav-fg);border-bottom:1px solid var(--nav-line);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);transition:background-color .25s ease,color .25s ease,border-color .25s ease;overflow:visible;z-index:60}
 .editor-nav{max-width:1120px;width:100%;height:100%;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -74,6 +71,7 @@ html,body{height:100%;overflow:hidden}
 .app-shell .controls{background:#fff;border:1px solid #e5e5e9;border-radius:20px;padding:24px 22px;scroll-padding:24px;scrollbar-color:#c4c4cb transparent;box-shadow:0 4px 20px #1d1d1f04}
 .app-shell .controls:focus-visible{outline:2px solid #fa233b;outline-offset:-3px}
 .app-shell .control-section{padding:23px 0;border-color:#e9e9ed}
+.app-shell .control-section{border:0}
 .app-shell .first-section{padding-top:0}
 .app-shell .last-section{padding-bottom:0}
 .app-shell h2{font-size:16px;font-weight:600;letter-spacing:-.3px}
@@ -273,3 +271,538 @@ html[data-theme="dark"] .photo-frame-controls{background:#2c2c2e;border-color:#3
 html[data-theme="dark"] .photo-frame-controls .icon-button,
 html[data-theme="dark"] .photo-treatment-label .icon-button,
 html[data-theme="dark"] .app-shell .section-top .icon-button{color:#98989d}
+
+/* Layered highlights and translucent surfaces suggest refractive glass. */
+.app-shell{background:radial-gradient(ellipse at 10% 8%,#f4dce9 0,transparent 42%),radial-gradient(ellipse at 90% 80%,#d9e6fa 0,transparent 43%),#edf0f7}
+html[data-theme="dark"] .app-shell{background:radial-gradient(ellipse at 10% 8%,#342034 0,transparent 42%),radial-gradient(ellipse at 90% 80%,#192841 0,transparent 43%),#10121b}
+.app-shell .app-header{height:80px;padding:12px 20px 0;background:transparent;border:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+.editor-nav{max-width:1064px;width:calc(100% - 16px);height:60px;padding:0 18px 0 24px;border:1px solid rgba(255,255,255,.8);border-radius:999px;background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.65) 48%,rgba(221,230,255,.72));box-shadow:inset 0 1px 1px #fff,inset 0 -1px 2px #ffffff80,0 12px 36px #3b49631c;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+html[data-theme="dark"] .editor-nav{border-color:#ffffff38;background:linear-gradient(135deg,#ffffff48,#ffffff28 48%,#b4c8ff38);box-shadow:inset 0 1px 1px #ffffff70,inset 0 -1px 2px #ffffff1c,0 12px 36px #0005}
+.app-shell .preview-panel,.app-shell .controls{background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,255,255,.7));border-color:#ffffffc9;box-shadow:inset 0 1px 1px #fff,0 18px 48px #53617a19;backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
+.app-shell .preview-stage{background:radial-gradient(ellipse at 50% 42%,#d9dff077,transparent 75%)}
+html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{background:linear-gradient(135deg,#ffffff38,#ffffff20);border-color:#ffffff30;box-shadow:inset 0 1px 1px #ffffff38,0 18px 48px #0004}
+html[data-theme="dark"] .app-shell .preview-stage{background:radial-gradient(ellipse at 50% 42%,#6a7ba333,transparent 75%)}
+.nav-menu-panel{background:rgba(255,255,255,.9);border-color:#fff;border-radius:20px;box-shadow:inset 0 1px 1px #fff,0 14px 40px #1b254033;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
+html[data-theme="dark"] .nav-menu-panel{background:rgba(32,33,42,.9);border-color:#ffffff38;box-shadow:inset 0 1px 1px #ffffff38,0 14px 40px #0007}
+@media(max-width:650px){.app-shell .app-header{height:72px;padding:12px 12px 0}.editor-nav{width:100%;height:58px;padding:0 14px 0 18px}}
+
+/* Glass controls retain distinct selected, hover, and focus states. */
+.nav-menu-trigger{border-radius:50%;background:rgba(255,255,255,.18);box-shadow:inset 0 1px 1px #ffffff80,0 2px 8px #00000012}
+.nav-menu-trigger:hover,.nav-menu-trigger:hover:not(:disabled){background:rgba(255,255,255,.35)}
+.theme-switch,.locale-switch{border-radius:999px;background:rgba(100,110,135,.16);box-shadow:inset 0 1px 3px #202a4026,0 1px 0 #ffffff80}
+.theme-switch-thumb,.locale-switch-thumb{border-radius:999px;background:linear-gradient(145deg,#fff,#e9edfae6);box-shadow:inset 0 1px 1px #fff,0 2px 7px #1b254033}
+.theme-switch button,.locale-switch button{border-radius:999px}
+.nav-menu-link{border:1px solid #ffffffa6;border-radius:999px;background:linear-gradient(135deg,#ffffffb3,#e3e9f580);box-shadow:inset 0 1px 1px #fff,0 3px 10px #28344b14}
+.nav-menu-link:hover{background:#fff}
+.app-shell .style-option,.app-shell .corner-options button,.app-shell .upload-zone{background:linear-gradient(135deg,#ffffffaa,#e8eef780);border-color:#ffffffc9;box-shadow:inset 0 1px 1px #fff,0 3px 12px #45577312}
+.app-shell .style-option.selected,.app-shell .corner-options button.active,.app-shell .upload-zone.dragging{background:linear-gradient(135deg,#fff5f7e6,#ffdce5aa);border-color:#fa233b}
+.app-shell .segmented{border-radius:999px;background:#8795b326;box-shadow:inset 0 1px 3px #26344d20,0 1px 0 #ffffff80}
+.app-shell .segmented button{border-radius:999px}
+.app-shell .segmented button.active{background:linear-gradient(135deg,#fff,#e8edf9d9);box-shadow:inset 0 1px 1px #fff,0 2px 8px #26344d24}
+.app-shell .toggle-row input{background:linear-gradient(135deg,#a9b4c4,#d5dce7);border-color:#ffffffa6;box-shadow:inset 0 1px 3px #25324d30,0 1px 0 #fff}
+.app-shell .toggle-row input:before{box-shadow:inset 0 1px 1px #fff,0 1px 4px #26344d55}
+.app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6a7c,#e71937);border-color:#f9596e}
+.app-shell .download{background:linear-gradient(135deg,#ff6577,#e81738);box-shadow:inset 0 1px 1px #ffffffa6,0 6px 18px #d7274940}
+.app-shell .download{transition:filter .2s,box-shadow .2s,opacity .15s}
+.app-shell .download:hover:not(:disabled){filter:brightness(1.08)}
+html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch{background:#ffffff1a;box-shadow:inset 0 1px 3px #0006,0 1px 0 #ffffff24}
+html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{background:linear-gradient(135deg,#8b8e9d,#525666);box-shadow:inset 0 1px 1px #ffffff70,0 2px 7px #0007}
+html[data-theme="dark"] .nav-menu-link{background:linear-gradient(135deg,#ffffff30,#ffffff16);border-color:#ffffff30;color:#f5f5f7}
+html[data-theme="dark"] .nav-menu-link:hover{background:#ffffff40}
+html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .upload-zone{background:linear-gradient(135deg,#ffffff20,#ffffff0c);border-color:#ffffff30;box-shadow:inset 0 1px 1px #ffffff30,0 3px 12px #0002}
+html[data-theme="dark"] .app-shell .style-option.selected,html[data-theme="dark"] .app-shell .corner-options button.active,html[data-theme="dark"] .app-shell .upload-zone.dragging{background:linear-gradient(135deg,#a3425555,#61283855);border-color:#fa233b}
+html[data-theme="dark"] .app-shell .segmented{background:#0004;box-shadow:inset 0 1px 3px #0006,0 1px 0 #ffffff18}
+html[data-theme="dark"] .app-shell .segmented button.active{background:linear-gradient(135deg,#8b8e9d,#525666);box-shadow:inset 0 1px 1px #ffffff70,0 2px 8px #0006}
+html[data-theme="dark"] .app-shell .toggle-row input{background:linear-gradient(135deg,#5a5e6d,#343743);border-color:#ffffff30;box-shadow:inset 0 1px 3px #0006}
+html[data-theme="dark"] .app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6a7c,#e71937);border-color:#f9596e}
+
+/* Translucent text fields match the glass controls without sacrificing contrast. */
+.app-shell .field input{background:linear-gradient(135deg,rgba(255,255,255,.74),rgba(235,241,252,.48));border-color:rgba(255,255,255,.85);box-shadow:inset 0 1px 2px rgba(65,80,110,.12),0 1px 0 rgba(255,255,255,.65);transition:border-color .15s,box-shadow .15s}
+.app-shell .field input::placeholder{color:#686e7b;opacity:1}
+.app-shell .field input:hover{border-color:#a1aac0}
+.app-shell .field input:focus{border-color:#d42545;box-shadow:inset 0 1px 2px #41506e1f,0 0 0 3px #fa233b2b}
+html[data-theme="dark"] .app-shell .field input{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border-color:rgba(255,255,255,.2);box-shadow:inset 0 1px 2px #0004,0 1px 0 #ffffff12}
+html[data-theme="dark"] .app-shell .field input::placeholder{color:#b3b6c2;opacity:1}
+html[data-theme="dark"] .app-shell .field input:hover{border-color:#ffffff70}
+html[data-theme="dark"] .app-shell .field input:focus{border-color:#ff7184;box-shadow:inset 0 1px 2px #0004,0 0 0 3px #ff718440}
+
+/* Restore the original accent in both appearances. */
+.app-shell{--accent:#fa233b}
+html[data-theme="dark"] .app-shell{--accent:#fa233b}
+.app-shell .download{background:linear-gradient(135deg,#4a4b53,#17181d);color:#fff;box-shadow:inset 0 1px 1px #ffffff70,0 6px 18px #17181d40}
+html[data-theme="dark"] .app-shell .download{background:linear-gradient(135deg,#fff,#d8dbe4);color:#17181d;box-shadow:inset 0 1px 1px #fff,0 6px 18px #0005}
+.app-shell .style-option.selected,.app-shell .corner-options button.active,.app-shell .upload-zone.dragging{background:linear-gradient(135deg,#ffffffed,#d9dce5aa);border-color:var(--accent);color:var(--text)}
+html[data-theme="dark"] .app-shell .style-option.selected,html[data-theme="dark"] .app-shell .corner-options button.active,html[data-theme="dark"] .app-shell .upload-zone.dragging{background:linear-gradient(135deg,#ffffff38,#ffffff18);border-color:var(--accent);color:var(--text)}
+.app-shell .style-option.selected:hover:not(:disabled),.app-shell .corner-options button.active:hover:not(:disabled),html[data-theme="dark"] .app-shell .style-option.selected:hover:not(:disabled),html[data-theme="dark"] .app-shell .corner-options button.active:hover:not(:disabled){border-color:var(--accent)}
+.app-shell .corner-options button.active .corner-icon{border-color:currentColor}
+.app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6577,#e81738);border-color:#ffffff66}
+html[data-theme="dark"] .app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6577,#e81738);border-color:#ffffff66}
+html[data-theme="dark"] .app-shell .toggle-row input:checked:before{background:#303138}
+.app-shell .swatch.selected,.app-shell .tint.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.app-shell .upload-zone{color:var(--accent)}
+.app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--accent) 0 var(--range-progress),#f5f5f7 var(--range-progress) 100%)}
+html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--accent) 0 var(--range-progress),#2c2c2e var(--range-progress) 100%)}
+.app-shell .range-label input[type="range"]::-webkit-slider-thumb{background:var(--accent)}
+.app-shell .range-label input[type="range"]::-moz-range-progress{border-color:var(--accent);background:var(--accent)}
+.app-shell .range-label input[type="range"]::-moz-range-thumb{background:var(--accent)}
+.app-shell .field input:focus,html[data-theme="dark"] .app-shell .field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.app-shell .controls:focus-visible{outline-color:var(--accent)}
+.theme-switch button:focus-visible,.locale-switch button:focus-visible,.nav-menu-trigger:focus-visible{outline-color:#202127}
+html[data-theme="dark"] .theme-switch button:focus-visible,html[data-theme="dark"] .locale-switch button:focus-visible,html[data-theme="dark"] .nav-menu-trigger:focus-visible{outline-color:#f2f3f7}
+.app-shell .download:hover:not(:disabled){background:linear-gradient(135deg,#4a4b53,#17181d)}
+html[data-theme="dark"] .app-shell .download:hover:not(:disabled){background:linear-gradient(135deg,#fff,#d8dbe4)}
+
+/* Switch thumbs glide between states and compress subtly while pressed. */
+.theme-switch-thumb,.locale-switch-thumb{transition:transform .38s cubic-bezier(.22,1.35,.36,1),box-shadow .2s ease}
+.theme-switch:active .theme-switch-thumb,.locale-switch:active .locale-switch-thumb{box-shadow:inset 0 1px 1px #ffffffb3,0 1px 4px #1b25404d}
+.app-shell .toggle-row input{transition:border-color .25s ease,box-shadow .25s ease}
+.app-shell .toggle-row input:before{transition:transform .38s cubic-bezier(.22,1.35,.36,1),background-color .25s ease,box-shadow .2s ease}
+.app-shell .toggle-row input:active:before{scale:.85}
+@media(prefers-reduced-motion:reduce){.app-shell .toggle-row input:active:before{scale:1}}
+
+/* One persistent highlight slides beneath the field selector labels. */
+.app-shell .segmented {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+}
+.app-shell .segmented:has(> button:nth-child(3)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.app-shell .segmented:has(> button:nth-child(4)) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.app-shell .segmented::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 11px) / 2);
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(255,255,255,.55), rgba(210,225,255,.3));
+  box-shadow: inset 0 1px 1px #ffffffb3, inset 0 -1px 3px #ffffff40, 0 2px 8px #26344d24;
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  backdrop-filter: blur(6px) saturate(160%);
+  transform: translateX(calc(var(--segment-index, 0) * (100% + 3px)));
+  transition: transform .32s cubic-bezier(.22, 1, .36, 1);
+}
+.app-shell .segmented:has(> button:nth-child(3))::before { width: calc((100% - 14px) / 3); }
+.app-shell .segmented:has(> button:nth-child(4))::before { width: calc((100% - 17px) / 4); }
+.app-shell .segmented:has(> button:nth-child(2).active) { --segment-index: 1; }
+.app-shell .segmented:has(> button:nth-child(3).active) { --segment-index: 2; }
+.app-shell .segmented:has(> button:nth-child(4).active) { --segment-index: 3; }
+.app-shell .segmented > button { min-width: 0; transition: color .2s ease; }
+.app-shell .segmented > button.active,
+html[data-theme="dark"] .app-shell .segmented > button.active { background: transparent; box-shadow: none; }
+html[data-theme="dark"] .app-shell .segmented::before {
+  background: linear-gradient(120deg, rgba(255,255,255,.3), rgba(160,185,255,.17));
+  box-shadow: inset 0 1px 1px #ffffff80, inset 0 -1px 3px #ffffff20, 0 2px 8px #0005;
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-shell .segmented::before,
+  .app-shell .toggle-row input::before { transition: none; }
+}
+
+/* Glass slider thumbs enlarge without shifting the track or changing the value. */
+.app-shell {
+  --slider-glass: linear-gradient(145deg, #ffffff, #eef1f7 48%, #cbd3e0);
+  --slider-edge: #8c97ab;
+  --slider-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #5c69854d, 0 2px 6px #26344d40;
+}
+html[data-theme="dark"] .app-shell {
+  --slider-glass: linear-gradient(145deg, #ffffff, #dce4f1 48%, #8794ad);
+  --slider-edge: #ffffffb3;
+  --slider-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #ffffff40, 0 2px 7px #0008;
+}
+.app-shell .range-label input[type="range"]::-webkit-slider-thumb {
+  width: 20px;
+  height: 12px;
+  margin-top: -4.5px;
+  border-radius: 999px;
+  border: 1px solid var(--slider-edge);
+  background: var(--slider-glass);
+  box-shadow: var(--slider-shadow);
+  transition: transform .18s cubic-bezier(.2,.8,.2,1);
+}
+html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-thumb { box-shadow: var(--slider-shadow); }
+.app-shell .range-label input[type="range"]::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 22px;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--slider-edge);
+  background: var(--slider-glass);
+  box-shadow: var(--slider-shadow);
+  transition: transform .18s cubic-bezier(.2,.8,.2,1);
+}
+.app-shell .range-label input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.5); }
+.app-shell .range-label input[type="range"]:active::-moz-range-thumb { transform: scale(1.5); }
+@media (prefers-reduced-motion: reduce) {
+  .app-shell .range-label input[type="range"]::-webkit-slider-thumb { transition: none; }
+  .app-shell .range-label input[type="range"]::-moz-range-thumb { transition: none; }
+  .app-shell .range-label input[type="range"]:active::-webkit-slider-thumb { transform: none; }
+  .app-shell .range-label input[type="range"]:active::-moz-range-thumb { transform: none; }
+}
+
+/* A separate glass layer keeps the navigation and its popover interactive. */
+html .liquid-nav.liquid-nav{
+  position:relative;
+  isolation:isolate;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  --liquid-fill:linear-gradient(120deg,rgba(255,255,255,.66),rgba(239,244,255,.44) 48%,rgba(210,225,255,.55));
+  --liquid-edge:rgba(255,255,255,.8);
+  --liquid-shadow:0 12px 36px rgba(39,52,78,.15);
+}
+html .liquid-nav--landing.liquid-nav{position:absolute;--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.24),rgba(226,235,255,.12) 48%,rgba(180,205,255,.2));--liquid-edge:rgba(255,255,255,.5);--liquid-shadow:0 14px 40px rgba(0,0,0,.32)}
+html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.23),rgba(210,225,255,.12) 48%,rgba(160,185,255,.18));--liquid-edge:rgba(255,255,255,.28);--liquid-shadow:0 12px 36px rgba(0,0,0,.35)}
+.liquid-nav::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  border:1px solid var(--liquid-edge);
+  border-radius:inherit;
+  background:var(--liquid-fill);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.65),inset 0 -2px 5px rgba(255,255,255,.16),inset 3px 0 8px rgba(255,255,255,.1),var(--liquid-shadow);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  backdrop-filter:blur(18px) saturate(160%);
+}
+@supports (backdrop-filter: url("#liquid-nav-distortion")){
+  .liquid-nav::before{backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%)}
+}
+@media(forced-colors:active){
+  .liquid-nav::before{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .liquid-nav--landing{color:CanvasText}
+}
+
+/* Shared liquid-glass interface surfaces; the cover canvas is not filtered. */
+.app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  backdrop-filter:blur(18px) saturate(160%);
+}
+.app-shell .preview-panel,.app-shell .controls{
+  box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -2px 8px #ffffff40,0 18px 48px #53617a24;
+}
+html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
+  box-shadow:inset 0 1px 1px #ffffff60,inset 0 -2px 8px #ffffff10,0 18px 48px #0005;
+}
+.app-shell .photo-frame-controls{
+  background:linear-gradient(135deg,#ffffffa6,#e3eaf77a);
+  border-color:#ffffffb3;
+  box-shadow:inset 0 1px 1px #fff,0 6px 18px #45577314;
+}
+html[data-theme="dark"] .app-shell .photo-frame-controls{
+  background:linear-gradient(135deg,#ffffff20,#ffffff0a);
+  border-color:#ffffff30;
+  box-shadow:inset 0 1px 1px #ffffff30,0 6px 18px #0003;
+}
+.app-shell .style-option,.app-shell .corner-options button,.app-shell .upload-zone,.app-shell .field input{
+  box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -1px 3px #ffffff40,0 3px 12px #45577314;
+}
+html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .upload-zone,html[data-theme="dark"] .app-shell .field input{
+  box-shadow:inset 0 1px 1px #ffffff38,inset 0 -1px 3px #ffffff0d,0 3px 12px #0003;
+}
+.app-shell .field input:focus,html[data-theme="dark"] .app-shell .field input:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){
+  .app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
+    backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%);
+  }
+}
+@media(forced-colors:active){
+  .app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
+    background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+}
+
+/* Refract the backdrop of controls as well as the larger glass surfaces. */
+:is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
+.app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  backdrop-filter:blur(18px) saturate(160%);
+}
+.app-shell .download,.app-shell .download:hover:not(:disabled){
+  color:#1d1d1f;
+  border:1px solid rgba(255,255,255,.65);
+  background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
+  box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -2px 5px #ffffff29,0 6px 18px #1b254026;
+}
+html[data-theme="dark"] .app-shell .download,html[data-theme="dark"] .app-shell .download:hover:not(:disabled){
+  color:#fff;
+  border-color:rgba(255,255,255,.4);
+  background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
+  box-shadow:inset 0 1px 1px #ffffff80,inset 0 -2px 5px #ffffff20,0 6px 18px #0005;
+}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){
+  :is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
+  .app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
+    backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%);
+  }
+}
+@media(forced-colors:active){
+  :is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
+  .app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
+    backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+}
+
+@media(forced-colors:active){.app-shell,html[data-theme="dark"] .app-shell{background:Canvas}}
+
+/* Keep the editor background visible through its glass panels. */
+.app-shell .preview-panel,.app-shell .controls{
+  background:linear-gradient(120deg,rgba(255,255,255,.38),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
+  -webkit-backdrop-filter:blur(2px) saturate(160%);
+  backdrop-filter:blur(2px) saturate(160%);
+}
+html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
+  background:linear-gradient(120deg,rgba(255,255,255,.23),rgba(210,225,255,.12) 48%,rgba(160,185,255,.18));
+}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){
+  .app-shell .preview-panel,.app-shell .controls{backdrop-filter:url("#liquid-nav-distortion") blur(2px) saturate(160%)}
+  .app-shell .segmented::before{backdrop-filter:url("#liquid-nav-distortion") blur(6px) saturate(160%)}
+}
+@media(forced-colors:active){
+  .app-shell .preview-panel,.app-shell .controls,html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
+    background:Canvas;backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+}
+@media(forced-colors:active){
+  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before{
+    background:Highlight;backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+  .app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active{color:HighlightText}
+}
+
+/* Keep the background visible through the editor navigation. */
+html .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.24),rgba(239,244,255,.1) 48%,rgba(210,225,255,.16))}
+html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.13),rgba(210,225,255,.06) 48%,rgba(160,185,255,.1))}
+.editor-nav.liquid-nav::before{-webkit-backdrop-filter:blur(2px) saturate(160%);backdrop-filter:blur(2px) saturate(160%)}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){
+  .editor-nav.liquid-nav::before{backdrop-filter:url("#liquid-nav-distortion") blur(2px) saturate(160%)}
+}
+@media(forced-colors:active){.editor-nav.liquid-nav::before{backdrop-filter:none;-webkit-backdrop-filter:none}}
+
+/* Draggable switch thumbs follow the pointer without changing click semantics. */
+.theme-switch,.locale-switch,.app-shell .toggle-row input{touch-action:pan-y}
+.theme-switch[data-dragging="true"] .theme-switch-thumb,.locale-switch[data-dragging="true"] .locale-switch-thumb{
+  transform:translateX(calc(var(--drag-progress) * 100%)) scaleX(var(--drag-stretch,1));transition:none;
+}
+.app-shell .toggle-row input[data-dragging="true"]::before{
+  transform:translateX(calc(var(--drag-progress) * 14px)) scaleX(var(--drag-stretch,1));scale:1;transition:none;
+}
+
+/* Settings and range handles use the same translucent glass as the editor. */
+.nav-menu-panel{background:linear-gradient(120deg,rgba(255,255,255,.72),rgba(220,230,247,.6));border-color:#ffffffa6}
+html[data-theme="dark"] .nav-menu-panel{background:linear-gradient(120deg,rgba(76,88,107,.76),rgba(35,48,67,.82));border-color:#ffffff52}
+.app-shell{--slider-active-glass:linear-gradient(145deg,rgba(255,255,255,.7),rgba(222,232,249,.45) 48%,rgba(170,185,210,.4))}
+html[data-theme="dark"] .app-shell{--slider-active-glass:linear-gradient(145deg,rgba(255,255,255,.68),rgba(205,221,245,.42) 48%,rgba(140,160,193,.38))}
+.app-shell .range-label input[type="range"]:active::-webkit-slider-thumb{background:var(--slider-active-glass)}
+.app-shell .range-label input[type="range"]:active::-moz-range-thumb{background:var(--slider-active-glass)}
+@media(forced-colors:active){.nav-menu-panel,html[data-theme="dark"] .nav-menu-panel{background:Canvas;border-color:CanvasText}}
+
+/* Slightly larger interface text without changing the cover artwork. */
+body{font-size:15px}
+.app-shell h2{font-size:17px}
+.app-shell :is(.field,.field-label,.color-control,.toggle-row,.range-label){font-size:13px}
+.app-shell .field input{font-size:15px}
+.app-shell .style-option strong,.app-shell .segmented button{font-size:13px}
+.app-shell .style-option small,.app-shell .corner-options button{font-size:11px}
+.app-shell .help-text{font-size:12px}
+.app-shell .download,.nav-menu-label,.nav-menu-link{font-size:14px}
+.app-shell .section-top{font-size:10px}
+.locale-switch button{font-size:12px}
+@media(max-width:650px){.app-shell .download{font-size:12px}}
+
+/* Keep switch indicators consistent with the translucent download button. */
+.app-shell .segmented::before,.theme-switch-thumb,.locale-switch-thumb,.app-shell .toggle-row input::before{
+  background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
+  box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -1px 3px #ffffff40,0 2px 8px #1b254026;
+  -webkit-backdrop-filter:blur(6px) saturate(160%);
+  backdrop-filter:blur(6px) saturate(160%);
+}
+html[data-theme="dark"] :is(.theme-switch-thumb,.locale-switch-thumb),
+html[data-theme="dark"] .app-shell .segmented::before,
+html[data-theme="dark"] .app-shell .toggle-row input::before,
+html[data-theme="dark"] .app-shell .toggle-row input:checked::before{
+  background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
+  box-shadow:inset 0 1px 1px #ffffff80,inset 0 -1px 3px #ffffff20,0 2px 8px #0005;
+}
+.app-shell .toggle-row input::before,html[data-theme="dark"] .app-shell .toggle-row input::before,
+.app-shell .toggle-row input:checked::before,html[data-theme="dark"] .app-shell .toggle-row input:checked::before{
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(240,245,255,.78));
+}
+.app-shell .corner-options button:not(.active):not(:disabled){color:#434b5a}
+.app-shell .corner-options button:not(.active):not(:disabled) .corner-icon{border-color:currentColor}
+html[data-theme="dark"] .app-shell .corner-options button:not(.active):not(:disabled){color:#e0e5f0}
+@media(forced-colors:active){
+  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before{background:Highlight;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
+/* Borderless tracks with start, midpoint, and end guides. */
+.app-shell{--range-tick:rgba(70,78,91,.4)}
+html[data-theme="dark"] .app-shell{--range-tick:rgba(192,200,213,.35)}
+.app-shell .range-label input[type="range"]{
+  height:24px;
+  background-image:linear-gradient(var(--range-tick),var(--range-tick)),linear-gradient(var(--range-tick),var(--range-tick)),linear-gradient(var(--range-tick),var(--range-tick));
+  background-size:2px 4px;
+  background-position:11px bottom,center bottom,calc(100% - 11px) bottom;
+  background-repeat:no-repeat;
+}
+.app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{border:0}
+.app-shell .range-label input[type="range"]::-moz-range-track{height:5px;border:0}
+.app-shell .range-label input[type="range"]::-moz-range-progress{height:5px;border:0}
+.app-shell .range-label > span{display:none}
+.app-shell .toggle-row input,html[data-theme="dark"] .app-shell .toggle-row input{border:0}
+.app-shell .toggle-row input::before{top:3px;left:3px}
+@media(forced-colors:active){.app-shell,html[data-theme="dark"] .app-shell{--range-tick:CanvasText}}
+
+/* The selected segment follows pointer drags and snaps on release. */
+.app-shell .segmented{touch-action:pan-y}
+.app-shell .segmented[data-dragging="true"]::before{
+  transform:translateX(calc(var(--drag-index) * (100% + 3px))) scaleX(var(--drag-stretch,1));
+  transition:none;
+}
+@media(prefers-reduced-motion:reduce){
+  .theme-switch[data-dragging="true"],.locale-switch[data-dragging="true"],
+  .app-shell .toggle-row input[data-dragging="true"],.app-shell .segmented[data-dragging="true"]{--drag-stretch:1 !important}
+}
+
+/* Separate fields without adding dividers between related controls. */
+.app-shell .fields{gap:18px}
+.app-shell .field input{margin-top:9px}
+.app-shell .range-label{margin-top:20px}
+.app-shell .photo-frame-controls .range-label{margin-top:18px}
+
+/* Visual choices: the selected thumbnail is framed, with its label underneath. */
+.app-shell .style-options{gap:20px}
+.app-shell .control-section.first-section{padding-bottom:8px}
+.app-shell .first-section .section-heading{margin-bottom:9px}
+.app-shell .style-option,.app-shell .style-option.selected,
+.app-shell .corner-options button,.app-shell .corner-options button.active,
+html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .style-option.selected,
+html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .corner-options button.active{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  gap:10px;padding:5px 2px;border:0;background:transparent;box-shadow:none;text-align:center;
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+}
+.app-shell .first-section .style-option,html[data-theme="dark"] .app-shell .first-section .style-option{gap:6px;padding-top:3px;padding-bottom:3px}
+.app-shell .style-thumb{
+  width:min(100%,112px);height:auto;aspect-ratio:1;border-radius:12px;
+  box-shadow:0 5px 16px #0004;outline:2px solid transparent;outline-offset:3px;
+}
+.app-shell .classic-thumb{font-size:38px}
+.app-shell .essentials-thumb{justify-content:flex-start;gap:12px}
+.app-shell .essentials-thumb>span{font-size:12px;padding:9px 2px}
+.app-shell .essentials-thumb svg{width:32px;height:32px}
+.app-shell .style-option strong{font-size:14px}
+.app-shell .style-option small{display:none}
+.app-shell .corner-options{gap:8px}
+.app-shell .corner-options button{font-size:12px;line-height:1.2}
+.app-shell .corner-icon{
+  width:min(100%,68px);height:auto;aspect-ratio:1;border:0;border-radius:10px;
+  background:linear-gradient(145deg,#9d5a88,#554d93 46%,#267a78);
+  box-shadow:0 5px 16px #0004;outline:2px solid transparent;outline-offset:3px;
+}
+.app-shell .corner-icon::before{
+  content:"";position:absolute;left:18%;right:18%;top:39%;height:15%;border-radius:2px;background:#ffffffbd;
+}
+.app-shell .corner-icon i{width:18%;height:12%;border-radius:2px;background:#fff}
+.app-shell .corner-icon.top-left i,.app-shell .corner-icon.top-right i{top:11%}
+.app-shell .corner-icon.bottom-left i,.app-shell .corner-icon.bottom-right i{bottom:11%}
+.app-shell .corner-icon.top-left i,.app-shell .corner-icon.bottom-left i{left:11%}
+.app-shell .corner-icon.top-right i,.app-shell .corner-icon.bottom-right i{right:11%}
+.app-shell .style-option.selected .style-thumb,.app-shell .corner-options button.active .corner-icon{outline-color:var(--accent)}
+.app-shell .corner-options button:disabled{opacity:.45}
+@media(forced-colors:active){
+  .app-shell .style-option.selected .style-thumb,.app-shell .corner-options button.active .corner-icon{outline-color:Highlight}
+}
+
+/* Selected switch buttons use the accent rather than a glass fill. */
+.app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before,
+.theme-switch-thumb,.locale-switch-thumb,html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{
+  background:#fa233b;
+  box-shadow:0 2px 6px #0003;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+}
+.app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active,
+html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .locale-switch button[aria-checked="true"]{color:#fff}
+@media(forced-colors:active){
+  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before,
+  .theme-switch-thumb,.locale-switch-thumb,html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{background:Highlight}
+  .app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active,
+  html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .locale-switch button[aria-checked="true"]{color:HighlightText}
+}
+
+/* Share a darker track color across inactive switches and sliders. */
+@media(forced-colors:none){
+  :root{--inactive-track:#aeb5c1;--inactive-label:#303744}
+  html[data-theme="dark"]{--inactive-track:#252a34;--inactive-label:#d2d9e4}
+  .theme-switch,.locale-switch,html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch,
+  .app-shell .segmented,html[data-theme="dark"] .app-shell .segmented,
+  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){background:var(--inactive-track)}
+  .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track,
+  html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{
+    background:linear-gradient(to right,var(--accent) 0 var(--range-progress),var(--inactive-track) var(--range-progress) 100%);
+  }
+  .app-shell .range-label input[type="range"]::-moz-range-track,
+  html[data-theme="dark"] .app-shell .range-label input[type="range"]::-moz-range-track{background:var(--inactive-track)}
+  .app-shell .segmented button:not(.active),html[data-theme="dark"] .app-shell .segmented button:not(.active),
+  html[data-theme] .theme-switch button[aria-checked="false"],html[data-theme] .locale-switch button[aria-checked="false"]{color:var(--inactive-label)}
+}
+
+/* Match switch tracks to the translucent download button. */
+@media(forced-colors:none){
+  .theme-switch,.locale-switch,.app-shell .segmented,.app-shell .toggle-row input:not(:checked){
+    background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
+    box-shadow:inset 0 0 0 1px #ffffff70,inset 0 1px 1px #ffffffa6,0 3px 10px #1b254026;
+  }
+  html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch,
+  html[data-theme="dark"] .app-shell .segmented,html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
+    background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
+    box-shadow:inset 0 0 0 1px #ffffff40,inset 0 1px 1px #ffffff80,0 3px 10px #0003;
+  }
+  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
+    box-shadow:inset 0 1px 1px #ffffff80,0 3px 10px #0003;
+  }
+}
+
+/* Toggle handles share the slider thumb's pill shape and pressed feedback. */
+.app-shell .toggle-row input{width:44px;height:22px;--drag-travel:18px}
+.app-shell .toggle-row input::before{width:20px;height:12px;top:5px;left:3px;border-radius:999px;box-shadow:var(--slider-shadow)}
+.app-shell .toggle-row input:checked::before{transform:translateX(18px)}
+.app-shell .toggle-row input[data-dragging="true"]::before{transform:translateX(calc(var(--drag-progress) * 18px)) scaleX(var(--drag-stretch,1))}
+.app-shell .toggle-row input:active::before,
+.app-shell .toggle-row input[data-dragging="true"]:active::before,
+html[data-theme="dark"] .app-shell .toggle-row input:active::before,
+html[data-theme="dark"] .app-shell .toggle-row input:checked:active::before{
+  background:var(--slider-active-glass);scale:1.5;
+}
+@media(prefers-reduced-motion:reduce){
+  .app-shell .toggle-row input:active::before,.app-shell .toggle-row input[data-dragging="true"]:active::before{scale:1}
+}
+
+@media(forced-colors:none){
+  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
+    background:var(--inactive-track);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
+  }
+}
+
+/* Make preview actions and editor labels easy to see in both appearances. */
+.app-shell .preview-panel .preview-actions .icon-button{
+  width:34px;height:34px;border:1px solid #ffffff80;border-radius:50%;
+  color:#fff;background:rgba(37,43,56,.7);
+  box-shadow:inset 0 1px 1px #ffffff66,0 3px 12px #0003;
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+}
+.app-shell .preview-panel .preview-actions .icon-button:hover:not(:disabled){background:rgba(55,63,80,.85)}
+html[data-theme="dark"] .app-shell .preview-panel .preview-actions .icon-button{color:#fff}
+html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-control,.toggle-row,.help-text){color:#fff}
+@media(forced-colors:active){
+  .app-shell .preview-panel .preview-actions .icon-button,html[data-theme="dark"] .app-shell .preview-panel .preview-actions .icon-button{color:ButtonText;background:ButtonFace;border-color:ButtonText;backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+
