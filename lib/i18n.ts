@@ -132,11 +132,9 @@ export const dictionaries = {
       background: "Background",
       gradient: "Gradient",
       color: "Color",
-      custom: "Solid",
       picture: "Picture",
       backgroundColor: "Background color",
       gradientN: (n: number) => `Gradient ${n}`,
-      colorN: (n: number) => `Color ${n}`,
       dismiss: "Dismiss notification",
       thereYouGo: "There you go!",
       corners: {
@@ -283,11 +281,9 @@ export const dictionaries = {
       background: "Fondo",
       gradient: "Degradado",
       color: "Color",
-      custom: "Sólido",
       picture: "Foto",
       backgroundColor: "Color de fondo",
       gradientN: (n: number) => `Degradado ${n}`,
-      colorN: (n: number) => `Color ${n}`,
       dismiss: "Cerrar aviso",
       thereYouGo: "¡Ahí la tienes!",
       corners: {

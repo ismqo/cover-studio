@@ -73,7 +73,18 @@ export function fitTitleBlock(title: string, subtitle: string, measure: (value: 
   return { title: main, subtitle: sub, gap, height };
 }
 
-export type BackgroundType = "gradients" | "colors" | "custom" | "picture";
+export type BackgroundType = "gradients" | "custom" | "picture";
+
+/** Diagonal shade for a solid background: 25% darker at the bottom-left, 18% lighter at the top-right. */
+export function colorShade(hex: string) {
+  const channels = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const toHex = (values: number[]) => `#${values.map(v => Math.round(v).toString(16).padStart(2, "0")).join("")}`;
+  return {
+    dark: toHex(channels.map(c => c * .75)),
+    base: toHex(channels),
+    light: toHex(channels.map(c => c + (255 - c) * .18)),
+  };
+}
 
 /** Background drawn behind a style: Original and Full photo each keep their own choice; other styles have none. */
 export function activeBackground(mode: CoverMode, appleBackground: BackgroundType, spotifyBackground: BackgroundType): BackgroundType | null {

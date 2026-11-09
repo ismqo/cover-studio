@@ -133,3 +133,10 @@ test("the photo treatment reset is enabled when any treatment setting differs", 
   assert.equal(treatmentChanged("essentials", { ...base, tint: "#ffffff" }), true);
   assert.equal(treatmentChanged("essentials", { ...base, brightness: 10 }), true);
 });
+
+test("shades a solid color darker toward the bottom-left and lighter toward the top-right", async () => {
+  const { colorShade } = await import("../lib/cover-layout.ts");
+  assert.deepEqual(colorShade("#808080"), { dark: "#606060", base: "#808080", light: "#979797" });
+  assert.deepEqual(colorShade("#000000"), { dark: "#000000", base: "#000000", light: "#2e2e2e" });
+  assert.deepEqual(colorShade("#ffffff"), { dark: "#bfbfbf", base: "#ffffff", light: "#ffffff" });
+});

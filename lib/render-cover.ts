@@ -1,6 +1,6 @@
 import { appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { activeBackground, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { activeBackground, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -15,7 +15,7 @@ export type CoverSettings = {
   classicTitleWeight: "normal" | "bold"; classicSubtitleWeight: "normal" | "bold";
   showLogo: boolean; corner: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   backgroundType: BackgroundType; spotifyBackgroundType: BackgroundType;
-  gradient: number; color: number; customColor: string;
+  gradient: number; customColor: string;
   textColor: string; bandColor: string; bandHeight: number; essentialsFontSize: number;
   treatment: "original" | "mono" | "duotone"; tint: string;
   brightness: number; contrast: number;
@@ -29,7 +29,7 @@ export const defaults: CoverSettings = {
   classicTitleWeight: "bold", classicSubtitleWeight: "normal",
   essentialsTitle: "Essentials", spotifyTitle: "Title", spotifyKicker: "THIS IS", spotifyFontSize: 150,
   spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
-  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, color: 0, customColor: "#7865a8",
+  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8",
   textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136,
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
@@ -212,13 +212,22 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   const size = 1200;
   const spotify = platformOf(s.mode) === "spotify";
   const backgroundType = activeBackground(s.mode, s.backgroundType, s.spotifyBackgroundType);
-  const background = backgroundType === "gradients" || backgroundType === "colors" ? await loadImage(`/assets/${backgroundType}/${backgroundType === "gradients" ? s.gradient : s.color}.png`) : null;
+  const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
   await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   ctx.textBaseline = "top";
-  ctx.fillStyle = s.customColor;
+  if (backgroundType === "custom") {
+    const shade = colorShade(s.customColor);
+    const fill = ctx.createLinearGradient(0, size, size, 0);
+    fill.addColorStop(0, shade.dark);
+    fill.addColorStop(.5, shade.base);
+    fill.addColorStop(1, shade.light);
+    ctx.fillStyle = fill;
+  } else {
+    ctx.fillStyle = s.customColor;
+  }
   ctx.fillRect(0, 0, size, size);
   if (background) ctx.drawImage(background, 0, 0, size, size);
   const band = Math.round(size * s.bandHeight / 100);
