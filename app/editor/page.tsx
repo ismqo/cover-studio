@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
-import { ArrowDownToLine, Check, ImagePlus, Music2, RotateCcw, X } from "lucide-react";
+import { ALargeSmall, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, Music2, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { DragToggle, DraggableSegments } from "@/components/drag-switch";
 import { SmoothRange } from "@/components/smooth-range";
@@ -206,67 +206,67 @@ export default function Home() {
         </div>
 
         <section className="controls" aria-label={copy.coverSettings} tabIndex={0}>
-          <div className="control-section first-section"><div className="section-heading"><h2>{copy.platform}</h2></div>
+          <Section title={copy.platform} className="first-section">
             <div className="style-options">
               {(["apple", "spotify"] as const).map(value => <button key={value} className={`style-option ${platform === value ? "selected" : ""}`} aria-pressed={platform === value} aria-label={value === "apple" ? copy.appleMusic : copy.spotify} title={value === "apple" ? copy.appleMusic : copy.spotify} onClick={() => selectPlatform(value)}><span className={`platform-logo ${value}-logo`} aria-hidden="true">{value === "apple" ? <svg viewBox={`0 0 ${APPLE_MUSIC_PICKER_VIEWBOX.width} ${APPLE_MUSIC_PICKER_VIEWBOX.height}`}><path d={APPLE_MUSIC_PICKER_PATH}/></svg> : <i/>}</span></button>)}
             </div>
-          </div>
+          </Section>
 
-          <div className="control-section first-section"><div className="section-heading"><h2>{copy.coverStyle}</h2></div>
+          <Section title={copy.coverStyle} className="first-section">
             <div className={`style-options ${spotify ? "three-up" : ""}`}>
               {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={() => selectMode(mode)}><StyleThumb mode={mode}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
             </div>
-          </div>
+          </Section>
 
           {/* 1. Text: what the cover says. */}
           <Section title={copy.textContent}>
-            {thisIs && <TextField label={copy.kicker} maxLength={40} value={settings.spotifyKicker} onChange={value => update("spotifyKicker", value)}/>}
-            {hasSubtitle && <SegmentField label={copy.content} value={settings.spotifyShowSubtitle} options={[[false, copy.titleOnly], [true, copy.titleAndSubtitle]]} onChange={value => update("spotifyShowSubtitle", value)}/>}
-            {spotify && <TextField label={copy.title} value={settings.spotifyTitle} placeholder={copy.sampleTitle} onChange={value => update("spotifyTitle", value)}/>}
-            {showSpotifySubtitle && <TextField label={copy.subtitle} value={settings.spotifySubtitle} placeholder={copy.sampleSubtitle} onChange={value => update("spotifySubtitle", value)}/>}
-            {essentials && <TextField label={copy.title} value={settings.essentialsTitle} placeholder={copy.sampleEssentials} onChange={value => update("essentialsTitle", value)}/>}
+            {thisIs && <TextField icon={Tag} label={copy.kicker} maxLength={40} value={settings.spotifyKicker} onChange={value => update("spotifyKicker", value)}/>}
+            {hasSubtitle && <SegmentField icon={Layers} label={copy.content} value={settings.spotifyShowSubtitle} options={[[false, copy.titleOnly], [true, copy.titleAndSubtitle]]} onChange={value => update("spotifyShowSubtitle", value)}/>}
+            {spotify && <TextField icon={Heading} label={copy.title} value={settings.spotifyTitle} placeholder={copy.sampleTitle} onChange={value => update("spotifyTitle", value)}/>}
+            {showSpotifySubtitle && <TextField icon={Text} label={copy.subtitle} value={settings.spotifySubtitle} placeholder={copy.sampleSubtitle} onChange={value => update("spotifySubtitle", value)}/>}
+            {essentials && <TextField icon={Heading} label={copy.title} value={settings.essentialsTitle} placeholder={copy.sampleEssentials} onChange={value => update("essentialsTitle", value)}/>}
             {classic && <>
-              <TextField label={copy.bigTitle} value={settings.title} placeholder={copy.sampleTitle} onChange={value => update("title", value)}/>
-              <TextField label={copy.subtitle} value={settings.subtitle} placeholder={copy.sampleSubtitle} onChange={value => update("subtitle", value)}/>
-              <TextField label={copy.footer} maxLength={150} value={settings.footer} placeholder={copy.sampleFooter} onChange={value => update("footer", value)}/>
+              <TextField icon={Heading} label={copy.bigTitle} value={settings.title} placeholder={copy.sampleTitle} onChange={value => update("title", value)}/>
+              <TextField icon={Text} label={copy.subtitle} value={settings.subtitle} placeholder={copy.sampleSubtitle} onChange={value => update("subtitle", value)}/>
+              <TextField icon={Pilcrow} label={copy.footer} maxLength={150} value={settings.footer} placeholder={copy.sampleFooter} onChange={value => update("footer", value)}/>
             </>}
           </Section>
 
           {/* 2. Typography: how the text looks, in reading order. */}
           <Section title={copy.typography}>
-            {spotify && <SegmentField label={copy.titleFont} value={settings.spotifyFont} options={[["standard", copy.fontStandard], ["wide", copy.fontWide]]} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
-            {thisIs && <RangeField label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
-            {spotify && <RangeField label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
-            {showSpotifySubtitle && <RangeField label={copy.subtitleSize} unit="px" min="32" max="140" step="2" value={settings.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
-            {essentials && <RangeField label={copy.titleSize} unit="px" min="72" max="180" step="2" value={settings.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, s.corner.startsWith("bottom") ? Math.max(18, Math.ceil((fontSize + 40) / 12)) : 27) }))}/>}
+            {spotify && <SegmentField icon={Type} label={copy.titleFont} value={settings.spotifyFont} options={[["standard", copy.fontStandard], ["wide", copy.fontWide]]} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
+            {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
+            {spotify && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
+            {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="140" step="2" value={settings.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
+            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="180" step="2" value={settings.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, s.corner.startsWith("bottom") ? Math.max(18, Math.ceil((fontSize + 40) / 12)) : 27) }))}/>}
             {classic && <>
-              <RangeField label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} onChange={value => updateClassicFontSize("classicFontSize", value)}/>
-              <SegmentField label={copy.bigTitleWeight} value={settings.classicTitleWeight} options={[["normal", copy.normal], ["bold", copy.bold]]} onChange={value => update("classicTitleWeight", value)}/>
-              <RangeField label={copy.subtitleSize} unit="px" min="72" max="180" step="1" value={settings.classicSubtitleFontSize} onChange={value => updateClassicFontSize("classicSubtitleFontSize", value)}/>
-              <SegmentField label={copy.subtitleWeight} value={settings.classicSubtitleWeight} options={[["normal", copy.normal], ["bold", copy.bold]]} onChange={value => update("classicSubtitleWeight", value)}/>
+              <RangeField icon={ALargeSmall} label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} onChange={value => updateClassicFontSize("classicFontSize", value)}/>
+              <SegmentField icon={Bold} label={copy.bigTitleWeight} value={settings.classicTitleWeight} options={[["normal", copy.normal, Type], ["bold", copy.bold, Bold]]} onChange={value => update("classicTitleWeight", value)}/>
+              <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="72" max="180" step="1" value={settings.classicSubtitleFontSize} onChange={value => updateClassicFontSize("classicSubtitleFontSize", value)}/>
+              <SegmentField icon={Bold} label={copy.subtitleWeight} value={settings.classicSubtitleWeight} options={[["normal", copy.normal, Type], ["bold", copy.bold, Bold]]} onChange={value => update("classicSubtitleWeight", value)}/>
             </>}
           </Section>
 
           {/* 3. Layout: where things sit. */}
           {!thisIs && <Section title={copy.layout}>
             {spotify && <>
-              <SegmentField label={band ? copy.bandPosition : copy.titlePlacement} value={settings.spotifyTitlePosition} options={[["top", copy.top], ["bottom", copy.bottom]]} onChange={value => update("spotifyTitlePosition", value)}/>
-              <SegmentField label={copy.titleAlignment} value={settings.spotifyAlign} options={[["left", copy.left], ["right", copy.right]]} onChange={value => update("spotifyAlign", value)}/>
+              <SegmentField icon={PanelTop} label={band ? copy.bandPosition : copy.titlePlacement} value={settings.spotifyTitlePosition} options={[["top", copy.top, ArrowUpToLine], ["bottom", copy.bottom, ArrowDownToLine]]} onChange={value => update("spotifyTitlePosition", value)}/>
+              <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.spotifyAlign} options={[["left", copy.left, AlignLeft], ["right", copy.right, AlignRight]]} onChange={value => update("spotifyAlign", value)}/>
             </>}
             {classic && <>
-              <SegmentField label={copy.titleAlignment} value={settings.classicAlign} options={[["left", copy.left], ["center", copy.center]]} onChange={value => update("classicAlign", value)}/>
-              <RangeField label={copy.titlePosition} unit="%" min="15" max={classicTitleYMax} value={settings.classicTitleY} onChange={value => update("classicTitleY", value)}/>
+              <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.classicAlign} options={[["left", copy.left, AlignLeft], ["center", copy.center, AlignCenter]]} onChange={value => update("classicAlign", value)}/>
+              <RangeField icon={MoveVertical} label={copy.titlePosition} unit="%" min="15" max={classicTitleYMax} value={settings.classicTitleY} onChange={value => update("classicTitleY", value)}/>
             </>}
-            {band && <RangeField label={copy.bandHeight} unit="%" min="15" max="50" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
-            {essentials && <RangeField label={copy.bandHeight} unit="%" min={bandHeightMin} max="42" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
+            {band && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="15" max="50" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
+            {essentials && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min={bandHeightMin} max="42" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
           </Section>}
 
           {/* 4. Colors. */}
           <Section title={copy.colors}>
-            <ColorField copy={copy} label={copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>
-            {band && settings.showLogo && <label className="toggle-row"><span>{copy.logoMatchesBand}</span><DragToggle checked={settings.logoMatchesBand} onChange={value => update("logoMatchesBand", value)}/></label>}
-            {(essentials || band) && <ColorField copy={copy} label={copy.bandColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
-            {thisIs && <ColorField copy={copy} label={copy.accentColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
+            <ColorField copy={copy} icon={Brush} label={copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>
+            {band && settings.showLogo && <label className="toggle-row"><RowLabel icon={Link}>{copy.logoMatchesBand}</RowLabel><DragToggle checked={settings.logoMatchesBand} onChange={value => update("logoMatchesBand", value)}/></label>}
+            {(essentials || band) && <ColorField copy={copy} icon={PaintBucket} label={copy.bandColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
+            {thisIs && <ColorField copy={copy} icon={Droplet} label={copy.accentColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
           </Section>
 
           {/* 5. Photo or background. */}
@@ -275,13 +275,13 @@ export default function Home() {
           </Section>}
 
           {(classic || fullPhoto) && <Section title={copy.background}>
-            <DraggableSegments className="segmented">{([['gradients', copy.gradient],['custom', copy.color],['picture', copy.picture]] as const).map(([value,label]) => <button key={value} className={backgroundType === value ? "active" : ""} aria-pressed={backgroundType === value} onClick={() => update(backgroundKey, value)}>{label}</button>)}</DraggableSegments>
-            {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <ColorField copy={copy} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
+            <DraggableSegments className="segmented">{([['gradients', copy.gradient, Blend],['custom', copy.color, Palette],['picture', copy.picture, ImageIcon]] as const).map(([value,label,Icon]) => <button key={value} className={backgroundType === value ? "active" : ""} aria-pressed={backgroundType === value} onClick={() => update(backgroundKey, value)}><Icon size={14} aria-hidden="true"/>{label}</button>)}</DraggableSegments>
+            {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
           </Section>}
 
           {/* 6. Logo. */}
           <Section title={spotify ? copy.spotifyLogo : copy.appleLogo} last>
-            <label className="toggle-row"><span>{copy.showLogo}</span><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
+            <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
             {settings.showLogo && <div className="corner-options">{corners.map(corner => { const disabled = bottomLogoUnavailable && corner.startsWith("bottom"); return <button disabled={disabled} key={corner} className={settings.corner === corner ? "active" : ""} aria-pressed={settings.corner === corner} title={disabled ? copy.bottomCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner, bandHeight: essentials && corner.startsWith("top") ? Math.max(s.bandHeight, 27) : s.bandHeight }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
             {settings.showLogo && bottomLogoUnavailable && <p className="help-text">{copy.bottomCornerHelp}</p>}
             {!spotify && settings.showLogo && <div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
@@ -305,31 +305,36 @@ export default function Home() {
   </>;
 }
 
-/** A settings group: heading plus a body whose rows share one consistent gap. */
-function Section({ title, last = false, children }: { title: string; last?: boolean; children: ReactNode }) {
-  return <div className={`control-section${last ? " last-section" : ""}`}><div className="section-heading"><h2>{title}</h2></div><div className="section-body">{children}</div></div>;
+/** A settings category: a small title above one grouped card whose rows are separated by hairlines. */
+function Section({ title, className = "", last = false, children }: { title: string; className?: string; last?: boolean; children: ReactNode }) {
+  return <section className={`control-section ${className}${last ? " last-section" : ""}`}><div className="section-heading"><h2>{title}</h2></div><div className="section-body">{children}</div></section>;
 }
 
-function TextField({ label, value, onChange, placeholder, maxLength = 100 }: { label: string; value: string; onChange: (value: string) => void; placeholder?: string; maxLength?: number }) {
-  return <label className="field">{label}<input maxLength={maxLength} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}/></label>;
+/** Row label: a small leading icon, then the text. */
+function RowLabel({ icon: Icon, children }: { icon?: LucideIcon; children: ReactNode }) {
+  return <span className="row-label">{Icon && <Icon size={15} aria-hidden="true"/>}<span>{children}</span></span>;
 }
 
-function RangeField({ label, value, unit, min, max, step = "1", onChange }: { label: string; value: number; unit: string; min: number | string; max: number | string; step?: string; onChange: (value: number) => void }) {
-  return <label className="range-label">{label}<span>{value}{unit}</span><SmoothRange min={min} max={max} step={step} value={value} onValueChange={onChange}/></label>;
+function TextField({ icon, label, value, onChange, placeholder, maxLength = 100 }: { icon?: LucideIcon; label: string; value: string; onChange: (value: string) => void; placeholder?: string; maxLength?: number }) {
+  return <label className="field"><RowLabel icon={icon}>{label}</RowLabel><input maxLength={maxLength} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}/></label>;
 }
 
-function SegmentField<T extends string | boolean>({ label, value, options, onChange, className = "", optionClass }: { label: string; value: T; options: readonly (readonly [T, string])[]; onChange: (value: T) => void; className?: string; optionClass?: (value: T) => string }) {
-  return <div className="inline-row"><div className="field-label">{label}</div><DraggableSegments className={`segmented ${className}`}>{options.map(([option, text]) => <button key={String(option)} className={`${value === option ? "active" : ""} ${optionClass?.(option) ?? ""}`} aria-pressed={value === option} onClick={() => onChange(option)}>{text}</button>)}</DraggableSegments></div>;
+function RangeField({ icon, label, value, unit, min, max, step = "1", onChange }: { icon?: LucideIcon; label: string; value: number; unit: string; min: number | string; max: number | string; step?: string; onChange: (value: number) => void }) {
+  return <label className="range-label"><RowLabel icon={icon}>{label}</RowLabel><span className="range-value">{value}{unit}</span><SmoothRange min={min} max={max} step={step} value={value} onValueChange={onChange}/></label>;
+}
+
+function SegmentField<T extends string | boolean>({ icon, label, value, options, onChange, className = "", optionClass }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string, LucideIcon?])[]; onChange: (value: T) => void; className?: string; optionClass?: (value: T) => string }) {
+  return <div className="inline-row"><div className="field-label"><RowLabel icon={icon}>{label}</RowLabel></div><DraggableSegments className={`segmented ${className}`}>{options.map(([option, text, Icon]) => <button key={String(option)} className={`${value === option ? "active" : ""} ${optionClass?.(option) ?? ""}`} aria-pressed={value === option} onClick={() => onChange(option)}>{Icon && <Icon size={14} aria-hidden="true"/>}{text}</button>)}</DraggableSegments></div>;
 }
 
 type ColorPreset = { label: string; hex: string };
 
 /** Color row: a rainbow "custom" swatch that opens the system picker, then preset swatches. */
-function ColorField({ copy, label, value, onChange, presets }: { copy: Dictionary["editor"]; label: string; value: string; onChange: (value: string) => void; presets?: readonly ColorPreset[] }) {
+function ColorField({ copy, icon, label, value, onChange, presets }: { copy: Dictionary["editor"]; icon?: LucideIcon; label: string; value: string; onChange: (value: string) => void; presets?: readonly ColorPreset[] }) {
   const options = presets ?? BASIC_COLORS.map(([name, hex]) => ({ label: copy.colorNames[name], hex }));
   const selected = findPreset(value, options.map(option => option.hex));
   return <div className="color-control">
-    <span>{label}</span>
+    <RowLabel icon={icon}>{label}</RowLabel>
     <div className="color-swatches" role="group" aria-label={label}>
       <label className={`color-swatch custom-swatch${selected ? "" : " selected"}`} title={copy.customColor}><input type="color" aria-label={`${label}: ${copy.customColor}`} value={value} onChange={e => onChange(e.target.value)}/></label>
       {options.map(option => <button key={option.hex} type="button" className={`color-swatch${selected === option.hex ? " selected" : ""}`} style={{ background: option.hex }} title={option.label} aria-label={`${label}: ${option.label}`} aria-pressed={selected === option.hex} onClick={() => onChange(option.hex)}/>)}
@@ -382,11 +387,11 @@ function PhotoControls({
     <button className={`upload-zone ${dragging ? "dragging" : ""}`} onClick={() => fileInput.current?.click()} onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={e => { e.preventDefault(); setDragging(false); void upload(e.dataTransfer.files[0]); }}><ImagePlus size={23}/><strong>{uploading ? copy.openingPhoto : photo ? copy.replacePhoto : copy.addPhoto}</strong><span>{copy.dropPhoto}</span><small>{copy.photoTypes}</small></button>
     {photo && <div className="file-row"><span>{photoName}</span><button className="icon-button" aria-label={copy.removePhoto} onClick={onRemove}><X size={14}/></button></div>}
     {photo ? <>
-    {showPhotoFrame && updatePhotoFrame && resetPhotoFrame && <div className="photo-frame-controls"><div className="field-label">{copy.photoFrame}<button className="icon-button" title={copy.resetPhotoFrame} aria-label={copy.resetPhotoFrame} disabled={!photoFrameChanged} onClick={resetPhotoFrame}><RotateCcw size={14}/></button></div><label className="range-label">{copy.sideMargin}<span>{settings.photoMargin}%</span><SmoothRange min="0" max="12" step="1" value={settings.photoMargin} onValueChange={value => updatePhotoFrame("photoMargin", value)}/></label><label className="toggle-row compact frame-toggle"><span>{topMarginLabel}</span><DragToggle checked={settings.photoTopMargin} onChange={value => update("photoTopMargin", value)}/></label><label className="range-label">{copy.roundedCorners}<span>{settings.photoRadius}%</span><SmoothRange min="0" max="10" step="1" value={settings.photoRadius} onValueChange={value => updatePhotoFrame("photoRadius", value)}/></label></div>}
-    <div className="inline-row"><div className="field-label photo-treatment-label">{copy.photoTreatment}<button className="icon-button" title={copy.resetPhotoTreatment} aria-label={copy.resetPhotoTreatment} disabled={!treatmentChanged(settings.mode, settings)} onClick={() => { const start = treatmentDefaults(settings.mode); update("treatment", start.treatment); update("tint", start.tint); update("brightness", start.brightness); update("contrast", start.contrast); }}><RotateCcw size={14}/></button></div><DraggableSegments className="segmented treatments">{([['original', copy.originalTreatment],['mono', copy.mono],['duotone', copy.duotone]] as const).map(([value,label]) => <button key={value} aria-pressed={settings.treatment === value} className={settings.treatment === value ? "active" : ""} onClick={() => update("treatment", value)}>{label}</button>)}</DraggableSegments></div>
-    {settings.treatment === "duotone" && <ColorField copy={copy} label={copy.duotoneTint} value={settings.tint} presets={tintColors.map(hex => ({ label: copy.duotoneColor(hex), hex }))} onChange={value => update("tint", value)}/>}
-    <div className="photo-tone-controls"><label className="range-label">{copy.brightness}<span>{settings.brightness > 0 ? `+${settings.brightness}` : settings.brightness}</span><SmoothRange min="-100" max="100" step="1" value={settings.brightness} onValueChange={value => update("brightness", value)}/></label><label className="range-label">{copy.contrast}<span>{settings.contrast > 0 ? `+${settings.contrast}` : settings.contrast}</span><SmoothRange min="-100" max="100" step="1" value={settings.contrast} onValueChange={value => update("contrast", value)}/></label></div>
-    <div className="crop-controls"><label className="range-label">{copy.zoom}<span>{settings.zoom.toFixed(1)}×</span><SmoothRange min="1" max="3" step="0.05" value={settings.zoom} onValueChange={value => update("zoom", value)}/></label><label className="range-label">{copy.horizontal}<span>{settings.offsetX}%</span><SmoothRange min="0" max="100" value={settings.offsetX} onValueChange={value => update("offsetX", value)}/></label><label className="range-label">{copy.vertical}<span>{settings.offsetY}%</span><SmoothRange min="0" max="100" value={settings.offsetY} onValueChange={value => update("offsetY", value)}/></label></div>
+    {showPhotoFrame && updatePhotoFrame && resetPhotoFrame && <div className="photo-frame-controls"><div className="field-label"><RowLabel icon={Frame}>{copy.photoFrame}</RowLabel><button className="icon-button" title={copy.resetPhotoFrame} aria-label={copy.resetPhotoFrame} disabled={!photoFrameChanged} onClick={resetPhotoFrame}><RotateCcw size={14}/></button></div><label className="range-label"><RowLabel icon={MoveHorizontal}>{copy.sideMargin}</RowLabel><span className="range-value">{settings.photoMargin}%</span><SmoothRange min="0" max="12" step="1" value={settings.photoMargin} onValueChange={value => updatePhotoFrame("photoMargin", value)}/></label><label className="toggle-row compact frame-toggle"><RowLabel icon={ArrowUpToLine}>{topMarginLabel}</RowLabel><DragToggle checked={settings.photoTopMargin} onChange={value => update("photoTopMargin", value)}/></label><label className="range-label"><RowLabel icon={Squircle}>{copy.roundedCorners}</RowLabel><span className="range-value">{settings.photoRadius}%</span><SmoothRange min="0" max="10" step="1" value={settings.photoRadius} onValueChange={value => updatePhotoFrame("photoRadius", value)}/></label></div>}
+    <div className="inline-row"><div className="field-label photo-treatment-label"><RowLabel icon={SlidersHorizontal}>{copy.photoTreatment}</RowLabel><button className="icon-button" title={copy.resetPhotoTreatment} aria-label={copy.resetPhotoTreatment} disabled={!treatmentChanged(settings.mode, settings)} onClick={() => { const start = treatmentDefaults(settings.mode); update("treatment", start.treatment); update("tint", start.tint); update("brightness", start.brightness); update("contrast", start.contrast); }}><RotateCcw size={14}/></button></div><DraggableSegments className="segmented treatments">{([['original', copy.originalTreatment, ImageIcon],['mono', copy.mono, Contrast],['duotone', copy.duotone, Droplets]] as const).map(([value,label,Icon]) => <button key={value} aria-pressed={settings.treatment === value} className={settings.treatment === value ? "active" : ""} onClick={() => update("treatment", value)}><Icon size={14} aria-hidden="true"/>{label}</button>)}</DraggableSegments></div>
+    {settings.treatment === "duotone" && <ColorField copy={copy} icon={Droplets} label={copy.duotoneTint} value={settings.tint} presets={tintColors.map(hex => ({ label: copy.duotoneColor(hex), hex }))} onChange={value => update("tint", value)}/>}
+    <div className="photo-tone-controls"><label className="range-label"><RowLabel icon={Sun}>{copy.brightness}</RowLabel><span className="range-value">{settings.brightness > 0 ? `+${settings.brightness}` : settings.brightness}</span><SmoothRange min="-100" max="100" step="1" value={settings.brightness} onValueChange={value => update("brightness", value)}/></label><label className="range-label"><RowLabel icon={Contrast}>{copy.contrast}</RowLabel><span className="range-value">{settings.contrast > 0 ? `+${settings.contrast}` : settings.contrast}</span><SmoothRange min="-100" max="100" step="1" value={settings.contrast} onValueChange={value => update("contrast", value)}/></label></div>
+    <div className="crop-controls"><label className="range-label"><RowLabel icon={ZoomIn}>{copy.zoom}</RowLabel><span className="range-value">{settings.zoom.toFixed(1)}×</span><SmoothRange min="1" max="3" step="0.05" value={settings.zoom} onValueChange={value => update("zoom", value)}/></label><label className="range-label"><RowLabel icon={MoveHorizontal}>{copy.horizontal}</RowLabel><span className="range-value">{settings.offsetX}%</span><SmoothRange min="0" max="100" value={settings.offsetX} onValueChange={value => update("offsetX", value)}/></label><label className="range-label"><RowLabel icon={MoveVertical}>{copy.vertical}</RowLabel><span className="range-value">{settings.offsetY}%</span><SmoothRange min="0" max="100" value={settings.offsetY} onValueChange={value => update("offsetY", value)}/></label></div>
     </> : <p className="help-text">{copy.photoHelp}</p>}
   </>;
 }

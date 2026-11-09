@@ -892,8 +892,6 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 @media(prefers-reduced-motion:reduce){.app-shell .live-dot{animation:none;box-shadow:0 0 8px 2px #fa233b88}}
 
 /* Editor background artwork, shared by both themes and slightly dimmed (20% black); the glass panels sit on top of it. */
-.app-shell,html[data-theme="dark"] .app-shell{background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),#141414 url('/assets/brand/editor-bg.png') center/cover no-repeat}
-@media(forced-colors:active){.app-shell,html[data-theme="dark"] .app-shell{background:Canvas}}
 
 /* One glass system over the artwork.
    Tier 1 (nav, panels): translucent tint + strong blur. Tier 2 (everything inside): one flat, lighter fill. */
@@ -975,4 +973,98 @@ html body .app-shell.app-shell .controls::-webkit-scrollbar-thumb:hover{backgrou
 /* Browsers without ::-webkit-scrollbar (Firefox) get a thin white scrollbar; they can't inset its ends. */
 @supports not selector(::-webkit-scrollbar){
   html body .app-shell.app-shell .controls{scrollbar-color:rgba(255,255,255,.7) transparent;scrollbar-width:thin}
+}
+
+/* Inspector categories (Icon Composer style): a small muted title above one grouped glass card.
+   Inside the card every setting is a row (icon + label on the left, control on the right), split by hairlines. */
+.app-shell{--row-line:rgba(29,29,31,.1)}
+html[data-theme="dark"] .app-shell{--row-line:rgba(255,255,255,.1)}
+html body .app-shell.app-shell .controls{--field-gap:0px;display:flex;flex-direction:column;gap:18px;padding:16px 14px 24px}
+html body .app-shell.app-shell .controls .control-section{flex:none;padding:0;border:0;background:none;box-shadow:none}
+html body .app-shell.app-shell .controls .control-section .section-heading{display:flex;align-items:center;justify-content:flex-start;margin:0 0 6px;padding:0 8px}
+html body .app-shell.app-shell .controls .control-section .section-heading h2{
+  margin:0;font-size:11px;line-height:1.3;font-weight:600;letter-spacing:.1px;color:var(--text);opacity:.6;
+}
+/* The card. */
+html body .app-shell.app-shell .controls .section-body{
+  display:flex;flex-direction:column;gap:0;border:1px solid var(--glass-line);border-radius:14px;overflow:hidden;
+  background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
+}
+/* Rows: every direct child is a row; nested groups are transparent and split their own rows. */
+html body .app-shell.app-shell .controls .section-body > *,
+html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0;padding:12px 16px}
+html body .app-shell.app-shell .controls .section-body > :not(.hidden-input) ~ *,
+html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > * + *{border-top:1px solid var(--row-line)}
+html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls){
+  display:flex;flex-direction:column;gap:0;padding:0;border-radius:0;border-left:0;border-right:0;border-bottom:0;background:none;box-shadow:none;
+}
+/* Controls that draw their own surface (switch track, drop zone) sit inset as rows, keeping their own border. */
+html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone){margin:12px 16px;width:auto;align-self:stretch}
+html body .app-shell.app-shell .controls .section-body > .segmented{padding:3px}
+html body .app-shell.app-shell .controls .section-body > .upload-zone{padding:18px 12px;border:1px solid var(--glass-line)}
+html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone) + *{border-top:0}
+/* Labelled rows: label column, then the control. */
+html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control,.range-label){
+  display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr);align-items:center;gap:12px;min-height:52px;
+}
+html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(110px,38%) minmax(0,1fr) 44px}
+html body .app-shell.app-shell .controls .section-body .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
+html body .app-shell.app-shell .controls .section-body .row-label{
+  display:flex;align-items:center;gap:9px;min-width:0;order:0;font-size:13px;font-weight:500;color:var(--text);
+}
+html body .app-shell.app-shell .controls .section-body .row-label > *{order:0}
+html body .app-shell.app-shell .controls .section-body .row-label > svg{flex:none;opacity:.75}
+html body .app-shell.app-shell .controls .section-body .row-label > span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+html body .app-shell.app-shell .controls .section-body .range-label > .range-value{
+  display:block;order:3;text-align:right;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--text);opacity:.7;
+}
+/* Rows with a reset button keep it at the far right. */
+html body .app-shell.app-shell .controls .section-body .photo-frame-controls > .field-label{display:flex;align-items:center;justify-content:space-between;min-height:52px}
+html body .app-shell.app-shell .controls .section-body .photo-treatment-label{display:flex;align-items:center;justify-content:space-between;gap:6px}
+/* Compact controls, like inspector value fields. */
+html body .app-shell.app-shell .controls .section-body .field input{padding:7px 10px;font-size:13px;border-radius:8px}
+html body .app-shell.app-shell .controls .section-body .segmented{padding:3px}
+html body .app-shell.app-shell .controls .section-body .segmented > button{min-height:28px;font-size:12px}
+html body .app-shell.app-shell .segmented > button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+html body .app-shell.app-shell .segmented > button svg{flex:none}
+html body .app-shell.app-shell .controls .section-body .color-swatches{justify-content:end;padding:2px}
+html body .app-shell.app-shell .controls .section-body .help-text{font-size:12px;opacity:.75}
+@media(max-width:650px){
+  html body .app-shell.app-shell .controls{padding:12px 10px 20px;gap:14px}
+  html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(96px,38%) minmax(0,1fr) 40px}
+}
+@media(forced-colors:active){
+  html body .app-shell.app-shell .controls .section-body{background:Canvas;border-color:CanvasText}
+}
+
+/* Inspector layout (Icon Composer style): a full-width navbar, the cover floating on the artwork,
+   and the options in a full-height band flush against the right edge, with no outer margins. */
+html body .app-shell.app-shell .app-header.app-header{height:56px;padding:0;margin:0;border:0}
+html body .app-shell.app-shell .editor-nav.editor-nav{max-width:none;width:100%;height:56px;margin:0;padding:0 20px;border-radius:0}
+html body .app-shell.app-shell .editor-nav.liquid-nav::after{border-width:0 0 1px;border-radius:0}
+@media(min-width:651px){
+  html body .app-shell.app-shell>main{max-width:none;width:100%;margin:0;padding:0}
+  html body .app-shell.app-shell .workspace{
+    display:grid;grid-template-columns:minmax(0,1fr) clamp(400px,40vw,600px);gap:0;margin:0;padding:0;align-items:stretch;
+  }
+  html body .app-shell.app-shell .preview-column{height:100%;min-height:0;padding:24px 32px 18px;justify-content:center}
+  html body .app-shell.app-shell .preview-panel{
+    flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
+    background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:visible;
+  }
+  html body .app-shell.app-shell .preview-stage{padding:12px 0 20px}
+  /* "Live preview" and the reset button sit in the preview area's top corners, out of the cover's way. */
+  html body .app-shell.app-shell .preview-column{position:relative}
+  html body .app-shell.app-shell .preview-panel{position:static}
+  html body .app-shell.app-shell .preview-panel .section-top{
+    position:absolute;z-index:2;top:16px;left:20px;right:20px;margin:0;padding:0;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  /* The cover keeps its square and fits the space left by the navbar, the toolbar row and the download button. */
+  html body .app-shell.app-shell .preview-stage canvas{width:min(100%,max(160px,calc(100dvh - 280px)),720px)}
+  html body .app-shell.app-shell .preview-download{width:min(100%,360px);margin:0 auto;padding:0}
+  html body .app-shell.app-shell .preview-credit{margin:0;text-align:left}
+  html body .app-shell.app-shell .controls{
+    height:100%;border:0;border-left:1px solid var(--glass-line);border-radius:0;
+  }
 }
