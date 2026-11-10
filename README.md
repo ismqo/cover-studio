@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000 for the landing page or http://localhost:3000/editor for the editor. To check and build:
+Open http://localhost:3000 for the editor (`/editor` redirects there). To check and build:
 
 ```sh
 npm run typecheck
@@ -38,8 +38,7 @@ Photos are processed locally in the browser, with no upload service, analytics, 
 
 ## Project structure
 
-- `app/page.tsx` and `app/landing.module.css`: landing page with an animated cover wall and editor CTAs.
-- `app/editor/page.tsx`: editor controls, upload handling, preview, and download.
+- `app/page.tsx`: editor controls, upload handling, preview, and download.
 - `app/globals.css`: responsive dark editor styles.
 - `lib/render-cover.ts`: shared Canvas renderer with crop and pixel-based photo treatment.
 - `lib/apple-logo.ts`: vector path reused from the provided original source.

@@ -47,7 +47,7 @@ html,body{height:100%;overflow:hidden}
   .controls input,.controls button{scroll-margin-top:12px}
 }
 
-/* Compact editor heading after the landing page introduction. */
+/* Compact editor heading. */
 .app-shell .intro{margin:24px 0}.app-shell .intro .eyebrow{margin:0}
 @media(min-width:651px){.app-shell .preview-stage canvas{width:min(100%,max(80px,calc(100dvh - 310px)))}}
 
@@ -151,10 +151,6 @@ html,body{height:100%;overflow:hidden}
 .app-shell .corner-options button.active:hover:not(:disabled){
   border-color:#fa233b;
 }
-html[data-enter="editor"] .app-shell>header,
-html[data-enter="editor"] .app-shell>main{animation:editorIn .5s ease both}
-@keyframes editorIn{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){html[data-enter="editor"] .app-shell>header,html[data-enter="editor"] .app-shell>main{animation:none}}
 
 .app-shell{transition:filter .45s ease,background-color .25s ease,color .25s ease}
 body:has(.download-reveal){background:var(--page)}
@@ -462,7 +458,6 @@ html .liquid-nav.liquid-nav{
   --liquid-edge:rgba(255,255,255,.8);
   --liquid-shadow:0 12px 36px rgba(39,52,78,.15);
 }
-html .liquid-nav--landing.liquid-nav{position:absolute;--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.24),rgba(226,235,255,.12) 48%,rgba(180,205,255,.2));--liquid-edge:rgba(255,255,255,.5);--liquid-shadow:0 14px 40px rgba(0,0,0,.32)}
 html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.23),rgba(210,225,255,.12) 48%,rgba(160,185,255,.18));--liquid-edge:rgba(255,255,255,.28);--liquid-shadow:0 12px 36px rgba(0,0,0,.35)}
 .liquid-nav::before{
   content:"";
@@ -482,7 +477,6 @@ html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120
 }
 @media(forced-colors:active){
   .liquid-nav::before{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
-  .liquid-nav--landing{color:CanvasText}
 }
 
 /* Shared liquid-glass interface surfaces; the cover canvas is not filtered. */
@@ -784,7 +778,7 @@ html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .loc
 .app-shell .toggle-row input[data-dragging="true"]:active::before,
 html[data-theme="dark"] .app-shell .toggle-row input:active::before,
 html[data-theme="dark"] .app-shell .toggle-row input:checked:active::before{
-  background:var(--slider-active-glass);scale:1.5;
+  background:var(--slider-active-glass);scale:1.8;
 }
 @media(prefers-reduced-motion:reduce){
   .app-shell .toggle-row input:active::before,.app-shell .toggle-row input[data-dragging="true"]:active::before{scale:1}
@@ -855,7 +849,6 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
   -webkit-mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;
 }
 @media(forced-colors:active){.app-shell .style-option.selected .platform-logo{outline-color:Highlight}}
-.app-shell .platform-logo{margin-bottom:8px}
 
 /* One spacing system: rows inside a section share --field-gap; sections are separated by --section-gap. */
 .app-shell .controls .control-section:not(.first-section){padding:var(--section-gap) 0}
@@ -928,7 +921,7 @@ html body .app-shell.app-shell :is(.preview-panel,.controls){
   border-radius:20px;box-shadow:var(--glass-highlight);
 }
 
-/* Same navbar geometry and brand colors as the landing page, so it doesn't jump when navigating. */
+/* Navbar geometry and brand colors. */
 .app-shell .app-header.app-header{height:88px;padding-top:20px;padding-bottom:4px}
 .app-shell .editor-nav.editor-nav{height:64px}
 html[data-theme="dark"] .app-shell .editor-nav .brand{color:#fff}
@@ -936,7 +929,7 @@ html[data-theme="dark"] .app-shell .editor-nav .studio-label{color:rgba(255,255,
 @media(max-width:650px){.app-shell .app-header.app-header{height:74px;padding-top:12px;padding-bottom:4px}.app-shell .editor-nav.editor-nav{height:58px}}
 
 /* The options menu uses the same glass as the panels; its links and switches use the control fill.
-   The --glass-* values come from the page: the editor's theme values, or the landing page's dark values. */
+   The --glass-* values come from the editor's theme. */
 html body .nav-menu-panel.nav-menu-panel{
   background:var(--glass-sheen),var(--glass-panel);border:1px solid var(--glass-line);border-radius:20px;
   box-shadow:var(--glass-highlight);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
@@ -979,7 +972,7 @@ html body .app-shell.app-shell .controls::-webkit-scrollbar-thumb:hover{backgrou
    Inside the card every setting is a row (icon + label on the left, control on the right), split by hairlines. */
 .app-shell{--row-line:rgba(29,29,31,.1)}
 html[data-theme="dark"] .app-shell{--row-line:rgba(255,255,255,.1)}
-html body .app-shell.app-shell .controls{--field-gap:0px;display:flex;flex-direction:column;gap:18px;padding:16px 14px 24px}
+html body .app-shell.app-shell .controls{--field-gap:0px;display:flex;flex-direction:column;gap:28px;padding:16px 14px 24px}
 html body .app-shell.app-shell .controls .control-section{flex:none;padding:0;border:0;background:none;box-shadow:none}
 html body .app-shell.app-shell .controls .control-section .section-heading{display:flex;align-items:center;justify-content:flex-start;margin:0 0 6px;padding:0 8px}
 html body .app-shell.app-shell .controls .control-section .section-heading h2{
@@ -1030,7 +1023,7 @@ html body .app-shell.app-shell .segmented > button svg{flex:none}
 html body .app-shell.app-shell .controls .section-body .color-swatches{justify-content:end;padding:2px}
 html body .app-shell.app-shell .controls .section-body .help-text{font-size:12px;opacity:.75}
 @media(max-width:650px){
-  html body .app-shell.app-shell .controls{padding:12px 10px 20px;gap:14px}
+  html body .app-shell.app-shell .controls{padding:12px 10px 20px;gap:22px}
   html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(96px,38%) minmax(0,1fr) 40px}
 }
 @media(forced-colors:active){
@@ -1067,4 +1060,187 @@ html body .app-shell.app-shell .editor-nav.liquid-nav::after{border-width:0 0 1p
   html body .app-shell.app-shell .controls{
     height:100%;border:0;border-left:1px solid var(--glass-line);border-radius:0;
   }
+}
+
+/* Toggle motion. Gradients can't be animated, so the "on" fill lives on its own layer and fades in,
+   while the glass thumb slides and grows on press along one soft spring. Size and glass styling are unchanged. */
+@media(forced-colors:none){
+  html body .app-shell.app-shell .toggle-row input{isolation:isolate;transition:box-shadow .3s ease}
+  html body .app-shell.app-shell .toggle-row input:checked{background:var(--inactive-track)}
+  html body .app-shell.app-shell .toggle-row input::after{
+    content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+    background:linear-gradient(135deg,#ff6577,#e81738);box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
+    opacity:0;transition:opacity .32s cubic-bezier(.4,0,.2,1);
+  }
+  html body .app-shell.app-shell .toggle-row input:checked::after{opacity:1}
+}
+html body .app-shell.app-shell .toggle-row input::before{
+  z-index:1;transform-origin:0 50%;
+  transition:transform .42s cubic-bezier(.32,1.2,.5,1),scale .28s cubic-bezier(.32,1.35,.5,1),
+    transform-origin .42s cubic-bezier(.32,1.2,.5,1),box-shadow .2s ease;
+}
+/* The press growth is anchored at the track end the thumb rests against, so the enlarged thumb stays inside
+   the track. The origin is in the thumb's own box, so it adds the 18px travel: 100% + 18px is the track's right end. */
+html body .app-shell.app-shell .toggle-row input:checked::before{transform-origin:calc(100% + 18px) 50%}
+/* While dragging, the thumb follows the pointer directly; only the press growth stays animated. */
+html body .app-shell.app-shell .toggle-row input[data-dragging="true"]::before{
+  transform-origin:calc(var(--drag-progress) * (100% + 18px)) 50%;
+  transition:scale .28s cubic-bezier(.32,1.35,.5,1);
+}
+@media(prefers-reduced-motion:reduce){
+  html body .app-shell.app-shell .toggle-row input::before,
+  html body .app-shell.app-shell .toggle-row input::after{transition:none}
+}
+
+/* Segmented switches get the toggle's motion: the red highlight slides on the same soft spring and, while pressed
+   or dragged, swells slightly and turns into translucent red glass, then settles back to solid red. */
+@media(forced-colors:none){
+  html body .app-shell.app-shell .segmented::before{
+    transition:transform .42s cubic-bezier(.32,1.2,.5,1),scale .28s cubic-bezier(.32,1.35,.5,1),
+      background-color .25s ease,box-shadow .25s ease;
+  }
+  html body .app-shell.app-shell .segmented:active::before,
+  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{
+    scale:1.025 1.28;
+    background-color:color-mix(in srgb,#ff1a3c 80%,transparent);
+    box-shadow:inset 0 1px 1px rgba(255,255,255,.55),inset 0 -1px 3px rgba(255,255,255,.18),0 4px 14px rgba(0,0,0,.22);
+  }
+  /* While dragging, the highlight follows the pointer directly; only its size and glass stay animated. */
+  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{
+    transition:scale .28s cubic-bezier(.32,1.35,.5,1),background-color .25s ease,box-shadow .25s ease;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body .app-shell.app-shell .segmented::before{transition:none}
+  html body .app-shell.app-shell .segmented:active::before,
+  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{scale:1}
+}
+
+/* The preview is lifted only visually; the exported canvas remains unchanged. */
+.app-shell .preview-stage{perspective:1000px}
+.app-shell .preview-stage canvas{
+  cursor:grab;touch-action:none;
+  transform:perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1);
+  transition:transform .55s cubic-bezier(.2,1.3,.4,1),box-shadow .3s ease;
+}
+.app-shell .preview-stage canvas[data-grabbing="true"]{
+  cursor:grabbing;
+  transform:perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1.025);
+  transition:transform .12s ease-out,box-shadow .3s ease;
+}
+@media(prefers-reduced-motion:reduce){
+  .app-shell .preview-stage canvas,.app-shell .preview-stage canvas[data-grabbing="true"]{transform:none;transition:none;cursor:auto;touch-action:auto}
+}
+
+/* Reset: the cover is thrown off to the right with a spin, then the fresh cover pops in. These use the individual
+   translate/rotate/scale properties so they stack on top of the tilt transform instead of replacing it. */
+.app-shell .preview-stage canvas[data-reset="throw"]{pointer-events:none;animation:coverThrow .46s cubic-bezier(.5,0,.75,0) forwards}
+.app-shell .preview-stage canvas[data-reset="land"]{pointer-events:none;animation:coverLand .42s cubic-bezier(.32,1.3,.5,1)}
+@keyframes coverThrow{
+  20%{translate:-3% 1%;rotate:-3deg}
+  100%{translate:135% -10%;rotate:28deg;opacity:0}
+}
+@keyframes coverLand{from{scale:.82;opacity:0}}
+@media(prefers-reduced-motion:reduce){.app-shell .preview-stage canvas[data-reset]{animation:none}}
+
+/* Reset confirmation: a glass card over a dimmed, blurred page. */
+.confirm-dialog{
+  width:min(340px,calc(100% - 32px));padding:0;border:1px solid var(--glass-line);border-radius:22px;color:inherit;
+  background:var(--glass-sheen),var(--glass-panel);box-shadow:var(--glass-highlight),0 24px 60px rgba(0,0,0,.35);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+}
+.confirm-dialog::backdrop{background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.confirm-dialog[open]{animation:confirmIn .22s cubic-bezier(.32,1.2,.5,1)}
+.confirm-dialog[open]::backdrop{animation:confirmFade .22s ease}
+@keyframes confirmIn{from{opacity:0;transform:scale(.94)}}
+@keyframes confirmFade{from{opacity:0}}
+.confirm-dialog-content{padding:22px 20px 18px;text-align:center}
+.confirm-dialog h2{margin:0 0 8px;font-size:17px;font-weight:600;letter-spacing:-.2px}
+.confirm-dialog p{margin:0 0 20px;font-size:13px;line-height:1.45;opacity:.75}
+.confirm-dialog-actions{display:flex;gap:10px}
+.confirm-dialog-actions button{
+  flex:1;padding:10px 14px;border:1px solid var(--glass-line);border-radius:999px;font-size:14px;font-weight:600;
+  background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
+}
+.confirm-dialog-actions .confirm-dialog-danger{border-color:transparent;color:#fff;background:linear-gradient(135deg,#ff6577,#e81738)}
+.confirm-dialog-actions button:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.confirm-dialog[open],.confirm-dialog[open]::backdrop{animation:none}}
+@media(forced-colors:active){
+  .confirm-dialog{background:Canvas;color:CanvasText;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .confirm-dialog-actions button,.confirm-dialog-actions .confirm-dialog-danger{background:ButtonFace;color:ButtonText;border-color:ButtonText}
+}
+
+/* Notifications use the editor's liquid glass: a floating pill over the page, with a round glass close button. */
+html body .app-shell.app-shell .toast{
+  bottom:28px;padding:10px 10px 10px 20px;gap:14px;border:1px solid var(--glass-line);border-radius:999px;
+  color:inherit;font-size:13px;font-weight:500;
+  background:var(--glass-sheen),var(--glass-panel);
+  box-shadow:var(--glass-highlight),inset 0 -2px 8px rgba(255,255,255,.08),0 16px 40px rgba(0,0,0,.28);
+  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  animation:toastIn .36s cubic-bezier(.32,1.3,.5,1);
+}
+@supports (backdrop-filter:url("#liquid-nav-distortion")){
+  html body .app-shell.app-shell .toast{backdrop-filter:url("#liquid-nav-distortion") var(--glass-blur)}
+}
+html body .app-shell.app-shell .toast.error{
+  border-color:rgba(250,35,59,.45);
+  background:linear-gradient(120deg,rgba(255,101,119,.28),rgba(232,23,56,.14)),var(--glass-panel);
+}
+html body .app-shell.app-shell .toast button{
+  width:28px;height:28px;flex:none;display:grid;place-items:center;padding:0;border:1px solid var(--glass-line);border-radius:50%;
+  color:inherit;background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
+}
+html body .app-shell.app-shell .toast button:hover{background:var(--glass-sheen),var(--glass-line)}
+@keyframes toastIn{from{opacity:0;translate:0 14px;scale:.94}}
+@media(prefers-reduced-motion:reduce){html body .app-shell.app-shell .toast{animation:none}}
+@media(forced-colors:active){
+  html body .app-shell.app-shell .toast,html body .app-shell.app-shell .toast.error{background:Canvas;color:CanvasText;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
+  html body .app-shell.app-shell .toast button{background:ButtonFace;color:ButtonText;border-color:ButtonText}
+}
+
+/* Save version: an archive button beside Download, and the saved versions as a glass column left of the cover. */
+html body .app-shell.app-shell .preview-download{display:flex;gap:10px}
+html body .app-shell.app-shell .preview-download .download:not(.archive-button){flex:1;width:auto}
+html body .app-shell.app-shell .preview-download .archive-button{flex:none;width:auto;padding-left:14px;padding-right:14px}
+.mobile-preview-archive{display:none}
+html body .app-shell.app-shell .preview-stage{position:relative}
+/* The rail holds the glass box of versions and, below it, the trash button. */
+html body .app-shell.app-shell .memory-rail{
+  position:absolute;z-index:2;left:0;top:50%;translate:0 -50%;display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+html body .app-shell.app-shell .memory-list{
+  display:flex;flex-direction:column;gap:10px;padding:8px;
+  border:1px solid var(--glass-line);border-radius:18px;background:var(--glass-sheen),var(--glass-panel);
+  box-shadow:var(--glass-highlight),0 12px 32px rgba(0,0,0,.22);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
+  animation:toastIn .36s cubic-bezier(.32,1.3,.5,1);
+}
+html body .app-shell.app-shell .memory{
+  width:56px;height:56px;padding:0;border:2px solid transparent;border-radius:11px;overflow:hidden;background:var(--glass-fill);
+  box-shadow:0 4px 12px rgba(0,0,0,.2);transition:scale .25s cubic-bezier(.32,1.35,.5,1),border-color .2s ease;
+}
+html body .app-shell.app-shell .memory img{display:block;width:100%;height:100%;object-fit:cover}
+html body .app-shell.app-shell .memory:hover{scale:1.06;filter:none}
+html body .app-shell.app-shell .memory:active{scale:.96}
+html body .app-shell.app-shell .memory[aria-pressed="true"]{border-color:#fa233b}
+html body .app-shell.app-shell .memory:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
+/* Leave room for the column so it never covers the artwork. */
+html body .app-shell.app-shell .preview-stage:has(.memory-list) canvas{max-width:calc(100% - 168px)}
+@media(max-width:650px){
+  html body .app-shell.app-shell .mobile-preview-archive{
+    display:grid;place-items:center;position:absolute;z-index:2;right:62px;bottom:18px;width:36px;height:36px;padding:0;border-radius:50%;box-shadow:0 4px 14px #0003;
+  }
+  html body .app-shell.app-shell .memory-rail{left:6px;gap:8px}
+  html body .app-shell.app-shell .memory-list{gap:7px;padding:6px;border-radius:14px}
+  html body .app-shell.app-shell .memory{width:40px;height:40px;border-radius:8px}
+  html body .app-shell.app-shell .preview-stage:has(.memory-list) canvas{max-width:calc(100% - 128px)}
+}
+@media(prefers-reduced-motion:reduce){html body .app-shell.app-shell :is(.memory-list,.memory){animation:none;transition:none}}
+@media(forced-colors:active){
+  html body .app-shell.app-shell .memory-list{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
+  html body .app-shell.app-shell .memory[aria-pressed="true"]{border-color:Highlight}
+}
+/* Trash below the box: deletes all saved versions. It is a .download button sized like the archive button beside Download. */
+html body .app-shell.app-shell .memory-delete{flex:none;padding-left:14px;padding-right:14px}
+@media(max-width:650px){
+  html body .app-shell.app-shell .memory-delete{display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;box-shadow:0 4px 14px #0003}
 }
