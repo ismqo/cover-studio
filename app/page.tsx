@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
-import { ALargeSmall, Archive, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, Music2, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, X, ZoomIn, type LucideIcon } from "lucide-react";
+import { ALargeSmall, Archive, SeparatorHorizontal, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DragToggle, DraggableSegments } from "@/components/drag-switch";
@@ -11,9 +11,10 @@ import { CoverSettings, defaults, loadImage, releaseImage, renderCover } from "@
 import { clearMemories, loadMemories, saveMemory, type CoverMemory } from "@/lib/cover-memories";
 import { localizeCoverSamples, type Dictionary, type NoticeKey } from "@/lib/i18n";
 import { APPLE_MUSIC_PICKER_PATH, APPLE_MUSIC_PICKER_VIEWBOX, appleLogoShape } from "@/lib/apple-logo";
+import { SPOTIFY_PATH } from "@/lib/spotify-logo";
 import { BASIC_COLORS, findPreset } from "@/lib/color-presets";
 import { treatmentChanged, treatmentDefaults } from "@/lib/cover-layout";
-import { platformModes, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
+import { allowedLogoCorner, classicTitleYMax, logoCornerFor, platformModes, titleCorner, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
 import { previewTilt } from "@/lib/preview-tilt";
 
 const corners = ["top-left", "top-right", "bottom-left", "bottom-right"] as const;
@@ -89,9 +90,12 @@ export default function Home() {
   const displayTitle = spotify ? settings.spotifyTitle : essentials ? settings.essentialsTitle : settings.title;
   const selectMode = (mode: CoverMode) => { setSettings(s => ({ ...s, mode, ...styleDefaults(mode) })); setStatus(""); };
   const selectPlatform = (next: Platform) => { if (next !== platform) selectMode(platformModes[next][0]); };
-  const bottomLogoUnavailable = essentials && (settings.photoMargin > 0 || settings.photoRadius > 0);
-  const bandHeightMin = settings.corner.startsWith("bottom") ? Math.max(18, Math.ceil((settings.essentialsFontSize + 40) / 12)) : 27;
-  const classicTitleYMax = Math.max(15, Math.floor((900 - settings.classicFontSize - settings.classicSubtitleFontSize) / 12));
+  const takenCorner = titleCorner(settings.mode, settings.spotifyTitlePosition, settings.spotifyAlign);
+  const titleYMax = classicTitleYMax(settings.classicFontSize, settings.classicSubtitleFontSize, settings.classicSubtitleGap);
+  // Original's title owns its corner: when the title moves onto the logo, the logo moves to the other side of the edge.
+  useEffect(() => {
+    if (settings.corner === takenCorner) setSettings(s => ({ ...s, corner: allowedLogoCorner(s.corner, takenCorner) }));
+  }, [takenCorner, settings.corner]);
   const update = <K extends keyof CoverSettings>(key: K, value: CoverSettings[K]) => {
     setSettings(s => ({ ...s, [key]: value })); setStatus("");
   };
@@ -99,7 +103,6 @@ export default function Home() {
     setSettings(s => ({
       ...s,
       [key]: value,
-      corner: value > 0 && s.mode === "essentials" && s.corner.startsWith("bottom") ? (s.corner === "bottom-left" ? "top-left" : "top-right") : s.corner,
     }));
     setStatus("");
   };
@@ -108,11 +111,10 @@ export default function Home() {
     setSettings(s => ({ ...s, photoMargin: defaults.photoMargin, photoTopMargin: defaults.photoTopMargin, photoRadius: defaults.photoRadius }));
     setStatus("");
   };
-  const updateClassicFontSize = (key: "classicFontSize" | "classicSubtitleFontSize", value: number) => {
+  const updateClassicTextBlock = (key: "classicFontSize" | "classicSubtitleFontSize" | "classicSubtitleGap", value: number) => {
     setSettings(s => {
-      const totalSize = key === "classicFontSize" ? value + s.classicSubtitleFontSize : s.classicFontSize + value;
-      const maxTitleY = Math.max(15, Math.floor((900 - totalSize) / 12));
-      return { ...s, [key]: value, classicTitleY: Math.min(s.classicTitleY, maxTitleY) };
+      const next = { ...s, [key]: value };
+      return { ...next, classicTitleY: Math.min(s.classicTitleY, classicTitleYMax(next.classicFontSize, next.classicSubtitleFontSize, next.classicSubtitleGap)) };
     });
     setStatus("");
   };
@@ -135,12 +137,6 @@ export default function Home() {
     });
     return () => { cancelled = true; };
   }, [settings, photo]);
-
-  useEffect(() => {
-    if (bottomLogoUnavailable && settings.corner.startsWith("bottom")) {
-      setSettings(s => ({ ...s, corner: s.corner === "bottom-left" ? "top-left" : "top-right" }));
-    }
-  }, [bottomLogoUnavailable, settings.corner]);
 
   useEffect(() => () => { if (photo) releaseImage(photo); }, [photo]);
 
@@ -319,7 +315,7 @@ export default function Home() {
 
           <Section title={copy.coverStyle} className="first-section">
             <div className={`style-options ${spotify ? "three-up" : ""}`}>
-              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={() => selectMode(mode)}><StyleThumb mode={mode}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
+              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={() => selectMode(mode)}><StyleThumb mode={mode} copy={copy}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
             </div>
           </Section>
 
@@ -339,15 +335,17 @@ export default function Home() {
 
           {/* 2. Typography: how the text looks, in reading order. */}
           <Section title={copy.typography}>
-            {spotify && <SegmentField icon={Type} label={copy.titleFont} value={settings.spotifyFont} options={[["standard", copy.fontStandard], ["wide", copy.fontWide]]} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
+            {spotify && !thisIs && <SegmentField icon={Type} label={copy.titleFont} value={settings.spotifyFont} options={[["standard", copy.fontStandard], ["wide", copy.fontWide], ["condensed", copy.fontCondensed]]} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
             {spotify && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="140" step="2" value={settings.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
-            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="180" step="2" value={settings.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, s.corner.startsWith("bottom") ? Math.max(18, Math.ceil((fontSize + 40) / 12)) : 27) }))}/>}
+            {showSpotifySubtitle && <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="120" step="2" value={settings.spotifySubtitleGap} onChange={value => update("spotifySubtitleGap", value)}/>}
+            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="180" step="2" value={settings.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
             {classic && <>
-              <RangeField icon={ALargeSmall} label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} onChange={value => updateClassicFontSize("classicFontSize", value)}/>
+              <RangeField icon={ALargeSmall} label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} onChange={value => updateClassicTextBlock("classicFontSize", value)}/>
               <SegmentField icon={Bold} label={copy.bigTitleWeight} value={settings.classicTitleWeight} options={[["normal", copy.normal, Type], ["bold", copy.bold, Bold]]} onChange={value => update("classicTitleWeight", value)}/>
-              <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="72" max="180" step="1" value={settings.classicSubtitleFontSize} onChange={value => updateClassicFontSize("classicSubtitleFontSize", value)}/>
+              <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="72" max="180" step="1" value={settings.classicSubtitleFontSize} onChange={value => updateClassicTextBlock("classicSubtitleFontSize", value)}/>
+              <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="160" step="2" value={settings.classicSubtitleGap} onChange={value => updateClassicTextBlock("classicSubtitleGap", value)}/>
               <SegmentField icon={Bold} label={copy.subtitleWeight} value={settings.classicSubtitleWeight} options={[["normal", copy.normal, Type], ["bold", copy.bold, Bold]]} onChange={value => update("classicSubtitleWeight", value)}/>
             </>}
           </Section>
@@ -356,19 +354,19 @@ export default function Home() {
           {!thisIs && <Section title={copy.layout}>
             {spotify && <>
               <SegmentField icon={PanelTop} label={band ? copy.bandPosition : copy.titlePlacement} value={settings.spotifyTitlePosition} options={[["top", copy.top, ArrowUpToLine], ["bottom", copy.bottom, ArrowDownToLine]]} onChange={value => update("spotifyTitlePosition", value)}/>
-              <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.spotifyAlign} options={[["left", copy.left, AlignLeft], ["right", copy.right, AlignRight]]} onChange={value => update("spotifyAlign", value)}/>
+              {!band && <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.spotifyAlign} options={[["left", copy.left, AlignLeft], ["right", copy.right, AlignRight]]} onChange={value => update("spotifyAlign", value)}/>}
             </>}
             {classic && <>
               <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.classicAlign} options={[["left", copy.left, AlignLeft], ["center", copy.center, AlignCenter]]} onChange={value => update("classicAlign", value)}/>
-              <RangeField icon={MoveVertical} label={copy.titlePosition} unit="%" min="15" max={classicTitleYMax} value={settings.classicTitleY} onChange={value => update("classicTitleY", value)}/>
+              <RangeField icon={MoveVertical} label={copy.titlePosition} unit="%" min="15" max={titleYMax} value={settings.classicTitleY} onChange={value => update("classicTitleY", value)}/>
             </>}
             {band && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="15" max="50" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
-            {essentials && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min={bandHeightMin} max="42" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
+            {essentials && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="27" max="42" value={settings.bandHeight} onChange={value => update("bandHeight", value)}/>}
           </Section>}
 
           {/* 4. Colors. */}
           <Section title={copy.colors}>
-            <ColorField copy={copy} icon={Brush} label={copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>
+            {!thisIs && <ColorField copy={copy} icon={Brush} label={copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>}
             {band && settings.showLogo && <label className="toggle-row"><RowLabel icon={Link}>{copy.logoMatchesBand}</RowLabel><DragToggle checked={settings.logoMatchesBand} onChange={value => update("logoMatchesBand", value)}/></label>}
             {(essentials || band) && <ColorField copy={copy} icon={PaintBucket} label={copy.bandColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
             {thisIs && <ColorField copy={copy} icon={Droplet} label={copy.accentColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
@@ -381,14 +379,16 @@ export default function Home() {
 
           {(classic || fullPhoto) && <Section title={copy.background}>
             <DraggableSegments className="segmented">{([['gradients', copy.gradient, Blend],['custom', copy.color, Palette],['picture', copy.picture, ImageIcon]] as const).map(([value,label,Icon]) => <button key={value} className={backgroundType === value ? "active" : ""} aria-pressed={backgroundType === value} onClick={() => update(backgroundKey, value)}><Icon size={14} aria-hidden="true"/>{label}</button>)}</DraggableSegments>
-            {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
+            {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <>
+              <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/>
+              <label className="toggle-row"><RowLabel icon={Contrast}>{copy.colorShadow}</RowLabel><DragToggle checked={settings.colorShadow} onChange={value => update("colorShadow", value)}/></label>
+            </> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
           </Section>}
 
           {/* 6. Logo. */}
           <Section title={spotify ? copy.spotifyLogo : copy.appleLogo} last>
             <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
-            {settings.showLogo && <div className="corner-options">{corners.map(corner => { const disabled = bottomLogoUnavailable && corner.startsWith("bottom"); return <button disabled={disabled} key={corner} className={settings.corner === corner ? "active" : ""} aria-pressed={settings.corner === corner} title={disabled ? copy.bottomCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner, bandHeight: essentials && corner.startsWith("top") ? Math.max(s.bandHeight, 27) : s.bandHeight }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
-            {settings.showLogo && bottomLogoUnavailable && <p className="help-text">{copy.bottomCornerHelp}</p>}
+            {settings.showLogo && !thisIs && !band && <div className={`corner-options${essentials ? " top-only" : ""}`}>{corners.filter(corner => !essentials || corner.startsWith("top")).map(corner => { const active = logoCornerFor(settings.mode, settings.corner) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner, bandHeight: essentials ? Math.max(s.bandHeight, 27) : s.bandHeight }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
             {!spotify && settings.showLogo && <div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
               {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} title={name} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span></button>; })}
             </div>}
@@ -461,12 +461,16 @@ function styleCopy(copy: Dictionary["editor"], mode: CoverMode): [string, string
   }
 }
 
-function StyleThumb({ mode }: { mode: CoverMode }) {
-  if (mode === "classic") return <span className="style-thumb classic-thumb" aria-hidden="true">Aa</span>;
-  if (mode === "essentials") return <span className="style-thumb essentials-thumb" aria-hidden="true"><span>Essentials</span><Music2 size={19}/></span>;
-  if (mode === "spotify-this-is") return <span className="style-thumb this-is-thumb" aria-hidden="true"><b>THIS IS</b><i/><b>Artist</b></span>;
-  if (mode === "spotify-band") return <span className="style-thumb band-thumb" aria-hidden="true"><i/><b>Title</b></span>;
-  return <span className="style-thumb photo-thumb" aria-hidden="true"><b>Title</b></span>;
+/** Style thumbnails draw each style's default cover in miniature: the same elements, colors, and positions as the 1200px canvas, scaled with container units. */
+function StyleThumb({ mode, copy }: { mode: CoverMode; copy: Dictionary["editor"] }) {
+  const apple = appleLogoShape("classic");
+  const appleMark = <svg className="thumb-logo apple" viewBox={`0 0 ${apple.width} ${apple.height}`}><path d={apple.path}/></svg>;
+  const spotifyMark = <svg className="thumb-logo spotify" viewBox="0 0 24 24"><path d={SPOTIFY_PATH} fillRule="evenodd"/></svg>;
+  if (mode === "classic") return <span className="style-thumb thumb-classic" aria-hidden="true">{appleMark}<b>{copy.sampleTitle}</b><span>{copy.sampleSubtitle}</span><small>{copy.sampleFooter}</small></span>;
+  if (mode === "essentials") return <span className="style-thumb thumb-essentials" aria-hidden="true"><i/>{appleMark}<b>{copy.sampleEssentials}</b></span>;
+  if (mode === "spotify-this-is") return <span className="style-thumb thumb-this-is" aria-hidden="true">{spotifyMark}<em>THIS IS</em><i/><b>{copy.sampleTitle}</b></span>;
+  if (mode === "spotify-band") return <span className="style-thumb thumb-band" aria-hidden="true"><i/>{spotifyMark}<b>{copy.sampleTitle}</b></span>;
+  return <span className="style-thumb thumb-photo" aria-hidden="true">{spotifyMark}<b>{copy.sampleTitle}</b></span>;
 }
 
 type DownloadHandoff = { url: string; filename: string; size: number; x: number; y: number; scale: number; leaving: boolean };

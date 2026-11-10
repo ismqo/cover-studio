@@ -1,6 +1,6 @@
 import { appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { activeBackground, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -8,14 +8,14 @@ export type CoverSettings = {
   spotifyTitle: string; spotifyKicker: string; spotifyFontSize: number;
   spotifyTitlePosition: "top" | "bottom"; spotifyAlign: "left" | "right";
   spotifySubtitle: string; spotifyShowSubtitle: boolean; spotifyFont: SpotifyFont;
-  spotifyKickerFontSize: number; spotifySubtitleFontSize: number;
+  spotifyKickerFontSize: number; spotifySubtitleFontSize: number; spotifySubtitleGap: number;
   appleLogo: AppleLogoStyle; logoMatchesBand: boolean;
   classicAlign: "left" | "center"; classicTitleY: number;
-  classicFontSize: number; classicSubtitleFontSize: number;
+  classicFontSize: number; classicSubtitleFontSize: number; classicSubtitleGap: number;
   classicTitleWeight: "normal" | "bold"; classicSubtitleWeight: "normal" | "bold";
   showLogo: boolean; corner: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   backgroundType: BackgroundType; spotifyBackgroundType: BackgroundType;
-  gradient: number; customColor: string;
+  gradient: number; customColor: string; colorShadow: boolean;
   textColor: string; bandColor: string; bandHeight: number; essentialsFontSize: number;
   treatment: "original" | "mono" | "duotone"; tint: string;
   brightness: number; contrast: number;
@@ -25,11 +25,11 @@ export type CoverSettings = {
 
 export const defaults: CoverSettings = {
   mode: "classic", title: "Title", subtitle: "Subtitle", footer: "Description",
-  classicAlign: "left", classicTitleY: 22, classicFontSize: 192, classicSubtitleFontSize: 160,
+  classicAlign: "left", classicTitleY: 22, classicFontSize: 192, classicSubtitleFontSize: 160, classicSubtitleGap: 0,
   classicTitleWeight: "bold", classicSubtitleWeight: "normal",
   essentialsTitle: "Essentials", spotifyTitle: "Title", spotifyKicker: "THIS IS", spotifyFontSize: 150,
-  spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
-  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8",
+  spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, spotifySubtitleGap: 16, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
+  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8", colorShadow: true,
   textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136,
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
@@ -145,10 +145,10 @@ function drawSpotifyLogo(ctx: CanvasRenderingContext2D, x: number, y: number, di
 }
 
 /** Draws a wrapped Spotify title, plus an optional smaller subtitle line under it, inside a box. */
-function spotifyTitle(ctx: CanvasRenderingContext2D, face: { weight: number; family: string }, value: string, box: { x: number; y: number; width: number; height: number }, size: number, align: "left" | "right" | "center", vertical: "top" | "center" | "bottom", maxLines: number, subtitle = "", subtitleSize = 0) {
+function spotifyTitle(ctx: CanvasRenderingContext2D, face: { weight: number; family: string }, value: string, box: { x: number; y: number; width: number; height: number }, size: number, align: "left" | "right" | "center", vertical: "top" | "center" | "bottom", maxLines: number, subtitle = "", subtitleSize = 0, gap?: number) {
   const lineHeight = 1.02;
   const measure = (line: string, fontSize: number) => { ctx.font = `${face.weight} ${fontSize}px ${face.family}`; return ctx.measureText(line).width; };
-  const fitted = fitTitleBlock(value, subtitle, measure, { size, minSize: 24, maxWidth: box.width, maxHeight: box.height, maxLines, lineHeight, subtitleSize });
+  const fitted = fitTitleBlock(value, subtitle, measure, { size, minSize: 24, maxWidth: box.width, maxHeight: box.height, maxLines, lineHeight, subtitleSize, gap });
   const top = vertical === "top" ? box.y : vertical === "bottom" ? box.y + box.height - fitted.height : box.y + (box.height - fitted.height) / 2;
   ctx.textAlign = align;
   const x = align === "left" ? box.x : align === "right" ? box.x + box.width : box.x + box.width / 2;
@@ -177,10 +177,11 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     ctx.fillStyle = s.bandColor;
     ctx.fillRect(0, size / 2, size, size / 2);
     drawPhoto(ctx, uploaded, s, 240, 250, 720, 720, 0);
-    ctx.fillStyle = s.textColor;
     const reserve = s.showLogo && s.corner.startsWith("top") ? 150 : 0;
+    ctx.fillStyle = THIS_IS_INK;
     // The "THIS IS" heading always uses the wide face, like Spotify's own covers; the font switch only affects the name.
     spotifyTitle(ctx, spotifyFace("wide"), s.spotifyKicker, { x: pad + reserve, y: 58, width: size - (pad + reserve) * 2, height: 178 }, s.spotifyKickerFontSize, "center", "center", 1);
+    ctx.fillStyle = thisIsTitleInk(s.bandColor);
     spotifyTitle(ctx, face, s.spotifyTitle, { x: pad, y: 995, width: size - pad * 2, height: 170 }, s.spotifyFontSize, "center", "center", 1);
     return;
   }
@@ -196,7 +197,7 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     ctx.fillRect(0, bandY, size, band);
     ctx.fillStyle = s.textColor;
     const titleBox = bandTitleBox(size, band, s.spotifyTitlePosition, pad);
-    spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y: titleBox.y, height: titleBox.height }, s.spotifyFontSize, align, titleBox.vertical, 2, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize);
+    spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y: titleBox.y, height: titleBox.height }, s.spotifyFontSize, align, titleBox.vertical, 2, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
     return;
   }
   // Full photo: the background (photo, gradient, color, or solid) is drawn by renderCover; only the photo is drawn here.
@@ -204,22 +205,24 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
   ctx.fillStyle = s.textColor;
   const height = size * .45;
   const y = s.spotifyTitlePosition === "top" ? 40 : size - 40 - height;
-  spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize);
+  spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
 }
 
 // Preview and export share this renderer, including crop and pixel-level color treatment.
 export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, photo: string | null) {
+  const spotifyAlign = spotifyAlignFor(s.mode, s.spotifyTitlePosition, s.spotifyAlign);
+  s = { ...s, spotifyAlign, spotifyFont: spotifyFontFor(s.mode, s.spotifyFont), corner: allowedLogoCorner(logoCornerFor(s.mode, s.corner), titleCorner(s.mode, s.spotifyTitlePosition, spotifyAlign)) };
   const size = 1200;
   const spotify = platformOf(s.mode) === "spotify";
   const backgroundType = activeBackground(s.mode, s.backgroundType, s.spotifyBackgroundType);
   const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
-  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide')] : [])]);
+  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   ctx.textBaseline = "top";
   if (backgroundType === "custom") {
-    const shade = colorShade(s.customColor);
+    const shade = colorShade(s.customColor, s.colorShadow);
     const fill = ctx.createLinearGradient(0, size, size, 0);
     fill.addColorStop(0, shade.dark);
     fill.addColorStop(.5, shade.base);
@@ -254,10 +257,10 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     ctx.fillStyle = s.textColor;
     ctx.textAlign = s.classicAlign;
     const classicX = s.classicAlign === "center" ? size / 2 : 100;
-    const maxTitleY = Math.max(15, Math.floor((900 - s.classicFontSize - s.classicSubtitleFontSize) / 12));
+    const maxTitleY = classicTitleYMax(s.classicFontSize, s.classicSubtitleFontSize, s.classicSubtitleGap);
     const titleY = Math.round(size * Math.min(s.classicTitleY, maxTitleY) / 100);
     text(ctx, s.title, classicX, titleY, s.classicFontSize, s.classicTitleWeight === "bold" ? 600 : 300, 1000);
-    text(ctx, s.subtitle, classicX, titleY + s.classicFontSize, s.classicSubtitleFontSize, s.classicSubtitleWeight === "bold" ? 600 : 300, 1000);
+    text(ctx, s.subtitle, classicX, titleY + s.classicFontSize + s.classicSubtitleGap, s.classicSubtitleFontSize, s.classicSubtitleWeight === "bold" ? 600 : 300, 1000);
     ctx.textAlign = "left";
     ctx.globalAlpha = .65;
     text(ctx, s.footer, 100, s.showLogo && s.corner.startsWith("bottom") ? 954 : 1060, 60, 400, 1000);
@@ -272,10 +275,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     const { x, y } = cornerPosition(s.corner, d, d, area, 48);
     drawSpotifyLogo(ctx, x, y, d, logoColor(s.mode, s.textColor, s.bandColor, s.logoMatchesBand));
   } else if (s.showLogo) {
-    const framedPhoto = s.mode === "essentials" && (s.photoMargin > 0 || s.photoRadius > 0);
-    const logoCorner = framedPhoto && s.corner.startsWith("bottom")
-      ? (s.corner === "bottom-left" ? "top-left" : "top-right")
-      : s.corner;
+    const logoCorner = s.corner;
     const logo = appleLogoShape(s.appleLogo);
     const w = s.mode === "essentials" ? 260 : 240;
     const h = w * logo.height / logo.width;
