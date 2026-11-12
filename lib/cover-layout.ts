@@ -111,7 +111,7 @@ export function fitTitleBlock(title: string, subtitle: string, measure: (value: 
 export type BackgroundType = "gradients" | "custom" | "picture";
 
 /** Shapes of the color background's gradient, in menu order. */
-export const GRADIENT_TYPES = ["linear", "radial", "conic", "diamond", "reflected"] as const;
+export const GRADIENT_TYPES = ["linear", "radial", "diamond", "reflected"] as const;
 export type GradientType = (typeof GRADIENT_TYPES)[number];
 
 /** Color stops (offset, color) for a color background's gradient, built from the shades of `colorShade`. */

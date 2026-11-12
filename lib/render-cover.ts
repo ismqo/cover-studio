@@ -262,7 +262,6 @@ function fillColorBackground(ctx: CanvasRenderingContext2D, color: string, shado
     return;
   }
   const fill = type === "radial" ? ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size * Math.SQRT1_2)
-    : type === "conic" ? ctx.createConicGradient(-Math.PI / 2, size / 2, size / 2)
     : ctx.createLinearGradient(0, size, size, 0);
   for (const [offset, hex] of stops) fill.addColorStop(offset, hex);
   ctx.fillStyle = fill;

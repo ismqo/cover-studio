@@ -291,12 +291,12 @@ test("small bubbles stay inside the cover", () => {
 
 const shade = { dark: "#000000", base: "#808080", light: "#ffffff" };
 
-test("the color background offers linear, radial, conic, diamond, and reflected gradients", () => {
-  assert.deepEqual(GRADIENT_TYPES, ["linear", "radial", "conic", "diamond", "reflected"]);
+test("the color background offers linear, radial, diamond, and reflected gradients", () => {
+  assert.deepEqual(GRADIENT_TYPES, ["linear", "radial", "diamond", "reflected"]);
 });
 
-test("linear, conic, and diamond gradients run from the dark shade through the base color to the light shade", () => {
-  for (const type of ["linear", "conic", "diamond"] as const) {
+test("linear and diamond gradients run from the dark shade through the base color to the light shade", () => {
+  for (const type of ["linear", "diamond"] as const) {
     assert.deepEqual(colorGradientStops(type, shade), [[0, "#000000"], [.5, "#808080"], [1, "#ffffff"]]);
   }
 });

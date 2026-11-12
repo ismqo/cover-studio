@@ -203,7 +203,10 @@ export default function Home() {
     setArtistPhotos(saved.map(artist => artist?.photo ? URL.createObjectURL(artist.photo) : null));
     setArtistNames(saved.map(artist => artist?.name ?? ""));
     restoringMemory.current = true;
-    setSettings({ ...defaults, ...memory.settings });
+    // Versions saved with a gradient type that no longer exists (e.g. conic) fall back to linear.
+    const restored = { ...defaults, ...memory.settings };
+    if (!(GRADIENT_TYPES as readonly string[]).includes(restored.gradientType)) restored.gradientType = defaults.gradientType;
+    setSettings(restored);
     setPhoto(memory.photo ? URL.createObjectURL(memory.photo) : null);
     setPhotoName(memory.photoName);
     setActiveMemory(memory.id);
@@ -380,8 +383,8 @@ export default function Home() {
           </Section>
 
           <Section title={copy.coverStyle} className="first-section">
-            <div className={`style-options ${platformModes[platform].length === 3 ? "three-up" : ""}`}>
-              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={() => selectMode(mode)}><StyleThumb mode={mode} copy={copy}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
+            <div key={platform} className="style-options style-carousel" role="group" aria-label={copy.coverStyle}>
+              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={e => { selectMode(mode); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }}><StyleThumb mode={mode} copy={copy}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
             </div>
           </Section>
 
@@ -455,8 +458,8 @@ export default function Home() {
             <DraggableSegments className="segmented">{([['gradients', copy.gradient, Blend],['custom', copy.color, Palette],['picture', copy.picture, ImageIcon]] as const).filter(([value]) => !artists || value !== "picture").map(([value,label,Icon]) => <button key={value} className={backgroundType === value ? "active" : ""} aria-pressed={backgroundType === value} onClick={() => update(backgroundKey, value)}><Icon size={14} aria-hidden="true"/>{label}</button>)}</DraggableSegments>
             {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <>
               <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/>
-              <label className="field select-field"><RowLabel icon={Blend}>{copy.gradientType}</RowLabel><span className="select-wrap"><select value={settings.gradientType} disabled={!settings.colorShadow} title={settings.colorShadow ? undefined : copy.gradientTypeHint} onChange={e => update("gradientType", e.target.value as typeof settings.gradientType)}>{GRADIENT_TYPES.map(type => <option key={type} value={type}>{copy.gradientTypes[type]}</option>)}</select></span></label>
               <label className="toggle-row"><RowLabel icon={Contrast}>{copy.colorShadow}</RowLabel><DragToggle checked={settings.colorShadow} onChange={value => update("colorShadow", value)}/></label>
+              {settings.colorShadow && <label className="field select-field"><RowLabel icon={Blend}>{copy.gradientType}</RowLabel><span className="select-wrap"><select value={settings.gradientType} onChange={e => update("gradientType", e.target.value as typeof settings.gradientType)}>{GRADIENT_TYPES.map(type => <option key={type} value={type}>{copy.gradientTypes[type]}</option>)}</select></span></label>}
             </> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
           </Section>}
 
@@ -465,7 +468,7 @@ export default function Home() {
             <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
             {settings.showLogo && !thisIs && !band && !essentials && !artists && <div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
             {!spotify && settings.showLogo && <div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
-              {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} title={name} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span></button>; })}
+              {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span><strong>{name}</strong></button>; })}
             </div>}
           </Section>
         </section>

@@ -44,7 +44,7 @@ Spotify titles have three fonts: Standard (SF Pro Bold), Wide (Archivo Expanded 
   - Spotify keeps your breaks and still wraps long lines. This Is allows up to 2 lines.
 - **Colors**: every color setting offers basic swatches, plus a multicolor swatch that opens a custom color picker.
 - **Backgrounds**: 40 gradients, a custom color, or a photo (in the styles that offer one).
-  - The custom color can carry a shadow shaded in a linear, radial, conic, diamond, or reflected gradient.
+  - The custom color can carry a shadow shaded in a linear, radial, diamond, or reflected gradient.
   - With the shadow off, the color is flat.
 - **Photos**: local JPG, PNG, or WebP (up to 20 MB).
   - Zoom and horizontal/vertical crop.

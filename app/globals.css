@@ -805,7 +805,9 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 
 
 /* Platform and Spotify style thumbnails. */
-.app-shell .style-options.three-up{grid-template-columns:repeat(3,1fr);gap:14px}
+/* Cover styles scroll sideways: about three fit, the next one peeks in to show there is more. Padding keeps the selected outline from being clipped. */
+.app-shell .style-options.style-carousel{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:6px;padding:6px 6px 10px;margin:-6px -6px -4px;scrollbar-width:thin}
+.app-shell .style-carousel>.style-option{flex:0 0 calc((100% - 28px) / 3.35);scroll-snap-align:start}
 /* Style thumbnails: each style's default cover in miniature. Positions and sizes are the 1200px canvas values as % and cqw (canvas px / 12). */
 .app-shell .style-thumb:is(.thumb-classic,.thumb-essentials,.thumb-artists,.thumb-this-is,.thumb-band,.thumb-photo){position:relative;display:block;container-type:inline-size;overflow:hidden;line-height:1;white-space:nowrap}
 .app-shell .style-thumb :is(b,span,small,em,i,.thumb-logo){position:absolute;display:block;margin:0;font-style:normal}
