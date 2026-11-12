@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
-import { ALargeSmall, Archive, SeparatorHorizontal, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
+import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DragToggle, DraggableSegments } from "@/components/drag-switch";
@@ -13,7 +13,7 @@ import { localizeCoverSamples, type Dictionary, type NoticeKey } from "@/lib/i18
 import { APPLE_MUSIC_PICKER_PATH, APPLE_MUSIC_PICKER_VIEWBOX, appleLogoShape } from "@/lib/apple-logo";
 import { SPOTIFY_PATH } from "@/lib/spotify-logo";
 import { BASIC_COLORS, findPreset } from "@/lib/color-presets";
-import { activeBackground, artistLookAt, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
+import { activeBackground, artistLookAt, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
 import { allowedLogoCorner, type ArtistCount, classicTitleYMax, titleLines, logoCornerFor, platformModes, titleCorner, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
 import { previewTilt } from "@/lib/preview-tilt";
 
@@ -87,6 +87,8 @@ export default function Home() {
   const spotify = platform === "spotify";
   const band = settings.mode === "spotify-band";
   const thisIs = settings.mode === "spotify-this-is";
+  const dailyMix = settings.mode === "spotify-daily-mix";
+  const newDailyMix = dailyMix && settings.dailyMixDesign === "new";
   const hasSubtitle = band || settings.mode === "spotify-photo";
   const showSpotifySubtitle = hasSubtitle && settings.spotifyShowSubtitle;
   const fullPhoto = settings.mode === "spotify-photo";
@@ -94,7 +96,7 @@ export default function Home() {
   const backgroundKey = fullPhoto ? "spotifyBackgroundType" : "backgroundType";
   // Similar Artist Radio has no picture background: a picture choice carried over from Original shows as color.
   const backgroundType = artists ? activeBackground(settings.mode, settings.backgroundType, settings.spotifyBackgroundType)! : settings[backgroundKey];
-  const displayTitle = spotify ? settings.spotifyTitle : essentials ? settings.essentialsTitle : artists ? copy.similarArtists : settings.title;
+  const displayTitle = dailyMix ? settings.dailyMixTitle : spotify ? settings.spotifyTitle : essentials ? settings.essentialsTitle : artists ? copy.similarArtists : settings.title;
   const selectMode = (mode: CoverMode) => { setSettings(s => ({ ...s, mode, ...styleDefaults(mode) })); setStatus(""); };
   const selectPlatform = (next: Platform) => { if (next !== platform) selectMode(platformModes[next][0]); };
   const takenCorner = titleCorner(settings.mode, settings.spotifyTitlePosition, settings.spotifyAlign);
@@ -392,7 +394,8 @@ export default function Home() {
           {!artists && <Section title={copy.textContent}>
             {thisIs && <TextField icon={Tag} label={copy.kicker} maxLength={40} value={settings.spotifyKicker} onChange={value => update("spotifyKicker", value)}/>}
             {hasSubtitle && <SegmentField icon={Layers} label={copy.content} value={settings.spotifyShowSubtitle} options={[[false, copy.titleOnly], [true, copy.titleAndSubtitle]]} onChange={value => update("spotifyShowSubtitle", value)}/>}
-            {spotify && <TextField multiline icon={Heading} label={copy.title} value={settings.spotifyTitle} placeholder={copy.sampleTitle} onChange={value => update("spotifyTitle", value)}/>}
+            {dailyMix && <TextField multiline icon={Heading} label={copy.title} maxLength={40} value={settings.dailyMixTitle} placeholder={copy.dailyMix} onChange={value => update("dailyMixTitle", value)}/>}
+            {spotify && !dailyMix && <TextField multiline icon={Heading} label={copy.title} value={settings.spotifyTitle} placeholder={copy.sampleTitle} onChange={value => update("spotifyTitle", value)}/>}
             {showSpotifySubtitle && <TextField icon={Text} label={copy.subtitle} value={settings.spotifySubtitle} placeholder={copy.sampleSubtitle} onChange={value => update("spotifySubtitle", value)}/>}
             {essentials && <TextField multiline icon={Heading} label={copy.title} value={settings.essentialsTitle} placeholder={copy.sampleEssentials} onChange={value => update("essentialsTitle", value)}/>}
             {classic && <>
@@ -404,9 +407,10 @@ export default function Home() {
 
           {/* 2. Typography: how the text looks, in reading order. */}
           {!artists && <Section title={copy.typography}>
-            {spotify && !thisIs && <SegmentField icon={Type} label={copy.titleFont} value={settings.spotifyFont} options={[["standard", copy.fontStandard], ["wide", copy.fontWide], ["condensed", copy.fontCondensed]]} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
+            {spotify && !thisIs && <SegmentField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, condensed: copy.fontCondensed }[font]] as const)} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} defaultValue={defaults.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
-            {spotify && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
+            {dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="200" step="2" value={settings.dailyMixFontSize} defaultValue={dailyMixDesignDefaults(settings.dailyMixDesign).dailyMixFontSize} onChange={value => update("dailyMixFontSize", value)}/>}
+            {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="140" step="2" value={settings.spotifySubtitleFontSize} defaultValue={defaults.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="120" step="2" value={settings.spotifySubtitleGap} defaultValue={defaults.spotifySubtitleGap} onChange={value => update("spotifySubtitleGap", value)}/>}
             {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="180" step="2" value={settings.essentialsFontSize} defaultValue={defaults.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
@@ -419,9 +423,17 @@ export default function Home() {
             </>}
           </Section>}
 
+          {/* 2b. Daily Mix number: whether it shows, its value, and (new design) its label size. */}
+          {dailyMix && <Section title={copy.mixNumber}>
+            <label className="toggle-row"><RowLabel icon={Eye}>{copy.showMixNumber}</RowLabel><DragToggle checked={settings.dailyMixShowNumber} onChange={value => update("dailyMixShowNumber", value)}/></label>
+            {settings.dailyMixShowNumber && <MixNumberField icon={Hash} label={copy.number} value={settings.dailyMixNumber} onChange={value => update("dailyMixNumber", value)}/>}
+            {newDailyMix && settings.dailyMixShowNumber && <RangeField icon={ALargeSmall} label={copy.numberSize} unit="px" min="120" max="260" step="2" value={settings.dailyMixNumberSize} defaultValue={defaults.dailyMixNumberSize} onChange={value => update("dailyMixNumberSize", value)}/>}
+          </Section>}
+
           {/* 3. Layout: where things sit. */}
           {!thisIs && !artists && <Section title={copy.layout}>
-            {spotify && <>
+            {dailyMix && <SegmentField icon={Shapes} label={copy.design} value={settings.dailyMixDesign} options={[["classic", copy.designClassic], ["new", copy.designNew]]} onChange={design => { setSettings(s => ({ ...s, ...dailyMixDesignDefaults(design) })); setStatus(""); }}/>}
+            {spotify && !dailyMix && <>
               <SegmentField icon={PanelTop} label={band ? copy.bandPosition : copy.titlePlacement} value={settings.spotifyTitlePosition} options={[["top", copy.top, ArrowUpToLine], ["bottom", copy.bottom, ArrowDownToLine]]} onChange={value => update("spotifyTitlePosition", value)}/>
               {!band && <SegmentField icon={AlignLeft} label={copy.titleAlignment} value={settings.spotifyAlign} options={[["left", copy.left, AlignLeft], ["right", copy.right, AlignRight]]} onChange={value => update("spotifyAlign", value)}/>}
             </>}
@@ -435,10 +447,12 @@ export default function Home() {
 
           {/* 4. Colors. */}
           <Section title={copy.colors}>
-            {!thisIs && <ColorField copy={copy} icon={Brush} label={copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>}
+            {!thisIs && <ColorField copy={copy} icon={Brush} label={newDailyMix ? copy.textColor : copy.textAndLogo} value={settings.textColor} onChange={value => update("textColor", value)}/>}
             {band && settings.showLogo && <label className="toggle-row"><RowLabel icon={Link}>{copy.logoMatchesBand}</RowLabel><DragToggle checked={settings.logoMatchesBand} onChange={value => update("logoMatchesBand", value)}/></label>}
             {(essentials || band) && <ColorField copy={copy} icon={PaintBucket} label={copy.bandColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
             {thisIs && <ColorField copy={copy} icon={Droplet} label={copy.accentColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
+            {dailyMix && <ColorField copy={copy} icon={newDailyMix ? Droplet : PaintBucket} label={newDailyMix ? copy.accentColor : copy.backgroundColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
+            {dailyMix && !newDailyMix && <RangeField icon={Blend} label={copy.colorOpacity} unit="%" min="0" max="100" value={settings.dailyMixTintOpacity} defaultValue={defaults.dailyMixTintOpacity} onChange={value => update("dailyMixTintOpacity", value)}/>}
           </Section>
 
           {/* 5. Photo or background. Similar Artist Radio: the main artist uses the regular photo controls, the others get their own photo and crop. */}
@@ -450,7 +464,7 @@ export default function Home() {
           </Section>}
 
           {/* 5. Photo or background. */}
-          {(essentials || thisIs || band) && <Section title={copy.yourPhoto}>
+          {(essentials || thisIs || band || dailyMix) && <Section title={copy.yourPhoto}>
             <PhotoControls showPhotoFrame={essentials || band} topMarginLabel={band ? copy.bandEdgeMargin : copy.includeTopMargin} copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} updatePhotoFrame={updatePhotoFrame} photoFrameChanged={photoFrameChanged} resetPhotoFrame={resetPhotoFrame}/>
           </Section>}
 
@@ -466,7 +480,7 @@ export default function Home() {
           {/* 6. Logo. */}
           <Section title={spotify ? copy.spotifyLogo : copy.appleLogo} last>
             <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
-            {settings.showLogo && !thisIs && !band && !essentials && !artists && <div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
+            {settings.showLogo && !thisIs && !band && !essentials && !artists && !dailyMix && <div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div>}
             {!spotify && settings.showLogo && <div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
               {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span><strong>{name}</strong></button>; })}
             </div>}
@@ -495,6 +509,15 @@ export default function Home() {
 /** A settings category: a small title above one grouped card whose rows are separated by hairlines. */
 function Section({ title, className = "", last = false, children }: { title: string; className?: string; last?: boolean; children: ReactNode }) {
   return <section className={`control-section ${className}${last ? " last-section" : ""}`}><div className="section-heading"><h2>{title}</h2></div><div className="section-body">{children}</div></section>;
+}
+
+/** Mix number input: typing updates the cover on every valid number (clamped to 1–99); an empty or invalid entry snaps back to the current number on blur. */
+function MixNumberField({ icon, label, value, onChange }: { icon?: LucideIcon; label: string; value: number; onChange: (value: number) => void }) {
+  const [draft, setDraft] = useState(String(value));
+  useEffect(() => { setDraft(current => parseMixNumber(current) === value ? current : String(value)); }, [value]);
+  return <label className="field"><RowLabel icon={icon}>{label}</RowLabel><input type="number" inputMode="numeric" min={1} max={DAILY_MIX_MAX} step={1} value={draft}
+    onChange={e => { setDraft(e.target.value); const next = parseMixNumber(e.target.value); if (next !== null) onChange(next); }}
+    onBlur={() => setDraft(String(value))}/></label>;
 }
 
 /** Row label: a small leading icon, then the text. */
@@ -542,6 +565,7 @@ function styleCopy(copy: Dictionary["editor"], mode: CoverMode): [string, string
     case "spotify-this-is": return [copy.thisIs, copy.thisIsHint];
     case "spotify-band": return [copy.spotifyBand, copy.spotifyBandHint];
     case "spotify-photo": return [copy.spotifyPhoto, copy.spotifyPhotoHint];
+    case "spotify-daily-mix": return [copy.dailyMix, copy.dailyMixHint];
   }
 }
 
@@ -555,6 +579,7 @@ function StyleThumb({ mode, copy }: { mode: CoverMode; copy: Dictionary["editor"
   if (mode === "similar-artists") return <span className="style-thumb thumb-artists" aria-hidden="true">{appleMark}<i/><em/><span/></span>;
   if (mode === "spotify-this-is") return <span className="style-thumb thumb-this-is" aria-hidden="true">{spotifyMark}<em>THIS IS</em><i/><b>{copy.sampleTitle}</b></span>;
   if (mode === "spotify-band") return <span className="style-thumb thumb-band" aria-hidden="true"><i/>{spotifyMark}<b>{copy.sampleTitle}</b></span>;
+  if (mode === "spotify-daily-mix") return <span className="style-thumb thumb-daily-mix" aria-hidden="true"><svg className="thumb-wave" viewBox="0 0 1200 1200"><defs><linearGradient id="thumb-daily-mix-photo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#777"/><stop offset="1" stopColor="#262629"/></linearGradient></defs><rect width="1200" height="1200" fill="url(#thumb-daily-mix-photo)"/><path d={`M0 0H1200V1200H0Z${DAILY_MIX_WAVE}`} fill="#f06e94" fillOpacity={DAILY_MIX_TINT_OPACITY / 100} fillRule="evenodd"/></svg>{spotifyMark}<b>Daily Mix 1</b></span>;
   return <span className="style-thumb thumb-photo" aria-hidden="true">{spotifyMark}<b>{copy.sampleTitle}</b></span>;
 }
 
@@ -586,7 +611,7 @@ function PhotoControls({
     {photo && <div className="file-row"><span>{photoName}</span><button className="icon-button" aria-label={copy.removePhoto} onClick={onRemove}><X size={14}/></button></div>}
     {photo ? <>
     {showPhotoFrame && updatePhotoFrame && resetPhotoFrame && <div className="photo-frame-controls"><div className="field-label"><RowLabel icon={Frame}>{copy.photoFrame}</RowLabel><button className="icon-button" title={copy.resetPhotoFrame} aria-label={copy.resetPhotoFrame} disabled={!photoFrameChanged} onClick={resetPhotoFrame}><RotateCcw size={14}/></button></div><label className="range-label"><RowLabel icon={MoveHorizontal}>{copy.sideMargin}</RowLabel><span className="range-value">{settings.photoMargin}%</span><SmoothRange min="0" max="12" step="1" value={settings.photoMargin} defaultValue={defaults.photoMargin} onValueChange={value => updatePhotoFrame("photoMargin", value)}/></label><label className="toggle-row compact frame-toggle"><RowLabel icon={ArrowUpToLine}>{topMarginLabel}</RowLabel><DragToggle checked={settings.photoTopMargin} onChange={value => update("photoTopMargin", value)}/></label><label className="range-label"><RowLabel icon={Squircle}>{copy.roundedCorners}</RowLabel><span className="range-value">{settings.photoRadius}%</span><SmoothRange min="0" max="10" step="1" value={settings.photoRadius} defaultValue={defaults.photoRadius} onValueChange={value => updatePhotoFrame("photoRadius", value)}/></label></div>}
-    <PhotoTreatmentControls copy={copy} value={settings} start={treatmentDefaults(settings.mode)} onChange={patch => (Object.keys(patch) as (keyof typeof patch)[]).forEach(key => update(key, patch[key]!))}/>
+    <PhotoTreatmentControls copy={copy} value={settings} start={treatmentDefaults(settings.mode, settings.dailyMixDesign)} onChange={patch => (Object.keys(patch) as (keyof typeof patch)[]).forEach(key => update(key, patch[key]!))}/>
     <div className="crop-controls"><label className="range-label"><RowLabel icon={ZoomIn}>{copy.zoom}</RowLabel><span className="range-value">{settings.zoom.toFixed(1)}×</span><SmoothRange min="1" max="3" step="0.05" value={settings.zoom} defaultValue={defaults.zoom} onValueChange={value => update("zoom", value)}/></label><label className="range-label"><RowLabel icon={MoveHorizontal}>{copy.horizontal}</RowLabel><span className="range-value">{settings.offsetX}%</span><SmoothRange min="0" max="100" value={settings.offsetX} defaultValue={defaults.offsetX} onValueChange={value => update("offsetX", value)}/></label><label className="range-label"><RowLabel icon={MoveVertical}>{copy.vertical}</RowLabel><span className="range-value">{settings.offsetY}%</span><SmoothRange min="0" max="100" value={settings.offsetY} defaultValue={defaults.offsetY} onValueChange={value => update("offsetY", value)}/></label></div>
     </> : <p className="help-text">{copy.photoHelp}</p>}
   </>;

@@ -5,6 +5,8 @@
 /* Archivo Expanded Black (SIL OFL 1.1), bundled locally for the wide Spotify title option. */
 @font-face{font-family:CoverFontWide;src:url('/assets/fonts/Archivo-ExpandedBlack-latin-ext.woff2') format('woff2');font-weight:900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:CoverFontWide;src:url('/assets/fonts/Archivo-ExpandedBlack-latin.woff2') format('woff2');font-weight:900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* Unbounded Regular (SIL OFL 1.1), bundled locally for the new Daily Mix number label; only the Latin subset, which covers its digits. */
+@font-face{font-family:CoverFontMix;src:url('/assets/fonts/Unbounded-Regular-latin.woff2') format('woff2');font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Archivo Condensed Bold (SIL OFL 1.1), bundled locally for the condensed Spotify title option. */
 @font-face{font-family:CoverFontCondensed;src:url('/assets/fonts/Archivo-CondensedBold-latin-ext.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:CoverFontCondensed;src:url('/assets/fonts/Archivo-CondensedBold-latin.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
@@ -809,7 +811,7 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .style-options.style-carousel{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:6px;padding:6px 6px 10px;margin:-6px -6px -4px;scrollbar-width:thin}
 .app-shell .style-carousel>.style-option{flex:0 0 calc((100% - 28px) / 3.35);scroll-snap-align:start}
 /* Style thumbnails: each style's default cover in miniature. Positions and sizes are the 1200px canvas values as % and cqw (canvas px / 12). */
-.app-shell .style-thumb:is(.thumb-classic,.thumb-essentials,.thumb-artists,.thumb-this-is,.thumb-band,.thumb-photo){position:relative;display:block;container-type:inline-size;overflow:hidden;line-height:1;white-space:nowrap}
+.app-shell .style-thumb:is(.thumb-classic,.thumb-essentials,.thumb-artists,.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix){position:relative;display:block;container-type:inline-size;overflow:hidden;line-height:1;white-space:nowrap}
 .app-shell .style-thumb :is(b,span,small,em,i,.thumb-logo){position:absolute;display:block;margin:0;font-style:normal}
 .app-shell .style-thumb .thumb-logo{top:4%;left:4%;height:auto;fill:currentColor}
 .app-shell .style-thumb .thumb-logo.spotify{width:8.667%}
@@ -830,7 +832,7 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .thumb-artists :is(em,span){width:26.167%;height:26.167%;box-shadow:0 0 0 1.167cqw #3a3836}
 .app-shell .thumb-artists em{top:11.583%;left:10.333%}
 .app-shell .thumb-artists span{top:63%;left:62.417%}
-.app-shell :is(.thumb-this-is,.thumb-band,.thumb-photo) b{font-family:CoverFontBold,CoverFont,sans-serif;font-weight:700;font-size:12.5cqw}
+.app-shell :is(.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix) b{font-family:CoverFontBold,CoverFont,sans-serif;font-weight:700;font-size:12.5cqw}
 .app-shell .thumb-this-is{background:linear-gradient(#fff 50%,#e0a988 50%);color:#111}
 .app-shell .thumb-this-is em{top:7.25%;left:0;right:0;text-align:center;font-family:CoverFontWide,CoverFontBold,sans-serif;font-weight:900;font-size:10cqw}
 .app-shell .thumb-this-is i{top:20.833%;left:20%;width:60%;height:60%;background:linear-gradient(135deg,#777,#262629)}
@@ -840,6 +842,9 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .thumb-band b{top:73%;left:4%}
 .app-shell .thumb-photo{background:linear-gradient(135deg,#777,#262629);color:#ff4632}
 .app-shell .thumb-photo b{top:3.333%;right:4%}
+.app-shell .thumb-daily-mix{background:#f06e94;color:#111}
+.app-shell .thumb-daily-mix .thumb-wave{position:absolute;inset:0;width:100%;height:100%}
+.app-shell .thumb-daily-mix b{top:80%;left:10.667%;font-size:10cqw}
 .app-shell .font-options .font-wide{font-family:CoverFontWide,CoverFontBold,sans-serif;font-weight:900;letter-spacing:.02em}
 .app-shell .font-options .font-condensed{font-family:CoverFontCondensed,CoverFontBold,sans-serif;font-weight:700}
 

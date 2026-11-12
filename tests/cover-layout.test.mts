@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults } from "../lib/cover-layout.ts";
+import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE } from "../lib/cover-layout.ts";
 
 // Each character is as wide as the font size, so widths are easy to reason about.
 const measure = (value: string, size: number) => value.length * size;
@@ -155,7 +155,7 @@ test("Band keeps the logo relative to the cover on the band side or without a ma
 });
 
 test("Spotify lists its Original (full photo) style first, so choosing Spotify starts there", () => {
-  assert.deepEqual(platformModes.spotify, ["spotify-photo", "spotify-this-is", "spotify-band"]);
+  assert.deepEqual(platformModes.spotify, ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix"]);
 });
 
 test("Original's title takes the logo corner on its position and alignment side; other styles take none", () => {
@@ -331,4 +331,202 @@ test("an artist's treatment counts as changed only when it differs from its own 
   assert.equal(treatmentDiffers(DEFAULT_ARTIST_LOOK, DEFAULT_ARTIST_LOOK), false);
   assert.equal(treatmentDiffers(DEFAULT_ARTIST_LOOK, { ...DEFAULT_ARTIST_LOOK, contrast: 5 }), true);
   assert.equal(treatmentDiffers(DEFAULT_ARTIST_LOOK, { ...DEFAULT_ARTIST_LOOK, tint: "#E8E8ED" }), false);
+});
+
+test("Spotify lists Daily Mix after Band", () => {
+  assert.equal(platformModes.spotify.at(-1), "spotify-daily-mix");
+  assert.equal(platformOf("spotify-daily-mix"), "spotify");
+});
+
+test("Daily Mix starts with the classic design: a color photo on pink, with near-black text and logo", () => {
+  const style = styleDefaults("spotify-daily-mix");
+  assert.equal(style.dailyMixDesign, "classic");
+  assert.equal(style.corner, "top-left");
+  assert.equal(style.textColor, "#111111");
+  assert.equal(style.bandColor, "#f06e94");
+  assert.equal(style.treatment, "original");
+});
+
+test("Daily Mix's new design starts with a mono photo, cyan labels and logo, and near-black label text", () => {
+  assert.deepEqual(dailyMixDesignDefaults("new"), { dailyMixDesign: "new", textColor: "#111111", bandColor: "#1ed7f0", treatment: "mono", dailyMixFontSize: 112 });
+  assert.deepEqual(dailyMixDesignDefaults("classic"), { dailyMixDesign: "classic", textColor: "#111111", bandColor: "#f06e94", treatment: "original", dailyMixFontSize: 120 });
+});
+
+test("Daily Mix's photo treatment starts from its design's treatment", () => {
+  assert.equal(treatmentDefaults("spotify-daily-mix", "classic").treatment, "original");
+  assert.equal(treatmentDefaults("spotify-daily-mix", "new").treatment, "mono");
+  // Other styles ignore the design.
+  assert.equal(treatmentDefaults("spotify-photo", "classic").treatment, "mono");
+});
+
+test("Daily Mix pins the logo top-left, uses the chosen title font, and has no background choice or title corner", () => {
+  assert.equal(logoCornerFor("spotify-daily-mix", "bottom-right"), "top-left");
+  assert.equal(spotifyFontFor("spotify-daily-mix", "wide"), "wide");
+  assert.equal(spotifyFontFor("spotify-daily-mix", "standard"), "standard");
+  assert.equal(activeBackground("spotify-daily-mix", "gradients", "picture"), null);
+  assert.equal(titleCorner("spotify-daily-mix", "bottom", "left"), null);
+});
+
+test("Daily Mix's logo follows the text color in the classic design and the label color in the new design", () => {
+  assert.equal(logoColor("spotify-daily-mix", "#111111", "#1ed7f0", false, "classic"), "#111111");
+  assert.equal(logoColor("spotify-daily-mix", "#111111", "#1ed7f0", false, "new"), "#1ed7f0");
+  // The design only matters for Daily Mix.
+  assert.equal(logoColor("spotify-photo", "#111111", "#1ed7f0", false, "new"), "#111111");
+});
+
+test("the mix number field accepts whole numbers from 1 to 99, clamping out-of-range ones and ignoring anything else", () => {
+  assert.equal(parseMixNumber("4"), 4);
+  assert.equal(parseMixNumber(" 12 "), 12);
+  assert.equal(parseMixNumber("0"), 1);
+  assert.equal(parseMixNumber("-3"), 1);
+  assert.equal(parseMixNumber("250"), 99);
+  assert.equal(parseMixNumber(""), null);
+  assert.equal(parseMixNumber("2.5"), null);
+  assert.equal(parseMixNumber("abc"), null);
+});
+
+test("the classic Daily Mix heading follows the title with the mix number; the new design zero-pads the number", () => {
+  assert.equal(dailyMixHeading("Daily Mix", 4), "Daily Mix 4");
+  assert.equal(dailyMixHeading("  Daily Mix  ", 4), "Daily Mix 4");
+  assert.equal(dailyMixHeading("", 4), "4");
+  // A line break in the title is kept; the number follows the last line.
+  assert.equal(dailyMixHeading("My\nDaily Mix", 4), "My\nDaily Mix 4");
+  // With the number hidden, the heading is the title alone.
+  assert.equal(dailyMixHeading("  Daily Mix  ", null), "Daily Mix");
+  assert.equal(dailyMixNumberLabel(1), "01");
+  assert.equal(dailyMixNumberLabel(6), "06");
+});
+
+test("new Daily Mix labels hug their text: the title at the bottom-left and the number at the bottom-right, on a shared bottom edge", () => {
+  const { titles: [title], number } = dailyMixLabels(1200, 40, [{ width: 400, ascent: 80, font: 100 }], { width: 200, ascent: 130, font: 180 });
+  assert.equal(title.x, 40);
+  assert.equal(number.x + number.width, 1160);
+  assert.equal(title.y + title.height, 1160);
+  assert.equal(number.y + number.height, 1160);
+  // Padding scales with the font size, and the text sits inside its box.
+  assert.equal(title.width, 400 + 100 * .16 * 2);
+  assert.equal(number.width, 200 + 180 * .16 * 2);
+  assert.equal(title.textX, 40 + 16);
+  assert.ok(title.baseline - 80 > title.y && title.baseline < title.y + title.height);
+  assert.ok(number.baseline - 130 > number.y && number.baseline < number.y + number.height);
+});
+
+test("a two-line new Daily Mix title stacks one label per line, the last line at the bottom, with equal heights", () => {
+  const { titles: [first, last] } = dailyMixLabels(1200, 40, [{ width: 300, ascent: 70, font: 100 }, { width: 500, ascent: 80, font: 100 }], { width: 200, ascent: 130, font: 180 });
+  assert.equal(last.y + last.height, 1160);
+  assert.equal(first.y + first.height, last.y);
+  assert.equal(first.x, 40);
+  assert.equal(last.x, 40);
+  assert.equal(first.height, last.height);
+  assert.equal(first.width, 300 + 32);
+  assert.equal(last.width, 500 + 32);
+});
+
+test("with the number hidden, the new Daily Mix has no number label and the title labels stay bottom-left", () => {
+  const { titles: [title], number } = dailyMixLabels(1200, 40, [{ width: 400, ascent: 80, font: 100 }], null);
+  assert.equal(number, null);
+  assert.equal(title.x, 40);
+  assert.equal(title.y + title.height, 1160);
+});
+
+test("the classic Daily Mix wave is smooth: few curves, no kinks where they meet, and none doubling back", () => {
+  const curves = [...DAILY_MIX_WAVE.matchAll(/C([^CLZ]+)/g)].map(m => m[1].trim().split(/\s+/).map(Number));
+  // Each curve: [c1x, c1y, c2x, c2y, x, y], starting where the previous command ended.
+  const starts = [...DAILY_MIX_WAVE.matchAll(/([MLC])([^MLCZ]+)/g)].reduce<{ point: number[]; starts: number[][] }>((acc, [, cmd, args]) => {
+    const n = args.trim().split(/\s+/).map(Number);
+    if (cmd === "C") acc.starts.push(acc.point);
+    acc.point = n.slice(-2);
+    return acc;
+  }, { point: [], starts: [] }).starts;
+  assert.ok(curves.length <= 6, `expected at most 6 curves, got ${curves.length}`);
+  curves.forEach(([c1x, , c2x, , x], i) => {
+    const dir = Math.sign(x - starts[i][0]);
+    // Handles move in the curve's direction and never cross, so the edge never doubles back on itself.
+    assert.ok((c1x - starts[i][0]) * dir >= 0 && (c2x - c1x) * dir >= 0 && (x - c2x) * dir >= 0, `curve ${i} doubles back`);
+  });
+  for (let i = 1; i < curves.length; i++) {
+    const [px, py] = curves[i - 1].slice(4);
+    if (starts[i][0] !== px || starts[i][1] !== py) continue; // a straight edge sits between them
+    const into = [px - curves[i - 1][2], py - curves[i - 1][3]];
+    const out = [curves[i][0] - px, curves[i][1] - py];
+    const cross = into[0] * out[1] - into[1] * out[0];
+    const dot = into[0] * out[0] + into[1] * out[1];
+    assert.ok(dot > 0 && Math.abs(cross) / (Math.hypot(...into) * Math.hypot(...out)) < .02, `kink between curves ${i - 1} and ${i}`);
+  }
+});
+
+test("Daily Mix offers the standard and wide fonts but not condensed; a condensed choice from another style shows as standard", () => {
+  assert.deepEqual(spotifyFonts("spotify-daily-mix"), ["standard", "wide"]);
+  assert.equal(spotifyFontFor("spotify-daily-mix", "condensed"), "standard");
+  // Other Spotify styles keep all three fonts and the condensed choice.
+  assert.deepEqual(spotifyFonts("spotify-band"), ["standard", "wide", "condensed"]);
+  assert.equal(spotifyFontFor("spotify-band", "condensed"), "condensed");
+});
+
+test("the new Daily Mix number uses the wide round Unbounded face with the standard font, and the title font otherwise", () => {
+  assert.deepEqual(dailyMixNumberFace("standard"), { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" });
+  assert.deepEqual(dailyMixNumberFace("wide"), spotifyFace("wide"));
+});
+
+test("the classic Daily Mix wave leaves the top-left logo as much room as the logo has from the cover's edges", () => {
+  const center = SPOTIFY_LOGO.pad + SPOTIFY_LOGO.size / 2, radius = SPOTIFY_LOGO.size / 2;
+  let point = [0, 0];
+  let closest = Infinity;
+  for (const [, cmd, args] of DAILY_MIX_WAVE.matchAll(/([MLC])([^MLCZ]+)/g)) {
+    const n = args.trim().split(/\s+/).map(Number);
+    if (cmd === "C") {
+      for (let i = 0; i <= 400; i++) {
+        const t = i / 400, u = 1 - t;
+        const x = u ** 3 * point[0] + 3 * u * u * t * n[0] + 3 * u * t * t * n[2] + t ** 3 * n[4];
+        const y = u ** 3 * point[1] + 3 * u * u * t * n[1] + 3 * u * t * t * n[3] + t ** 3 * n[5];
+        closest = Math.min(closest, Math.hypot(x - center, y - center) - radius);
+      }
+    }
+    point = n.slice(-2);
+  }
+  assert.ok(closest >= SPOTIFY_LOGO.pad, `the wave comes within ${closest.toFixed(1)}px of the logo`);
+});
+
+test("the classic Daily Mix wave has no sharp turns: every bend is gentle, and bends ease into each other where curves meet", () => {
+  const curves: number[][][] = [];
+  let point = [0, 0];
+  for (const [, cmd, args] of DAILY_MIX_WAVE.matchAll(/([MLC])([^MLCZ]+)/g)) {
+    const n = args.trim().split(/\s+/).map(Number);
+    if (cmd === "C") curves.push([point, n.slice(0, 2), n.slice(2, 4), n.slice(4, 6)]);
+    point = n.slice(-2);
+  }
+  // Signed curvature of a cubic Bézier at t, from its first and second derivatives.
+  const curvature = ([p0, c1, c2, p3]: number[][], t: number) => {
+    const u = 1 - t;
+    const d1 = [0, 1].map(k => 3 * u * u * (c1[k] - p0[k]) + 6 * u * t * (c2[k] - c1[k]) + 3 * t * t * (p3[k] - c2[k]));
+    const d2 = [0, 1].map(k => 6 * u * (c2[k] - 2 * c1[k] + p0[k]) + 6 * t * (p3[k] - 2 * c2[k] + c1[k]));
+    return (d1[0] * d2[1] - d1[1] * d2[0]) / Math.hypot(d1[0], d1[1]) ** 3;
+  };
+  curves.forEach((curve, i) => {
+    const tightest = Math.max(...Array.from({ length: 401 }, (_, j) => Math.abs(curvature(curve, j / 400))));
+    assert.ok(1 / tightest >= 180, `curve ${i} bends with a ${Math.round(1 / tightest)}px radius`);
+  });
+  for (let i = 1; i < curves.length; i++) {
+    const [px, py] = curves[i - 1][3];
+    if (curves[i][0][0] !== px || curves[i][0][1] !== py) continue; // a straight edge sits between them
+    const before = Math.abs(curvature(curves[i - 1], 1)), after = Math.abs(curvature(curves[i], 0));
+    assert.ok(Math.abs(before - after) / Math.max(before, after) <= .2, `the bend changes abruptly between curves ${i - 1} and ${i}`);
+  }
+});
+
+test("Daily Mix starts with its designs' title sizes and a 190px number", () => {
+  assert.equal(styleDefaults("spotify-daily-mix").dailyMixFontSize, 120);
+  assert.equal(DAILY_MIX_NUMBER_SIZE, 190);
+});
+
+test("the classic Daily Mix title keeps its bottom edge at any size and grows upward with room for two lines", () => {
+  for (const size of [72, 120, 200]) {
+    const box = dailyMixTitleBox(size);
+    assert.equal(box.x, 128);
+    assert.equal(box.width, 1200 - 128 * 2);
+    assert.equal(box.y + box.height, 1102);
+    assert.ok(box.height >= size * 1.02 * 2, `two ${size}px lines fit`);
+  }
+  // The default size keeps the box it had before the size became adjustable.
+  assert.deepEqual(dailyMixTitleBox(120), { x: 128, y: 852, width: 944, height: 250 });
 });

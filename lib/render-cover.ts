@@ -1,6 +1,6 @@
 import { appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -23,6 +23,8 @@ export type CoverSettings = {
   zoom: number; offsetX: number; offsetY: number;
   /** Similar Artist Radio: how many artist bubbles, and the crop and treatment of the second and third artists (the main artist uses the fields above). */
   artistCount: ArtistCount; artistLooks: ArtistLook[];
+  /** Daily Mix: its design, its title and title size, its mix number with whether it shows and its size (new design), and the classic color's opacity (%) over the photo. */
+  dailyMixDesign: DailyMixDesign; dailyMixTitle: string; dailyMixFontSize: number; dailyMixNumber: number; dailyMixShowNumber: boolean; dailyMixNumberSize: number; dailyMixTintOpacity: number;
 };
 
 export const defaults: CoverSettings = {
@@ -36,6 +38,7 @@ export const defaults: CoverSettings = {
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
   artistCount: 3, artistLooks: [DEFAULT_ARTIST_LOOK, DEFAULT_ARTIST_LOOK],
+  dailyMixDesign: "classic", dailyMixTitle: "Daily Mix", dailyMixFontSize: 120, dailyMixNumber: 1, dailyMixNumberSize: DAILY_MIX_NUMBER_SIZE, dailyMixShowNumber: true, dailyMixTintOpacity: DAILY_MIX_TINT_OPACITY,
 };
 
 const images = new Map<string, Promise<HTMLImageElement>>();
@@ -89,8 +92,10 @@ function drawPhoto(
   photoWidth: number,
   photoHeight: number,
   photoRadius: number,
-  outline: () => void = () => roundedRect(ctx, photoX, photoY, photoWidth, photoHeight, photoRadius),
+  /** Builds the clip path, or returns it as a Path2D. */
+  outline: () => Path2D | void = () => roundedRect(ctx, photoX, photoY, photoWidth, photoHeight, photoRadius),
 ) {
+  const clip = () => { const path = outline(); if (path) ctx.clip(path); else ctx.clip(); };
   if (uploaded) {
     const photoCanvas = document.createElement("canvas");
     photoCanvas.width = photoWidth;
@@ -125,8 +130,7 @@ function drawPhoto(
       photoCtx.putImageData(pixels, 0, 0);
     }
     ctx.save();
-    outline();
-    ctx.clip();
+    clip();
     ctx.drawImage(photoCanvas, photoX, photoY);
     ctx.restore();
   } else {
@@ -134,8 +138,7 @@ function drawPhoto(
     placeholder.addColorStop(0, "#777777");
     placeholder.addColorStop(1, "#262629");
     ctx.save();
-    outline();
-    ctx.clip();
+    clip();
     ctx.fillStyle = placeholder;
     ctx.fillRect(photoX, photoY, photoWidth, photoHeight);
     ctx.restore();
@@ -205,6 +208,10 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     return { x: pad + (s.corner.endsWith("left") ? reserve : 0), width: size - pad * 2 - reserve };
   };
   ctx.fillStyle = s.textColor;
+  if (s.mode === "spotify-daily-mix") {
+    renderDailyMix(ctx, s, uploaded, size, face);
+    return;
+  }
   if (s.mode === "spotify-this-is") {
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, size, size / 2);
@@ -240,6 +247,55 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
   const height = size * .45;
   const y = s.spotifyTitlePosition === "top" ? 40 : size - 40 - height;
   spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
+}
+
+/** Daily Mix. Classic: the photo through a wavy window in a nearly opaque color, and the title with its number at the bottom-left.
+ *  New: a full photo with each title line in a color label at the bottom-left and the two-digit number in one at the bottom-right. */
+function renderDailyMix(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded: HTMLImageElement | null, size: number, face: { weight: number; family: string }) {
+  if (s.dailyMixDesign === "classic") {
+    drawPhoto(ctx, uploaded, s, 0, 0, size, size, 0);
+    // The color covers everything outside the window: the whole cover minus the window, filled even-odd.
+    const tint = new Path2D(`M0 0H${size}V${size}H0Z`);
+    tint.addPath(new Path2D(DAILY_MIX_WAVE));
+    ctx.save();
+    ctx.globalAlpha = Math.min(100, Math.max(0, s.dailyMixTintOpacity)) / 100;
+    ctx.fillStyle = s.bandColor;
+    ctx.fill(tint, "evenodd");
+    ctx.restore();
+    ctx.fillStyle = s.textColor;
+    // One line sits on the bottom edge of the box; a second line grows upward.
+    spotifyTitle(ctx, face, dailyMixHeading(s.dailyMixTitle, s.dailyMixShowNumber ? s.dailyMixNumber : null), dailyMixTitleBox(s.dailyMixFontSize), s.dailyMixFontSize, "left", "bottom", 2);
+    return;
+  }
+  drawPhoto(ctx, uploaded, s, 0, 0, size, size, 0);
+  const margin = 40, gap = 24;
+  ctx.textBaseline = "alphabetic";
+  const numberFace = dailyMixNumberFace(s.spotifyFont);
+  const measure = (value: string, font: number, typeface = face) => {
+    ctx.font = `${typeface.weight} ${font}px ${typeface.family}`;
+    const metrics = ctx.measureText(value);
+    return { width: metrics.width, ascent: metrics.actualBoundingBoxAscent, font };
+  };
+  const number = dailyMixNumberLabel(s.dailyMixNumber);
+  const lines = titleLines(s.dailyMixTitle, 2).filter(Boolean);
+  const numberText = s.dailyMixShowNumber ? measure(number, s.dailyMixNumberSize, numberFace) : null;
+  // A long title shrinks, all lines together, to stay clear of the number label (or of the right margin when it is hidden).
+  const numberLabel = dailyMixLabels(size, margin, [], numberText).number;
+  const room = size - margin * 2 - (numberLabel ? numberLabel.width + gap : 0);
+  let font = s.dailyMixFontSize;
+  let titleText = lines.map(line => measure(line, font));
+  while (titleText.some(line => line.width + font * .32 > room) && font > 40) { font -= 2; titleText = lines.map(line => measure(line, font)); }
+  const labels = dailyMixLabels(size, margin, titleText, numberText);
+  const draw = (label: NonNullable<typeof labels.number>, value: string, font: number, typeface = face) => {
+    ctx.fillStyle = s.bandColor;
+    ctx.fillRect(label.x, label.y, label.width, label.height);
+    ctx.fillStyle = s.textColor;
+    ctx.font = `${typeface.weight} ${font}px ${typeface.family}`;
+    ctx.fillText(value, label.textX, label.baseline);
+  };
+  labels.titles.forEach((label, i) => draw(label, lines[i], font));
+  if (labels.number && numberText) draw(labels.number, number, numberText.font, numberFace);
+  ctx.textBaseline = "top";
 }
 
 /** Color background: the chosen color shaded darker and lighter in the chosen gradient shape (flat when the shadow is off). */
@@ -278,7 +334,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
   const artists = s.mode === "similar-artists" ? await Promise.all(artistPhotos.slice(0, s.artistCount - 1).map(src => src ? loadImage(src) : null)) : [];
-  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed')] : [])]);
+  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed'), document.fonts.load('400 100px CoverFontMix')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   ctx.textBaseline = "top";
@@ -329,13 +385,13 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     ctx.globalAlpha = 1;
   }
   if (s.showLogo && spotify) {
-    const d = 104;
+    const d = SPOTIFY_LOGO.size;
     // In Band, a framed photo moves the logo into the photo's corner instead of the cover's.
     const area = s.mode === "spotify-band"
       ? bandLogoArea(size, band, s.spotifyTitlePosition, s.corner, s.photoMargin, s.photoTopMargin)
       : { x: 0, y: 0, width: size, height: size };
-    const { x, y } = cornerPosition(s.corner, d, d, area, 48);
-    drawSpotifyLogo(ctx, x, y, d, logoColor(s.mode, s.textColor, s.bandColor, s.logoMatchesBand));
+    const { x, y } = cornerPosition(s.corner, d, d, area, SPOTIFY_LOGO.pad);
+    drawSpotifyLogo(ctx, x, y, d, logoColor(s.mode, s.textColor, s.bandColor, s.logoMatchesBand, s.dailyMixDesign));
   } else if (s.showLogo) {
     const logoCorner = s.corner;
     const logo = appleLogoShape(s.appleLogo);

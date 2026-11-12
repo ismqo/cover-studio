@@ -1,9 +1,9 @@
-export type CoverMode = "classic" | "essentials" | "similar-artists" | "spotify-this-is" | "spotify-band" | "spotify-photo";
+export type CoverMode = "classic" | "essentials" | "similar-artists" | "spotify-this-is" | "spotify-band" | "spotify-photo" | "spotify-daily-mix";
 export type Platform = "apple" | "spotify";
 
 export const platformModes: Record<Platform, readonly CoverMode[]> = {
   apple: ["classic", "essentials", "similar-artists"],
-  spotify: ["spotify-photo", "spotify-this-is", "spotify-band"],
+  spotify: ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix"],
 };
 
 export function platformOf(mode: CoverMode): Platform {
@@ -19,7 +19,83 @@ export function styleDefaults(mode: CoverMode) {
     case "spotify-this-is": return { corner: "top-left", textColor: "#111111", bandColor: "#e0a988" } as const;
     case "spotify-band": return { corner: "top-left", textColor: "#111111", bandColor: "#5aa05a", spotifyTitlePosition: "bottom", spotifyAlign: "left" } as const;
     case "spotify-photo": return { corner: "top-left", textColor: "#ff4632", spotifyTitlePosition: "top", spotifyAlign: "right", treatment: "mono" } as const;
+    case "spotify-daily-mix": return { corner: "top-left", ...dailyMixDesignDefaults("classic") } as const;
   }
+}
+
+/** Daily Mix designs: Spotify's classic cover (a photo with a wavy edge on a solid color) and its new one (a full photo with color labels). */
+export type DailyMixDesign = "classic" | "new";
+
+/** Highest mix number: the new design shows it as two digits. */
+export const DAILY_MIX_MAX = 99;
+
+/** Mix number typed in the number field: a whole number clamped to 1–99, or null while the field holds anything else (empty, decimals, text). */
+export function parseMixNumber(value: string): number | null {
+  const trimmed = value.trim();
+  if (!/^-?\d+$/.test(trimmed)) return null;
+  return Math.min(DAILY_MIX_MAX, Math.max(1, Number(trimmed)));
+}
+
+/** Settings each Daily Mix design applies when chosen, including its title size. `bandColor` is the classic background, or the new design's label and logo color. */
+export function dailyMixDesignDefaults(design: DailyMixDesign) {
+  return design === "classic"
+    ? { dailyMixDesign: "classic", textColor: "#111111", bandColor: "#f06e94", treatment: "original", dailyMixFontSize: 120 } as const
+    : { dailyMixDesign: "new", textColor: "#111111", bandColor: "#1ed7f0", treatment: "mono", dailyMixFontSize: 112 } as const;
+}
+
+/** Default size of the new Daily Mix number label's digits, in 1200px cover pixels. */
+export const DAILY_MIX_NUMBER_SIZE = 190;
+
+/** Classic Daily Mix title box: its bottom edge stays put at any size, and it grows upward to hold two lines at the chosen size. */
+export function dailyMixTitleBox(fontSize: number) {
+  const height = Math.max(250, Math.ceil(fontSize * 1.02 * 2));
+  return { x: 128, y: 1102 - height, width: 1200 - 128 * 2, height };
+}
+
+/** Classic Daily Mix heading: the title (with its line breaks) followed by the mix number on its last line, or the title alone when the number is hidden (null). */
+export function dailyMixHeading(title: string, number: number | null) {
+  return number === null ? title.trim() : `${title.trim()} ${number}`.trim();
+}
+
+/** New Daily Mix number label: always two digits, like "01". */
+export function dailyMixNumberLabel(number: number) {
+  return String(number).padStart(2, "0");
+}
+
+/** Classic Daily Mix photo window on the 1200px cover, fitted to points traced from a Spotify Daily Mix cover with six smooth curves
+ *  that meet without kinks (horizontal at the crest, the trough, and the top dips). The fit keeps every bend gentle (no radius under
+ *  about 200px) and lets bends ease into each other where curves meet, and its top-left corner opens up to keep as much room around
+ *  the logo as the logo keeps from the cover's edges. The color runs along
+ *  the top, dipping over the middle and leaving the top-right corner to the photo, and curves down the left side around the logo;
+ *  the bottom edge is a wave cresting left of center and dipping toward the bottom-right, above the title. */
+export const DAILY_MIX_WAVE = "M873 0L1200 0L1200 973C1147 989 1096 1011 1032 1011C799 1011 678 677 386 677C179 677 132 816 0 851L0 621C11 328 184 71 368 71C442 71 460 106 595 106C798 106 829 41 873 0Z";
+
+/** Default opacity (%) of the classic color outside the window: nearly opaque, so the photo still shows faintly through it, like Spotify's covers. */
+export const DAILY_MIX_TINT_OPACITY = 88;
+
+type LabelText = { width: number; ascent: number; font: number };
+type Label = { x: number; y: number; width: number; height: number; textX: number; baseline: number };
+
+/** New Daily Mix labels: one title box per title line at the bottom-left, stacked with the last line at the bottom, and the number box
+ *  (none when the number is hidden) at the bottom-right, sharing the bottom edge. Each box hugs its text (measured width and ascent above the baseline), with padding
+ *  relative to its font size; title boxes share the tallest line's ascent so they are all the same height. */
+export function dailyMixLabels(size: number, margin: number, titles: LabelText[], number: LabelText | null): { titles: Label[]; number: Label | null } {
+  const box = (text: LabelText, right: boolean, bottom: number): Label => {
+    const padX = text.font * .16, padTop = text.font * .2, padBottom = text.font * .22;
+    const width = text.width + padX * 2, height = text.ascent + padTop + padBottom;
+    const x = right ? size - margin - width : margin;
+    const y = bottom - height;
+    return { x, y, width, height, textX: x + padX, baseline: y + padTop + text.ascent };
+  };
+  const ascent = Math.max(0, ...titles.map(line => line.ascent));
+  const stacked: Label[] = [];
+  let bottom = size - margin;
+  for (const line of [...titles].reverse()) {
+    const label = box({ ...line, ascent }, false, bottom);
+    stacked.unshift(label);
+    bottom = label.y;
+  }
+  return { titles: stacked, number: number ? box(number, true, size - margin) : null };
 }
 
 type FitOptions = { size: number; minSize: number; maxWidth: number; maxHeight: number; maxLines: number; lineHeight: number };
@@ -84,9 +160,15 @@ export function classicTitleYMax(titleSize: number, subtitleSize: number, gap: n
   return Math.max(15, Math.floor((900 - titleHeight - subtitleSize - gap) / 12));
 }
 
-/** Title font a style actually uses: This Is always uses the standard face; other Spotify styles use the chosen font. */
+/** Title fonts a Spotify style offers: Daily Mix has no condensed font; the others offer all three. */
+export function spotifyFonts(mode: CoverMode): readonly SpotifyFont[] {
+  return mode === "spotify-daily-mix" ? ["standard", "wide"] : ["standard", "wide", "condensed"];
+}
+
+/** Title font a style actually uses: This Is always uses the standard face; a font the style does not offer falls back to standard;
+ *  other Spotify styles use the chosen font. */
 export function spotifyFontFor(mode: CoverMode, font: SpotifyFont): SpotifyFont {
-  return mode === "spotify-this-is" ? "standard" : font;
+  return mode === "spotify-this-is" || !spotifyFonts(mode).includes(font) ? "standard" : font;
 }
 
 /** Canvas font weight and family for Spotify titles: SF Pro Bold, the wide brutalist Archivo Expanded Black, or the tall Archivo Condensed Bold. */
@@ -94,6 +176,12 @@ export function spotifyFace(font: SpotifyFont) {
   if (font === "wide") return { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" };
   if (font === "condensed") return { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" };
   return { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" };
+}
+
+/** New Daily Mix number face: with the standard font, Unbounded Regular, whose wide round digits match Spotify's number labels;
+ *  otherwise the title's own face. */
+export function dailyMixNumberFace(font: SpotifyFont) {
+  return font === "standard" ? { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" } : spotifyFace(font);
 }
 
 /** Fits a title plus an optional one-line subtitle at its requested size; the title shrinks only to make room for the subtitle.
@@ -156,13 +244,17 @@ export function thisIsTitleInk(accent: string) {
   return ["#000000", "#111111"].includes(accent.toLowerCase()) ? "#ffffff" : THIS_IS_INK;
 }
 
-/** Logo color: always black in This Is; Band can match the band color; everything else follows the text color. */
-export function logoColor(mode: CoverMode, textColor: string, bandColor: string, matchBand: boolean) {
+/** Logo color: always black in This Is; Band can match the band color; the new Daily Mix uses its label color; everything else follows the text color. */
+export function logoColor(mode: CoverMode, textColor: string, bandColor: string, matchBand: boolean, dailyMixDesign?: DailyMixDesign) {
   if (mode === "spotify-this-is") return THIS_IS_INK;
+  if (mode === "spotify-daily-mix" && dailyMixDesign === "new") return bandColor;
   return mode === "spotify-band" && matchBand ? bandColor : textColor;
 }
 
 export type Corner = "top-left" | "top-right" | "bottom-left" | "bottom-right";
+
+/** Spotify logo on the 1200px cover: its diameter and its distance from the cover's edges. */
+export const SPOTIFY_LOGO = { size: 104, pad: 48 } as const;
 type Rect = { x: number; y: number; width: number; height: number };
 
 /** Top-left position of an item placed in a corner of an area, inset by padding. */
@@ -181,9 +273,9 @@ export function bandLogoArea(size: number, band: number, position: "top" | "bott
     : { x: 0, y: 0, width: size, height: size };
 }
 
-/** Logo corner a style actually uses: This Is and Band pin their logo to the top-left, Essentials and Similar Artist Radio pin it to the top-right, other styles use the chosen corner. */
+/** Logo corner a style actually uses: This Is, Band, and Daily Mix pin their logo to the top-left, Essentials and Similar Artist Radio pin it to the top-right, other styles use the chosen corner. */
 export function logoCornerFor(mode: CoverMode, corner: Corner): Corner {
-  if (mode === "spotify-this-is" || mode === "spotify-band") return "top-left";
+  if (mode === "spotify-this-is" || mode === "spotify-band" || mode === "spotify-daily-mix") return "top-left";
   if (mode === "essentials" || mode === "similar-artists") return "top-right";
   return corner;
 }
@@ -213,9 +305,9 @@ export function bandTitleBox(size: number, band: number, position: "top" | "bott
 
 type Treatment = { treatment: "original" | "mono" | "duotone"; tint: string; brightness: number; contrast: number };
 
-/** Photo treatment a style starts with: its own default treatment, the default tint, and neutral tone. */
-export function treatmentDefaults(mode: CoverMode): Treatment {
-  const style = styleDefaults(mode);
+/** Photo treatment a style starts with: its own default treatment (Daily Mix: its design's), the default tint, and neutral tone. */
+export function treatmentDefaults(mode: CoverMode, dailyMixDesign?: DailyMixDesign): Treatment {
+  const style = mode === "spotify-daily-mix" && dailyMixDesign ? dailyMixDesignDefaults(dailyMixDesign) : styleDefaults(mode);
   return { treatment: ("treatment" in style && style.treatment) || "original", tint: "#e8e8ed", brightness: 0, contrast: 0 };
 }
 
