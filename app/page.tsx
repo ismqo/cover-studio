@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
 import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
+import { BrandMark } from "@/components/brand-mark";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DragToggle, DraggableSegments } from "@/components/drag-switch";
 import { SmoothRange } from "@/components/smooth-range";
@@ -347,7 +348,7 @@ export default function Home() {
   <div className="app-shell">
     <header className="app-header">
       <nav className="editor-nav liquid-nav" aria-label={t.nav.main}>
-      <a href="/" className="brand" aria-label={t.nav.home}>Cover<span className="studio-label">STUDIO</span></a>
+      <a href="/" className="brand" aria-label={t.nav.home}><BrandMark className="brand-mark"/>Cover<span className="studio-label">STUDIO</span></a>
       <div className="editor-nav-actions">
         <NavMenu />
       </div>

@@ -957,6 +957,11 @@ html body .app-shell.app-shell :is(.preview-panel,.controls){
 .app-shell .editor-nav.editor-nav{height:64px}
 html[data-theme="dark"] .app-shell .editor-nav .brand{color:#fff}
 html[data-theme="dark"] .app-shell .editor-nav .studio-label{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.35)}
+/* The site name uses the wide cover font; the STUDIO badge keeps the interface font. */
+.app-shell .editor-nav .brand{font-family:CoverFontWide,CoverFontBold,sans-serif;font-weight:900;font-size:20px;letter-spacing:0}
+.app-shell .editor-nav .brand .studio-label{font-family:CoverFont,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+.app-shell .editor-nav .brand-mark{flex:none;width:32px;height:32px;overflow:visible}
+@media(max-width:650px){.app-shell .editor-nav .brand{font-size:18px}.app-shell .editor-nav .brand-mark{width:28px;height:28px}}
 @media(max-width:650px){.app-shell .app-header.app-header{height:74px;padding-top:12px;padding-bottom:4px}.app-shell .editor-nav.editor-nav{height:58px}}
 
 /* The options menu uses the same glass as the panels; its links and switches use the control fill.

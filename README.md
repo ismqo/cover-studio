@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/assets/brand/cover-studio-logo.svg" alt="Cover Studio logo" width="160" height="160">
+</p>
+
 # Cover Studio
 
 A Next.js editor for Apple Music and Spotify playlist covers. It ships with 40 background gradients, SF Pro, Archivo, and Unbounded fonts, and Apple Music and Spotify vector logos. Everything runs in the browser.
