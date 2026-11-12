@@ -771,10 +771,11 @@ html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .loc
 }
 
 /* Toggle handles share the slider thumb's pill shape and pressed feedback. */
+/* --drag-travel = track width - thumb width - 2 * inset. */
 .app-shell .toggle-row input{width:44px;height:22px;--drag-travel:18px}
 .app-shell .toggle-row input::before{width:20px;height:12px;top:5px;left:3px;border-radius:999px;box-shadow:var(--slider-shadow)}
-.app-shell .toggle-row input:checked::before{transform:translateX(18px)}
-.app-shell .toggle-row input[data-dragging="true"]::before{transform:translateX(calc(var(--drag-progress) * 18px)) scaleX(var(--drag-stretch,1))}
+.app-shell .toggle-row input:checked::before{transform:translateX(var(--drag-travel))}
+.app-shell .toggle-row input[data-dragging="true"]::before{transform:translateX(calc(var(--drag-progress) * var(--drag-travel))) scaleX(var(--drag-stretch,1))}
 .app-shell .toggle-row input:active::before,
 .app-shell .toggle-row input[data-dragging="true"]:active::before,
 html[data-theme="dark"] .app-shell .toggle-row input:active::before,
@@ -1002,6 +1003,9 @@ html body .app-shell.app-shell .controls::-webkit-scrollbar-thumb:hover{backgrou
    Inside the card every setting is a row (icon + label on the left, control on the right), split by hairlines. */
 .app-shell{--row-line:rgba(29,29,31,.1)}
 html[data-theme="dark"] .app-shell{--row-line:rgba(255,255,255,.1)}
+/* Every row shares one padding (--row-pad-*), and text, number and select fields take the segmented switches'
+   height (--control-h), so labelled rows line up at the same height. */
+html body .app-shell.app-shell .controls{--row-pad-y:12px;--row-pad-x:16px;--control-h:38px;--row-min-h:calc(var(--control-h) + 2 * var(--row-pad-y))}
 html body .app-shell.app-shell .controls{--field-gap:0px;display:flex;flex-direction:column;gap:28px;padding:16px 14px 24px}
 html body .app-shell.app-shell .controls .control-section{flex:none;padding:0;border:0;background:none;box-shadow:none}
 html body .app-shell.app-shell .controls .control-section .section-heading{display:flex;align-items:center;justify-content:flex-start;margin:0 0 6px;padding:0 8px}
@@ -1015,23 +1019,23 @@ html body .app-shell.app-shell .controls .section-body{
 }
 /* Rows: every direct child is a row; nested groups are transparent and split their own rows. */
 html body .app-shell.app-shell .controls .section-body > *,
-html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0;padding:12px 16px}
+html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0;padding:var(--row-pad-y) var(--row-pad-x)}
 html body .app-shell.app-shell .controls .section-body > :not(.hidden-input) ~ *,
 html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > * + *{border-top:1px solid var(--row-line)}
 html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls){
   display:flex;flex-direction:column;gap:0;padding:0;border-radius:0;border-left:0;border-right:0;border-bottom:0;background:none;box-shadow:none;
 }
 /* Controls that draw their own surface (switch track, drop zone) sit inset as rows, keeping their own border. */
-html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone){margin:12px 16px;width:auto;align-self:stretch}
+html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone){margin:var(--row-pad-y) var(--row-pad-x);width:auto;align-self:stretch}
 html body .app-shell.app-shell .controls .section-body > .segmented{padding:3px}
 html body .app-shell.app-shell .controls .section-body > .upload-zone{padding:18px 12px;border:1px solid var(--glass-line)}
 html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone) + *{border-top:0}
 /* Labelled rows: label column, then the control. */
 html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control,.range-label){
-  display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr);align-items:center;gap:12px;min-height:52px;
+  display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr);align-items:center;gap:12px;min-height:var(--row-min-h);
 }
 html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(110px,38%) minmax(0,1fr) 44px}
-html body .app-shell.app-shell .controls .section-body .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
+html body .app-shell.app-shell .controls .section-body .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:var(--row-min-h)}
 html body .app-shell.app-shell .controls .section-body .row-label{
   display:flex;align-items:center;gap:9px;min-width:0;order:0;font-size:13px;font-weight:500;color:var(--text);
 }
@@ -1042,12 +1046,14 @@ html body .app-shell.app-shell .controls .section-body .range-label > .range-val
   display:block;order:3;text-align:right;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--text);opacity:.7;
 }
 /* Rows with a reset button keep it at the far right. */
-html body .app-shell.app-shell .controls .section-body .photo-frame-controls > .field-label{display:flex;align-items:center;justify-content:space-between;min-height:52px}
+html body .app-shell.app-shell .controls .section-body .photo-frame-controls > .field-label{display:flex;align-items:center;justify-content:space-between;min-height:var(--row-min-h)}
 html body .app-shell.app-shell .controls .section-body .photo-treatment-label{display:flex;align-items:center;justify-content:space-between;gap:6px}
 /* Compact controls, like inspector value fields. */
-html body .app-shell.app-shell .controls .section-body .field :is(input,textarea,select){padding:7px 10px;font-size:13px;border-radius:8px}
-html body .app-shell.app-shell .controls .section-body .segmented{padding:3px}
-html body .app-shell.app-shell .controls .section-body .segmented > button{min-height:28px;font-size:12px}
+html body .app-shell.app-shell .controls .section-body .field :is(input,textarea,select){padding:0 10px;font-size:13px;border-radius:8px}
+html body .app-shell.app-shell .controls .section-body .field :is(input,select){height:var(--control-h)}
+html body .app-shell.app-shell .controls .section-body .field textarea{min-height:var(--control-h);padding-top:calc((var(--control-h) - 2px - 1.3em) / 2);padding-bottom:calc((var(--control-h) - 2px - 1.3em) / 2)}
+html body .app-shell.app-shell .controls .section-body .segmented{height:var(--control-h);padding:3px}
+html body .app-shell.app-shell .controls .section-body .segmented > button{min-height:0;height:100%;padding-top:0;padding-bottom:0;font-size:12px}
 html body .app-shell.app-shell .segmented > button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
 html body .app-shell.app-shell .segmented > button svg{flex:none}
 html body .app-shell.app-shell .controls .section-body .color-swatches{justify-content:end;padding:2px}
@@ -1110,11 +1116,11 @@ html body .app-shell.app-shell .toggle-row input::before{
     transform-origin .42s cubic-bezier(.32,1.2,.5,1),box-shadow .2s ease;
 }
 /* The press growth is anchored at the track end the thumb rests against, so the enlarged thumb stays inside
-   the track. The origin is in the thumb's own box, so it adds the 18px travel: 100% + 18px is the track's right end. */
-html body .app-shell.app-shell .toggle-row input:checked::before{transform-origin:calc(100% + 18px) 50%}
+   the track. The origin is in the thumb's own box, so it adds the travel: 100% + travel is the track's right end. */
+html body .app-shell.app-shell .toggle-row input:checked::before{transform-origin:calc(100% + var(--drag-travel)) 50%}
 /* While dragging, the thumb follows the pointer directly; only the press growth stays animated. */
 html body .app-shell.app-shell .toggle-row input[data-dragging="true"]::before{
-  transform-origin:calc(var(--drag-progress) * (100% + 18px)) 50%;
+  transform-origin:calc(var(--drag-progress) * (100% + var(--drag-travel))) 50%;
   transition:scale .28s cubic-bezier(.32,1.35,.5,1);
 }
 @media(prefers-reduced-motion:reduce){
@@ -1301,8 +1307,9 @@ html[data-theme="dark"] body .app-shell.app-shell{--preview-grid-line:rgba(255,2
 @media(max-width:650px){
   html body .app-shell.app-shell .preview-download{display:none}
   html body .app-shell.app-shell .mobile-preview-archive{left:18px;right:auto}
-  html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control){grid-template-columns:minmax(0,1fr);align-items:stretch;gap:12px;padding:16px 18px}
-  html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(0,1fr) auto;row-gap:12px;padding:16px 18px}
+  html body .app-shell.app-shell .controls{--row-pad-y:16px;--row-pad-x:18px}
+  html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control){grid-template-columns:minmax(0,1fr);align-items:stretch;gap:12px}
+  html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(0,1fr) auto;row-gap:12px}
   html body .app-shell.app-shell .controls .section-body .range-label > .row-label{grid-row:1;grid-column:1}
   html body .app-shell.app-shell .controls .section-body .range-label > .range-value{grid-row:1;grid-column:2}
   html body .app-shell.app-shell .controls .section-body .range-label > :not(.row-label,.range-value){grid-row:2;grid-column:1 / -1}
