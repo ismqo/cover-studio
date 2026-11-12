@@ -1,6 +1,6 @@
 import { appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -15,12 +15,14 @@ export type CoverSettings = {
   classicTitleWeight: "normal" | "bold"; classicSubtitleWeight: "normal" | "bold";
   showLogo: boolean; corner: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   backgroundType: BackgroundType; spotifyBackgroundType: BackgroundType;
-  gradient: number; customColor: string; colorShadow: boolean;
+  gradient: number; customColor: string; colorShadow: boolean; gradientType: GradientType;
   textColor: string; bandColor: string; bandHeight: number; essentialsFontSize: number;
   treatment: "original" | "mono" | "duotone"; tint: string;
   brightness: number; contrast: number;
   photoMargin: number; photoTopMargin: boolean; photoRadius: number;
   zoom: number; offsetX: number; offsetY: number;
+  /** Similar Artist Radio: how many artist bubbles, and the crop and treatment of the second and third artists (the main artist uses the fields above). */
+  artistCount: ArtistCount; artistLooks: ArtistLook[];
 };
 
 export const defaults: CoverSettings = {
@@ -29,10 +31,11 @@ export const defaults: CoverSettings = {
   classicTitleWeight: "bold", classicSubtitleWeight: "normal",
   essentialsTitle: "Essentials", spotifyTitle: "Title", spotifyKicker: "THIS IS", spotifyFontSize: 150,
   spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, spotifySubtitleGap: 16, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
-  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8", colorShadow: true,
+  backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8", colorShadow: true, gradientType: "linear",
   textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136,
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
+  artistCount: 3, artistLooks: [DEFAULT_ARTIST_LOOK, DEFAULT_ARTIST_LOOK],
 };
 
 const images = new Map<string, Promise<HTMLImageElement>>();
@@ -48,13 +51,18 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
 export function releaseImage(src: string) { images.delete(src); URL.revokeObjectURL(src); }
 
 function text(ctx: CanvasRenderingContext2D, value: string, x: number, y: number, size: number, weight: number, width: number) {
+  textLines(ctx, [value], x, y, size, weight, width);
+}
+
+/** Draws lines one below the other at the requested pitch, shrinking them all together until the widest fits. */
+function textLines(ctx: CanvasRenderingContext2D, lines: string[], x: number, y: number, size: number, weight: number, width: number) {
   let fitted = size;
   ctx.font = `${weight} ${fitted}px CoverFont, Arial, sans-serif`;
-  while (ctx.measureText(value).width > width && fitted > 5) {
+  while (lines.some(line => ctx.measureText(line).width > width) && fitted > 5) {
     fitted -= 1;
     ctx.font = `${weight} ${fitted}px CoverFont, Arial, sans-serif`;
   }
-  ctx.fillText(value, x, y);
+  lines.forEach((line, i) => ctx.fillText(line, x, y + i * size * CLASSIC_LINE_HEIGHT));
 }
 
 function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
@@ -81,6 +89,7 @@ function drawPhoto(
   photoWidth: number,
   photoHeight: number,
   photoRadius: number,
+  outline: () => void = () => roundedRect(ctx, photoX, photoY, photoWidth, photoHeight, photoRadius),
 ) {
   if (uploaded) {
     const photoCanvas = document.createElement("canvas");
@@ -116,7 +125,7 @@ function drawPhoto(
       photoCtx.putImageData(pixels, 0, 0);
     }
     ctx.save();
-    roundedRect(ctx, photoX, photoY, photoWidth, photoHeight, photoRadius);
+    outline();
     ctx.clip();
     ctx.drawImage(photoCanvas, photoX, photoY);
     ctx.restore();
@@ -125,7 +134,7 @@ function drawPhoto(
     placeholder.addColorStop(0, "#777777");
     placeholder.addColorStop(1, "#262629");
     ctx.save();
-    roundedRect(ctx, photoX, photoY, photoWidth, photoHeight, photoRadius);
+    outline();
     ctx.clip();
     ctx.fillStyle = placeholder;
     ctx.fillRect(photoX, photoY, photoWidth, photoHeight);
@@ -133,6 +142,31 @@ function drawPhoto(
   }
 }
 
+
+/** Space between a small artist bubble and the main bubble it overlaps, in 1200px cover pixels. */
+const ARTIST_BUBBLE_GAP = 14;
+
+/** Similar Artist Radio bubbles: the main artist, cut away around the smaller artists so the background shows between them,
+ *  then the smaller artists. Each artist has its own crop and treatment; bubbles have no shadow or border. */
+function renderArtists(ctx: CanvasRenderingContext2D, s: CoverSettings, main: HTMLImageElement | null, others: (HTMLImageElement | null)[]) {
+  const circle = (target: CanvasRenderingContext2D, c: Circle) => { target.beginPath(); target.arc(c.x, c.y, c.r, 0, Math.PI * 2); target.closePath(); };
+  const drawBubble = (target: CanvasRenderingContext2D, bubble: Circle, i: number) => {
+    const photo = i === 0 ? main : others[i - 1] ?? null;
+    const look = i === 0 ? s : { ...s, ...artistLookAt(s.artistLooks, i - 1) };
+    drawPhoto(target, photo, look, bubble.x - bubble.r, bubble.y - bubble.r, bubble.r * 2, bubble.r * 2, 0, () => circle(target, bubble));
+  };
+  // The main bubble is drawn on its own layer so the gaps around the smaller bubbles erase only it, not the background.
+  const [mainBubble, ...smallBubbles] = artistBubbles(s.artistCount);
+  const layer = document.createElement("canvas");
+  layer.width = ctx.canvas.width;
+  layer.height = ctx.canvas.height;
+  const main2d = layer.getContext("2d")!;
+  drawBubble(main2d, mainBubble, 0);
+  main2d.globalCompositeOperation = "destination-out";
+  for (const bubble of smallBubbles) { circle(main2d, { ...bubble, r: bubble.r + ARTIST_BUBBLE_GAP }); main2d.fill(); }
+  ctx.drawImage(layer, 0, 0);
+  smallBubbles.forEach((bubble, i) => drawBubble(ctx, bubble, i + 1));
+}
 
 /** Draws the official Spotify icon; the even-odd fill leaves the sound waves see-through. */
 function drawSpotifyLogo(ctx: CanvasRenderingContext2D, x: number, y: number, diameter: number, color: string) {
@@ -182,7 +216,7 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     // The "THIS IS" heading always uses the wide face, like Spotify's own covers; the font switch only affects the name.
     spotifyTitle(ctx, spotifyFace("wide"), s.spotifyKicker, { x: pad + reserve, y: 58, width: size - (pad + reserve) * 2, height: 178 }, s.spotifyKickerFontSize, "center", "center", 1);
     ctx.fillStyle = thisIsTitleInk(s.bandColor);
-    spotifyTitle(ctx, face, s.spotifyTitle, { x: pad, y: 995, width: size - pad * 2, height: 170 }, s.spotifyFontSize, "center", "center", 1);
+    spotifyTitle(ctx, face, s.spotifyTitle, { x: pad, y: 995, width: size - pad * 2, height: 170 }, s.spotifyFontSize, "center", "center", Math.min(2, titleLines(s.spotifyTitle).length));
     return;
   }
   const align = s.spotifyAlign;
@@ -208,8 +242,35 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
   spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
 }
 
+/** Color background: the chosen color shaded darker and lighter in the chosen gradient shape (flat when the shadow is off). */
+function fillColorBackground(ctx: CanvasRenderingContext2D, color: string, shadow: boolean, type: GradientType, size: number) {
+  const stops = colorGradientStops(type, colorShade(color, shadow));
+  if (type === "diamond") {
+    // Canvas has no diamond gradient, so each pixel is colored from its diamond position.
+    const rgb = stops.map(([offset, hex]) => [offset, ...[1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))]);
+    const pixels = ctx.createImageData(size, size);
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const t = Math.min(1, diamondPosition(x + .5, y + .5, size));
+      const next = Math.max(1, rgb.findIndex(([offset]) => offset >= t));
+      const [from, to] = [rgb[next - 1], rgb[next]];
+      const mix = (t - from[0]) / (to[0] - from[0] || 1);
+      const i = (y * size + x) * 4;
+      for (let c = 1; c < 4; c++) pixels.data[i + c - 1] = Math.round(from[c] + (to[c] - from[c]) * mix);
+      pixels.data[i + 3] = 255;
+    }
+    ctx.putImageData(pixels, 0, 0);
+    return;
+  }
+  const fill = type === "radial" ? ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size * Math.SQRT1_2)
+    : type === "conic" ? ctx.createConicGradient(-Math.PI / 2, size / 2, size / 2)
+    : ctx.createLinearGradient(0, size, size, 0);
+  for (const [offset, hex] of stops) fill.addColorStop(offset, hex);
+  ctx.fillStyle = fill;
+  ctx.fillRect(0, 0, size, size);
+}
+
 // Preview and export share this renderer, including crop and pixel-level color treatment.
-export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, photo: string | null) {
+export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, photo: string | null, artistPhotos: readonly (string | null)[] = []) {
   const spotifyAlign = spotifyAlignFor(s.mode, s.spotifyTitlePosition, s.spotifyAlign);
   s = { ...s, spotifyAlign, spotifyFont: spotifyFontFor(s.mode, s.spotifyFont), corner: allowedLogoCorner(logoCornerFor(s.mode, s.corner), titleCorner(s.mode, s.spotifyTitlePosition, spotifyAlign)) };
   const size = 1200;
@@ -217,29 +278,29 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   const backgroundType = activeBackground(s.mode, s.backgroundType, s.spotifyBackgroundType);
   const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
+  const artists = s.mode === "similar-artists" ? await Promise.all(artistPhotos.slice(0, s.artistCount - 1).map(src => src ? loadImage(src) : null)) : [];
   await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   ctx.textBaseline = "top";
   if (backgroundType === "custom") {
-    const shade = colorShade(s.customColor, s.colorShadow);
-    const fill = ctx.createLinearGradient(0, size, size, 0);
-    fill.addColorStop(0, shade.dark);
-    fill.addColorStop(.5, shade.base);
-    fill.addColorStop(1, shade.light);
-    ctx.fillStyle = fill;
+    fillColorBackground(ctx, s.customColor, s.colorShadow, s.gradientType, size);
   } else {
     ctx.fillStyle = s.customColor;
+    ctx.fillRect(0, 0, size, size);
   }
-  ctx.fillRect(0, 0, size, size);
   if (background) ctx.drawImage(background, 0, 0, size, size);
   const band = Math.round(size * s.bandHeight / 100);
   if (spotify) {
     renderSpotify(ctx, s, uploaded, size);
+  } else if (s.mode === "similar-artists") {
+    renderArtists(ctx, s, uploaded, artists);
   } else if (s.mode === "essentials") {
+    const title = titleLines(s.essentialsTitle);
+    const block = essentialsTitleBlock(band, s.essentialsFontSize, title.length);
     const inset = Math.round(size * s.photoMargin / 100);
     const photoX = inset;
-    const photoY = band + (s.photoTopMargin ? inset : 0);
+    const photoY = block.band + (s.photoTopMargin ? inset : 0);
     const photoWidth = size - inset * 2;
     const photoHeight = size - photoY - inset;
     const photoRadius = Math.round(size * s.photoRadius / 100);
@@ -247,9 +308,9 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     ctx.fillRect(0, 0, size, size);
     drawPhoto(ctx, uploaded, s, photoX, photoY, photoWidth, photoHeight, photoRadius);
     ctx.fillStyle = s.bandColor;
-    ctx.fillRect(0, 0, size, band);
+    ctx.fillRect(0, 0, size, block.band);
     ctx.fillStyle = s.textColor;
-    text(ctx, s.essentialsTitle, 48, Math.max(28, band - s.essentialsFontSize - 20), s.essentialsFontSize, 600, 1104);
+    textLines(ctx, title, 48, block.y, s.essentialsFontSize, 600, 1104);
   } else {
     if (s.backgroundType === "picture") {
       drawPhoto(ctx, uploaded, s, 0, 0, size, size, 0);
@@ -257,10 +318,12 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     ctx.fillStyle = s.textColor;
     ctx.textAlign = s.classicAlign;
     const classicX = s.classicAlign === "center" ? size / 2 : 100;
-    const maxTitleY = classicTitleYMax(s.classicFontSize, s.classicSubtitleFontSize, s.classicSubtitleGap);
+    const title = titleLines(s.title);
+    const maxTitleY = classicTitleYMax(s.classicFontSize, s.classicSubtitleFontSize, s.classicSubtitleGap, title.length);
     const titleY = Math.round(size * Math.min(s.classicTitleY, maxTitleY) / 100);
-    text(ctx, s.title, classicX, titleY, s.classicFontSize, s.classicTitleWeight === "bold" ? 600 : 300, 1000);
-    text(ctx, s.subtitle, classicX, titleY + s.classicFontSize + s.classicSubtitleGap, s.classicSubtitleFontSize, s.classicSubtitleWeight === "bold" ? 600 : 300, 1000);
+    const titleHeight = s.classicFontSize + (title.length - 1) * s.classicFontSize * CLASSIC_LINE_HEIGHT;
+    textLines(ctx, title, classicX, titleY, s.classicFontSize, s.classicTitleWeight === "bold" ? 600 : 300, 1000);
+    text(ctx, s.subtitle, classicX, titleY + titleHeight + s.classicSubtitleGap, s.classicSubtitleFontSize, s.classicSubtitleWeight === "bold" ? 600 : 300, 1000);
     ctx.textAlign = "left";
     ctx.globalAlpha = .65;
     text(ctx, s.footer, 100, s.showLogo && s.corner.startsWith("bottom") ? 954 : 1060, 60, 400, 1000);
@@ -279,7 +342,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     const logo = appleLogoShape(s.appleLogo);
     const w = s.mode === "essentials" ? 260 : 240;
     const h = w * logo.height / logo.width;
-    const padding = s.mode === "essentials" ? 48 : 100;
+    const padding = s.mode === "essentials" ? 48 : s.mode === "similar-artists" ? 64 : 100;
     const x = logoCorner.endsWith("right") ? size - padding - w : padding;
     const y = logoCorner.startsWith("bottom") ? size - 48 - h : 48;
     ctx.save(); ctx.translate(x, y); ctx.scale(w / logo.width, h / logo.height);

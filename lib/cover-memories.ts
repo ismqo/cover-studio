@@ -3,13 +3,15 @@ import type { CoverSettings } from "./render-cover";
 /** How many saved cover versions the editor keeps. */
 export const MAX_MEMORIES = 3;
 
-/** One saved cover version: its settings, its photo (if any), and a small preview image. */
+/** One saved cover version: its settings, its photos (if any), and a small preview image. */
 export type CoverMemory = {
   id: string;
   savedAt: number;
   settings: CoverSettings;
   photo: Blob | null;
   photoName: string;
+  /** Similar Artist Radio's second and third artists; absent in versions saved before that style existed. */
+  artistPhotos?: { photo: Blob | null; name: string }[];
   thumbnail: Blob;
 };
 
