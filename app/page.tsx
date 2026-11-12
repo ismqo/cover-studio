@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
-import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Check, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
+import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Blend, Bold, Brush, Contrast, Droplet, Droplets, Eye, Frame, Heading, Image as ImageIcon, ImagePlus, Layers, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Squircle, Sun, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { BrandMark } from "@/components/brand-mark";
 import { ConfirmDialog } from "@/components/confirm-dialog";
@@ -475,7 +475,7 @@ export default function Home() {
               <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/>
               <label className="toggle-row"><RowLabel icon={Contrast}>{copy.colorShadow}</RowLabel><DragToggle checked={settings.colorShadow} onChange={value => update("colorShadow", value)}/></label>
               {settings.colorShadow && <label className="field select-field"><RowLabel icon={Blend}>{copy.gradientType}</RowLabel><span className="select-wrap"><select value={settings.gradientType} onChange={e => update("gradientType", e.target.value as typeof settings.gradientType)}>{GRADIENT_TYPES.map(type => <option key={type} value={type}>{copy.gradientTypes[type]}</option>)}</select></span></label>}
-            </> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/>{selected && <Check size={15}/>}</button>; })}</div>}
+            </> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/></button>; })}</div>}
           </Section>}
 
           {/* 6. Logo. */}
