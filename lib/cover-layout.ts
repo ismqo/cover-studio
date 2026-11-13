@@ -221,9 +221,6 @@ export function spotifyFontFor(mode: CoverMode, font: SpotifyFont): SpotifyFont 
 /** This Is heading face: the heavy Archivo Expanded Black, kept apart from the wide title font. */
 export const THIS_IS_KICKER_FACE = { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" } as const;
 
-/** This Is title face: SF Pro Semibold, lighter than the bold titles of the other Spotify styles. */
-export const THIS_IS_TITLE_FACE = { weight: 600, family: "CoverFont, Arial, sans-serif" } as const;
-
 export function spotifyFace(font: SpotifyFont) {
   if (font === "wide") return { weight: 700, family: "CoverFontSpotifyWide, CoverFontBold, Arial, sans-serif" };
   if (font === "condensed") return { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" };
