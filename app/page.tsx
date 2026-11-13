@@ -410,7 +410,7 @@ export default function Home() {
 
           {/* 2. Typography: how the text looks, in reading order. */}
           {!artists && !classicEssentials && <Section title={copy.typography}>
-            {spotify && !thisIs && !dailyMix && <SegmentField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, condensed: copy.fontCondensed }[font]] as const)} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
+            {spotify && !thisIs && !dailyMix && <SelectField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, black: copy.fontBlack, condensed: copy.fontCondensed }[font]] as const)} onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} defaultValue={defaults.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
             {dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="200" step="2" value={settings.dailyMixFontSize} defaultValue={dailyMixDesignDefaults(settings.dailyMixDesign).dailyMixFontSize} onChange={value => update("dailyMixFontSize", value)}/>}
             {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
@@ -542,8 +542,13 @@ function RangeField({ icon, label, value, defaultValue, unit, min, max, step = "
   return <label className="range-label"><RowLabel icon={icon}>{label}</RowLabel><span className="range-value">{value}{unit}</span><SmoothRange min={min} max={max} step={step} value={value} defaultValue={defaultValue} onValueChange={onChange}/></label>;
 }
 
-function SegmentField<T extends string | number | boolean>({ icon, label, value, options, onChange, className = "", optionClass }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string, LucideIcon?])[]; onChange: (value: T) => void; className?: string; optionClass?: (value: T) => string }) {
-  return <div className="inline-row"><div className="field-label"><RowLabel icon={icon}>{label}</RowLabel></div><DraggableSegments className={`segmented ${className}`}>{options.map(([option, text, Icon]) => <button key={String(option)} className={`${value === option ? "active" : ""} ${optionClass?.(option) ?? ""}`} aria-pressed={value === option} onClick={() => onChange(option)}>{Icon && <Icon size={14} aria-hidden="true"/>}{text}</button>)}</DraggableSegments></div>;
+/** Dropdown with a row label; `options` pairs each value with its label. */
+function SelectField<T extends string>({ icon, label, value, options, onChange }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string])[]; onChange: (value: T) => void }) {
+  return <label className="field select-field"><RowLabel icon={icon}>{label}</RowLabel><span className="select-wrap"><select value={value} onChange={e => onChange(e.target.value as T)}>{options.map(([option, text]) => <option key={option} value={option}>{text}</option>)}</select></span></label>;
+}
+
+function SegmentField<T extends string | number | boolean>({ icon, label, value, options, onChange, className = "" }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string, LucideIcon?])[]; onChange: (value: T) => void; className?: string }) {
+  return <div className="inline-row"><div className="field-label"><RowLabel icon={icon}>{label}</RowLabel></div><DraggableSegments className={`segmented ${className}`}>{options.map(([option, text, Icon]) => <button key={String(option)} className={value === option ? "active" : ""} aria-pressed={value === option} onClick={() => onChange(option)}>{Icon && <Icon size={14} aria-hidden="true"/>}{text}</button>)}</DraggableSegments></div>;
 }
 
 type ColorPreset = { label: string; hex: string };

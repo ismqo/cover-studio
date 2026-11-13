@@ -63,9 +63,10 @@ test("the This Is heading keeps the heavy Archivo Expanded Black, apart from the
   assert.deepEqual(THIS_IS_KICKER_FACE, { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" });
 });
 
-test("Spotify titles use the standard bold face unless the wide or condensed font is chosen", () => {
+test("Spotify titles use the standard bold face unless the wide, wide black, or condensed font is chosen", () => {
   assert.deepEqual(spotifyFace("standard"), { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" });
   assert.deepEqual(spotifyFace("wide"), { weight: 700, family: "CoverFontSpotifyWide, CoverFontBold, Arial, sans-serif" });
+  assert.deepEqual(spotifyFace("black"), { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" });
   assert.deepEqual(spotifyFace("condensed"), { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" });
 });
 
@@ -514,8 +515,10 @@ test("the classic Daily Mix wave is smooth: few curves, no kinks where they meet
 test("Daily Mix offers only the standard font; a wide or condensed choice from another style shows as standard", () => {
   assert.deepEqual(spotifyFonts("spotify-daily-mix"), ["standard"]);
   assert.equal(spotifyFontFor("spotify-daily-mix", "condensed"), "standard");
-  // Other Spotify styles keep all three fonts and the condensed choice.
-  assert.deepEqual(spotifyFonts("spotify-band"), ["standard", "wide", "condensed"]);
+  // Other Spotify styles keep all four fonts and the chosen one.
+  assert.deepEqual(spotifyFonts("spotify-band"), ["standard", "wide", "black", "condensed"]);
+  assert.equal(spotifyFontFor("spotify-band", "black"), "black");
+  assert.equal(spotifyFontFor("spotify-daily-mix", "black"), "standard");
   assert.equal(spotifyFontFor("spotify-band", "condensed"), "condensed");
 });
 

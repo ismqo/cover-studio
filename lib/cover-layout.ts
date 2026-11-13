@@ -197,7 +197,7 @@ export function bandPhotoRect(size: number, band: number, position: "top" | "bot
   return { x: inset, y, width: size - inset * 2, height };
 }
 
-export type SpotifyFont = "standard" | "wide" | "condensed";
+export type SpotifyFont = "standard" | "wide" | "black" | "condensed";
 
 /** Highest classic title position (% of the cover) that keeps the title (all its lines), gap, and subtitle above the footer; never below 15%. */
 export function classicTitleYMax(titleSize: number, subtitleSize: number, gap: number, titleLineCount = 1) {
@@ -205,9 +205,9 @@ export function classicTitleYMax(titleSize: number, subtitleSize: number, gap: n
   return Math.max(15, Math.floor((900 - titleHeight - subtitleSize - gap) / 12));
 }
 
-/** Title fonts a Spotify style offers: Daily Mix only the standard one; the others all three. */
+/** Title fonts a Spotify style offers: Daily Mix only the standard one; the others all four. */
 export function spotifyFonts(mode: CoverMode): readonly SpotifyFont[] {
-  return mode === "spotify-daily-mix" ? ["standard"] : ["standard", "wide", "condensed"];
+  return mode === "spotify-daily-mix" ? ["standard"] : ["standard", "wide", "black", "condensed"];
 }
 
 /** Title font a style actually uses: This Is always uses the standard face; a font the style does not offer falls back to standard;
@@ -216,13 +216,14 @@ export function spotifyFontFor(mode: CoverMode, font: SpotifyFont): SpotifyFont 
   return mode === "spotify-this-is" || !spotifyFonts(mode).includes(font) ? "standard" : font;
 }
 
-/** Canvas font weight and family for Spotify titles: SF Pro Bold, Anybody at 150% width (the closest free match for Spotify Mix Wide,
- *  which Spotify keeps exclusive), or the tall Archivo Condensed Bold. */
-/** This Is heading face: the heavy Archivo Expanded Black, kept apart from the wide title font. */
+/** This Is heading face: the heavy Archivo Expanded Black. */
 export const THIS_IS_KICKER_FACE = { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" } as const;
 
+/** Canvas font weight and family for Spotify titles: SF Pro Bold, Anybody at 150% width (the closest free match for Spotify Mix Wide,
+ *  which Spotify keeps exclusive), the heavy brutalist Archivo Expanded Black, or the tall Archivo Condensed Bold. */
 export function spotifyFace(font: SpotifyFont) {
   if (font === "wide") return { weight: 700, family: "CoverFontSpotifyWide, CoverFontBold, Arial, sans-serif" };
+  if (font === "black") return { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" };
   if (font === "condensed") return { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" };
   return { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" };
 }

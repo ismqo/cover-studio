@@ -3,7 +3,7 @@
 @font-face{font-family:CoverFont;src:url('/assets/fonts/SFProDisplay-Light.woff2') format('woff2');font-weight:100 300;font-display:swap}
 @font-face{font-family:CoverFontBold;src:url('/assets/fonts/SFProDisplay-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
 @font-face{font-family:CoverFontMono;src:url('/assets/fonts/SFMono-Heavy.woff2') format('woff2');font-weight:800;font-display:swap}
-/* Archivo Expanded Black (SIL OFL 1.1), bundled locally for the This Is heading and the editor brand. */
+/* Archivo Expanded Black (SIL OFL 1.1), bundled locally for the wide black Spotify title option, the This Is heading, and the editor brand. */
 @font-face{font-family:CoverFontWide;src:url('/assets/fonts/Archivo-ExpandedBlack-latin-ext.woff2') format('woff2');font-weight:900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:CoverFontWide;src:url('/assets/fonts/Archivo-ExpandedBlack-latin.woff2') format('woff2');font-weight:900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* Unbounded Regular (SIL OFL 1.1), bundled locally for the new Daily Mix number label; only the Latin subset, which covers its digits. */
@@ -849,8 +849,6 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .thumb-daily-mix{background:#f06e94;color:#111}
 .app-shell .thumb-daily-mix .thumb-wave{position:absolute;inset:0;width:100%;height:100%}
 .app-shell .thumb-daily-mix b{top:80%;left:10.667%;font-size:10cqw}
-.app-shell .font-options .font-wide{font-family:CoverFontSpotifyWide,CoverFontBold,sans-serif;font-weight:700}
-.app-shell .font-options .font-condensed{font-family:CoverFontCondensed,CoverFontBold,sans-serif;font-weight:700}
 
 /* Single-line controls: label on the left, field on the right. */
 .app-shell .controls{--label-col:minmax(96px,34%);--field-gap:16px;--section-gap:28px}
