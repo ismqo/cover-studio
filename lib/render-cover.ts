@@ -1,6 +1,6 @@
-import { appleLogoShape, type AppleLogoStyle } from "./apple-logo";
+import { APPLE_GLYPH_BOX, APPLE_GLYPH_PATH, appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, trackedWidth, type EssentialsDesign, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -17,6 +17,8 @@ export type CoverSettings = {
   backgroundType: BackgroundType; spotifyBackgroundType: BackgroundType;
   gradient: number; customColor: string; colorShadow: boolean; gradientType: GradientType;
   textColor: string; bandColor: string; bandHeight: number; essentialsFontSize: number;
+  /** Essentials: its design, and the classic design's optional subtitle under the title. */
+  essentialsDesign: EssentialsDesign; essentialsSubtitle: string;
   treatment: "original" | "mono" | "duotone"; tint: string;
   brightness: number; contrast: number;
   photoMargin: number; photoTopMargin: boolean; photoRadius: number;
@@ -34,7 +36,7 @@ export const defaults: CoverSettings = {
   essentialsTitle: "Essentials", spotifyTitle: "Title", spotifyKicker: "THIS IS", spotifyFontSize: 150,
   spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, spotifySubtitleGap: 16, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
   backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8", colorShadow: true, gradientType: "linear",
-  textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136,
+  textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136, essentialsDesign: "new", essentialsSubtitle: "",
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
   artistCount: 3, artistLooks: [DEFAULT_ARTIST_LOOK, DEFAULT_ARTIST_LOOK],
@@ -52,6 +54,32 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
   return images.get(src)!;
 }
 export function releaseImage(src: string) { images.delete(src); URL.revokeObjectURL(src); }
+
+/** Draws `value` one character at a time with `tracking` pixels between characters, in the current font and baseline. */
+function trackedText(ctx: CanvasRenderingContext2D, value: string, x: number, y: number, tracking: number) {
+  for (const char of value) {
+    ctx.fillText(char, x, y);
+    x += ctx.measureText(char).width + tracking;
+  }
+}
+
+/** Classic Essentials logo: the Apple glyph and "MUSIC" in spaced capitals, in the photo's top-right corner just under the band. */
+function drawClassicEssentialsLogo(ctx: CanvasRenderingContext2D, size: number, band: number, color: string) {
+  const l = ESSENTIALS_CLASSIC.logo;
+  const scale = l.glyphHeight / APPLE_GLYPH_BOX.height;
+  const glyphWidth = APPLE_GLYPH_BOX.width * scale;
+  ctx.font = `600 ${l.textSize}px CoverFont, Arial, sans-serif`;
+  const word = "MUSIC";
+  const wordWidth = trackedWidth(word, l.textSize, l.tracking, value => ctx.measureText(value).width);
+  const x = size - l.right - glyphWidth - l.gap - wordWidth;
+  const y = band + l.top;
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.save(); ctx.translate(x, y); ctx.scale(scale, scale); ctx.translate(-APPLE_GLYPH_BOX.x, -APPLE_GLYPH_BOX.y); ctx.fill(new Path2D(APPLE_GLYPH_PATH)); ctx.restore();
+  ctx.textBaseline = "alphabetic";
+  trackedText(ctx, word, x + glyphWidth + l.gap, y + l.glyphHeight, l.tracking * l.textSize);
+  ctx.restore();
+}
 
 function text(ctx: CanvasRenderingContext2D, value: string, x: number, y: number, size: number, weight: number, width: number) {
   textLines(ctx, [value], x, y, size, weight, width);
@@ -333,8 +361,9 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   const backgroundType = activeBackground(s.mode, s.backgroundType, s.spotifyBackgroundType);
   const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
+  const classicEssentials = s.mode === "essentials" && s.essentialsDesign === "classic";
   const artists = s.mode === "similar-artists" ? await Promise.all(artistPhotos.slice(0, s.artistCount - 1).map(src => src ? loadImage(src) : null)) : [];
-  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed'), document.fonts.load('400 100px CoverFontMix')] : [])]);
+  await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(classicEssentials ? [document.fonts.load('800 100px CoverFontMono'), document.fonts.load('700 100px CoverFontBold')] : []), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontCondensed'), document.fonts.load('400 100px CoverFontMix')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   ctx.textBaseline = "top";
@@ -346,10 +375,35 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   }
   if (background) ctx.drawImage(background, 0, 0, size, size);
   const band = Math.round(size * s.bandHeight / 100);
+  // The classic Essentials band follows its title; the logo sits just under it.
+  let classicBand = 0;
   if (spotify) {
     renderSpotify(ctx, s, uploaded, size);
   } else if (s.mode === "similar-artists") {
     renderArtists(ctx, s, uploaded, artists);
+  } else if (classicEssentials) {
+    const fonts = { title: "800 {size}px CoverFontMono, CoverFontBold, monospace", subtitle: "700 {size}px CoverFontBold, Arial, sans-serif" };
+    const font = (face: "title" | "subtitle", px: number) => fonts[face].replace("{size}", String(px));
+    const measure = (value: string, px: number, face: "title" | "subtitle") => { ctx.font = font(face, px); return ctx.measureText(value).width; };
+    const layout = essentialsClassicLayout(titleLines(s.essentialsTitle.toUpperCase()), s.essentialsSubtitle.toUpperCase(), s.essentialsFontSize, measure);
+    classicBand = layout.band;
+    ctx.fillStyle = s.bandColor;
+    ctx.fillRect(0, 0, size, size);
+    const inset = ESSENTIALS_CLASSIC.photoInset;
+    drawPhoto(ctx, uploaded, s, inset, layout.band, size - inset * 2, size - layout.band - inset, 0);
+    ctx.fillStyle = s.bandColor;
+    ctx.fillRect(0, 0, size, layout.band);
+    ctx.fillStyle = s.textColor;
+    ctx.textBaseline = "alphabetic";
+    ctx.font = font("title", layout.size);
+    layout.lines.forEach(line => trackedText(ctx, line.text, ESSENTIALS_CLASSIC.x, line.baseline, layout.size * ESSENTIALS_CLASSIC.tracking));
+    if (layout.subtitle) {
+      ctx.globalAlpha = .65;
+      ctx.font = font("subtitle", layout.subtitle.size);
+      trackedText(ctx, layout.subtitle.text, ESSENTIALS_CLASSIC.x, layout.subtitle.baseline, layout.subtitle.size * ESSENTIALS_CLASSIC.subtitleTracking);
+      ctx.globalAlpha = 1;
+    }
+    ctx.textBaseline = "top";
   } else if (s.mode === "essentials") {
     const title = titleLines(s.essentialsTitle);
     const block = essentialsTitleBlock(band, s.essentialsFontSize, title.length);
@@ -392,6 +446,8 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
       : { x: 0, y: 0, width: size, height: size };
     const { x, y } = cornerPosition(s.corner, d, d, area, SPOTIFY_LOGO.pad);
     drawSpotifyLogo(ctx, x, y, d, logoColor(s.mode, s.textColor, s.bandColor, s.logoMatchesBand, s.dailyMixDesign));
+  } else if (s.showLogo && classicEssentials) {
+    drawClassicEssentialsLogo(ctx, size, classicBand, s.textColor);
   } else if (s.showLogo) {
     const logoCorner = s.corner;
     const logo = appleLogoShape(s.appleLogo);

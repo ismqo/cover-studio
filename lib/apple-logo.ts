@@ -12,3 +12,8 @@ export function appleLogoShape(style: AppleLogoStyle) {
     ? { path: APPLE_MUSIC_PICKER_PATH, width: APPLE_MUSIC_PICKER_VIEWBOX.width, height: APPLE_MUSIC_PICKER_VIEWBOX.height }
     : { path: APPLE_MUSIC_PATH, width: 84.3, height: 20.7 };
 }
+
+/** The Apple glyph alone, taken from the classic wordmark above, and its bounding box in those path units. Used by the classic
+ *  Essentials logo, which sets "MUSIC" in capitals next to it. */
+export const APPLE_GLYPH_PATH = "M11.5,3.6C10.8,4.4,9.7,5.1,8.6,5C8.4,3.8,9,2.6,9.6,1.9c0.7-0.9,1.9-1.5,2.9-1.5C12.6,1.5,12.2,2.7,11.5,3.6L11.5,3.6z M12.5,5.2c0.6,0,2.4,0.2,3.6,2c-0.1,0.1-2.1,1.3-2.1,3.8c0,3,2.6,4,2.6,4c0,0.1-0.4,1.4-1.3,2.8c-0.8,1.2-1.7,2.4-3,2.4c-1.3,0-1.7-0.8-3.2-0.8c-1.5,0-2,0.8-3.2,0.8c-1.3,0-2.3-1.3-3.1-2.5c-1.7-2.5-3-7-1.2-10c0.8-1.5,2.4-2.5,4-2.5c1.3,0,2.5,0.9,3.2,0.9C9.5,6.1,10.9,5.1,12.5,5.2L12.5,5.2z";
+export const APPLE_GLYPH_BOX = { x: 0.73, y: 0.4, width: 15.87, height: 19.8 } as const;

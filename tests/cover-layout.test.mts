@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE } from "../lib/cover-layout.ts";
+import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
 
 // Each character is as wide as the font size, so widths are easy to reason about.
 const measure = (value: string, size: number) => value.length * size;
@@ -249,6 +249,53 @@ test("extra Essentials title lines grow upward, then grow the band once they rea
   const tall = essentialsTitleBlock(324, 100, 3);
   assert.equal(tall.y, 28);
   assert.equal(tall.band, 28 + 100 + 2 * 100 * CLASSIC_LINE_HEIGHT + 20);
+});
+
+// Monospaced stand-in: every character is 0.618em wide, like SF Mono.
+const mono = (value: string, size: number) => [...value].length * size * .618;
+
+test("Essentials designs set their own colors and title size", () => {
+  assert.deepEqual(essentialsDesignDefaults("classic"), { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6", essentialsFontSize: 152 });
+  assert.deepEqual(essentialsDesignDefaults("new"), { essentialsDesign: "new", textColor: "#111111", bandColor: "#c4c4c4", essentialsFontSize: 136 });
+});
+
+test("the classic Essentials title spans the cover at its default size, over a band just tall enough for it", () => {
+  const layout = essentialsClassicLayout(["ESSENTIALS"], "", 152, mono);
+  assert.equal(layout.size, 152);
+  const width = mono("ESSENTIALS", 152) + 9 * ESSENTIALS_CLASSIC.tracking * 152;
+  assert.ok(width <= ESSENTIALS_CLASSIC.maxWidth && width > ESSENTIALS_CLASSIC.maxWidth - 20, `title spans ${width}px`);
+  assert.equal(layout.subtitle, null);
+  // Equal-ish air above and below the capitals: the band ends just under the title.
+  const [line] = layout.lines;
+  assert.equal(line.baseline, Math.round(152 * (ESSENTIALS_CLASSIC.top + ESSENTIALS_CLASSIC.capHeight)));
+  assert.equal(layout.band, Math.round(line.baseline + 152 * ESSENTIALS_CLASSIC.bottom));
+});
+
+test("a classic Essentials title too wide for the cover shrinks until it fits", () => {
+  const layout = essentialsClassicLayout(["IMPRESCINDIBLES"], "", 152, mono);
+  assert.ok(layout.size < 152);
+  const width = (size: number) => mono("IMPRESCINDIBLES", size) + 14 * ESSENTIALS_CLASSIC.tracking * size;
+  assert.ok(width(layout.size) <= ESSENTIALS_CLASSIC.maxWidth);
+  assert.ok(width(layout.size + 1) > ESSENTIALS_CLASSIC.maxWidth);
+});
+
+test("a classic Essentials subtitle sits under the title and makes the band taller", () => {
+  const plain = essentialsClassicLayout(["ESSENTIALS"], "", 152, mono);
+  const withSubtitle = essentialsClassicLayout(["ESSENTIALS"], "SURF", 152, mono);
+  assert.ok(withSubtitle.subtitle);
+  assert.equal(withSubtitle.subtitle.text, "SURF");
+  assert.equal(withSubtitle.subtitle.size, Math.round(152 * ESSENTIALS_CLASSIC.subtitleScale));
+  assert.ok(withSubtitle.subtitle.baseline > withSubtitle.lines[0].baseline + withSubtitle.subtitle.size * ESSENTIALS_CLASSIC.capHeight);
+  assert.ok(withSubtitle.band > plain.band);
+  // A blank subtitle is no subtitle.
+  assert.equal(essentialsClassicLayout(["ESSENTIALS"], "   ", 152, mono).subtitle, null);
+});
+
+test("each extra classic Essentials title line adds one line pitch to the band", () => {
+  const one = essentialsClassicLayout(["ROCK"], "", 152, mono);
+  const two = essentialsClassicLayout(["ROCK", "ROLL"], "", 152, mono);
+  assert.equal(two.lines[1].baseline - two.lines[0].baseline, Math.round(152 * CLASSIC_LINE_HEIGHT));
+  assert.equal(two.band - one.band, Math.round(152 * CLASSIC_LINE_HEIGHT));
 });
 
 test("Apple Music lists Similar Artist Radio after Essentials", () => {

@@ -117,6 +117,50 @@ export function essentialsTitleBlock(band: number, fontSize: number, lineCount: 
   return top >= 28 ? { y: top, band } : { y: 28, band: band + 28 - top };
 }
 
+/** Essentials designs: Apple Music's classic cover (a light band with a wide, spaced-out monospaced title over a full-bleed photo) and the current one. */
+export type EssentialsDesign = "classic" | "new";
+
+export function essentialsDesignDefaults(design: EssentialsDesign) {
+  return design === "classic"
+    ? { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6", essentialsFontSize: 152 } as const
+    : { essentialsDesign: "new", textColor: "#111111", bandColor: "#c4c4c4", essentialsFontSize: 136 } as const;
+}
+
+/** Classic Essentials on the 1200px cover, measured from Apple's covers. Title: SF Mono Heavy in capitals, tracked so the default
+ *  "ESSENTIALS" spans the cover from x 32. Vertical spacing is in ems of the title size: air above the capitals, their height, and air
+ *  below them before the photo. The optional subtitle sits a third of the title size under it. The logo (Apple glyph and "MUSIC")
+ *  sits in the photo's top-right corner, and the photo sits in a frame of the band color, its sides lined up with the title. */
+export const ESSENTIALS_CLASSIC = {
+  x: 32, maxWidth: 1136, photoInset: 34,
+  tracking: .138, capHeight: .705, top: .255, bottom: .228,
+  subtitleScale: .33, subtitleGap: .33, subtitleTracking: .1,
+  logo: { glyphHeight: 34, textSize: 32, gap: 9, tracking: .06, right: 68, top: 38 },
+} as const;
+
+/** Width of `value` drawn with `tracking` ems between its characters. */
+export function trackedWidth(value: string, size: number, tracking: number, measure: (value: string, size: number) => number) {
+  return measure(value, size) + Math.max(0, [...value].length - 1) * tracking * size;
+}
+
+/** Classic Essentials title block: shrinks the title (and, with it, the subtitle) until every line fits the cover's width, then places
+ *  the baselines and ends the band below the last line. `measure` gets "title" or "subtitle" to pick the face. */
+export function essentialsClassicLayout(title: string[], subtitle: string, fontSize: number, measure: (value: string, size: number, face: "title" | "subtitle") => number) {
+  const c = ESSENTIALS_CLASSIC;
+  const titleWidth = (line: string, size: number) => trackedWidth(line, size, c.tracking, (v, s) => measure(v, s, "title"));
+  let size = fontSize;
+  while (size > 12 && title.some(line => titleWidth(line, size) > c.maxWidth)) size--;
+  const lines = title.map((text, i) => ({ text, baseline: Math.round(size * (c.top + c.capHeight) + i * size * CLASSIC_LINE_HEIGHT) }));
+  const last = lines[lines.length - 1].baseline;
+  const text = subtitle.trim();
+  let sub: { text: string; size: number; baseline: number } | null = null;
+  if (text) {
+    let subSize = Math.round(size * c.subtitleScale);
+    while (subSize > 8 && trackedWidth(text, subSize, c.subtitleTracking, (v, s) => measure(v, s, "subtitle")) > c.maxWidth) subSize--;
+    sub = { text, size: subSize, baseline: Math.round(last + size * c.subtitleGap + subSize * c.capHeight) };
+  }
+  return { size, lines, subtitle: sub, band: Math.round((sub ? sub.baseline : last) + size * c.bottom) };
+}
+
 function wrap(value: string, measure: (value: string, size: number) => number, size: number, maxWidth: number) {
   const lines: string[] = [];
   for (const word of value.trim().split(/\s+/).filter(Boolean)) {

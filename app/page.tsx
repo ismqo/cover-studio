@@ -14,7 +14,7 @@ import { localizeCoverSamples, type Dictionary, type NoticeKey } from "@/lib/i18
 import { APPLE_MUSIC_PICKER_PATH, APPLE_MUSIC_PICKER_VIEWBOX, appleLogoShape } from "@/lib/apple-logo";
 import { SPOTIFY_PATH } from "@/lib/spotify-logo";
 import { BASIC_COLORS, findPreset } from "@/lib/color-presets";
-import { activeBackground, artistLookAt, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
+import { activeBackground, artistLookAt, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, essentialsDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
 import { allowedLogoCorner, type ArtistCount, classicTitleYMax, titleLines, logoCornerFor, platformModes, titleCorner, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
 import { previewTilt } from "@/lib/preview-tilt";
 
@@ -82,6 +82,7 @@ export default function Home() {
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   }
   const essentials = settings.mode === "essentials";
+  const classicEssentials = essentials && settings.essentialsDesign === "classic";
   const artists = settings.mode === "similar-artists";
   const classic = settings.mode === "classic";
   const platform = platformOf(settings.mode);
@@ -399,6 +400,7 @@ export default function Home() {
             {spotify && !dailyMix && <TextField multiline icon={Heading} label={copy.title} value={settings.spotifyTitle} placeholder={copy.sampleTitle} onChange={value => update("spotifyTitle", value)}/>}
             {showSpotifySubtitle && <TextField icon={Text} label={copy.subtitle} value={settings.spotifySubtitle} placeholder={copy.sampleSubtitle} onChange={value => update("spotifySubtitle", value)}/>}
             {essentials && <TextField multiline icon={Heading} label={copy.title} value={settings.essentialsTitle} placeholder={copy.sampleEssentials} onChange={value => update("essentialsTitle", value)}/>}
+            {classicEssentials && <TextField icon={Text} label={copy.subtitle} maxLength={40} value={settings.essentialsSubtitle} onChange={value => update("essentialsSubtitle", value)}/>}
             {classic && <>
               <TextField multiline icon={Heading} label={copy.bigTitle} value={settings.title} placeholder={copy.sampleTitle} onChange={updateClassicTitle}/>
               <TextField icon={Text} label={copy.subtitle} value={settings.subtitle} placeholder={copy.sampleSubtitle} onChange={value => update("subtitle", value)}/>
@@ -414,7 +416,7 @@ export default function Home() {
             {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="200" step="2" value={settings.spotifySubtitleFontSize} defaultValue={defaults.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="120" step="2" value={settings.spotifySubtitleGap} defaultValue={defaults.spotifySubtitleGap} onChange={value => update("spotifySubtitleGap", value)}/>}
-            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="248" step="2" value={settings.essentialsFontSize} defaultValue={defaults.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
+            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="248" step="2" value={settings.essentialsFontSize} defaultValue={essentialsDesignDefaults(settings.essentialsDesign).essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
             {classic && <>
               <RangeField icon={ALargeSmall} label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} defaultValue={defaults.classicFontSize} onChange={value => updateClassicTextBlock("classicFontSize", value)}/>
               <SegmentField icon={Bold} label={copy.bigTitleWeight} value={settings.classicTitleWeight} options={[["normal", copy.normal, Baseline], ["bold", copy.bold, Bold]]} onChange={value => update("classicTitleWeight", value)}/>
@@ -443,7 +445,8 @@ export default function Home() {
               <RangeField icon={PanelTop} label={copy.titlePlacement} unit="%" min="15" max={titleYMax} value={settings.classicTitleY} defaultValue={defaults.classicTitleY} onChange={value => update("classicTitleY", value)}/>
             </>}
             {band && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="15" max="50" value={settings.bandHeight} defaultValue={defaults.bandHeight} onChange={value => update("bandHeight", value)}/>}
-            {essentials && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="27" max="42" value={settings.bandHeight} defaultValue={defaults.bandHeight} onChange={value => update("bandHeight", value)}/>}
+            {essentials && <SegmentField icon={Shapes} label={copy.design} value={settings.essentialsDesign} options={[["classic", copy.designClassic], ["new", copy.designNew]]} onChange={design => { setSettings(s => ({ ...s, ...essentialsDesignDefaults(design) })); setStatus(""); }}/>}
+            {essentials && !classicEssentials && <RangeField icon={Ruler} label={copy.bandHeight} unit="%" min="27" max="42" value={settings.bandHeight} defaultValue={defaults.bandHeight} onChange={value => update("bandHeight", value)}/>}
           </Section>}
 
           {/* 4. Colors. */}
@@ -466,7 +469,7 @@ export default function Home() {
 
           {/* 5. Photo or background. */}
           {(essentials || thisIs || band || dailyMix) && <Section title={copy.yourPhoto}>
-            <PhotoControls showPhotoFrame={essentials || band} topMarginLabel={band ? copy.bandEdgeMargin : copy.includeTopMargin} copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} updatePhotoFrame={updatePhotoFrame} photoFrameChanged={photoFrameChanged} resetPhotoFrame={resetPhotoFrame}/>
+            <PhotoControls showPhotoFrame={(essentials && !classicEssentials) || band} topMarginLabel={band ? copy.bandEdgeMargin : copy.includeTopMargin} copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} updatePhotoFrame={updatePhotoFrame} photoFrameChanged={photoFrameChanged} resetPhotoFrame={resetPhotoFrame}/>
           </Section>}
 
           {(classic || fullPhoto || artists) && <Section title={copy.background}>
@@ -482,7 +485,7 @@ export default function Home() {
           <Section title={spotify ? copy.spotifyLogo : copy.appleLogo} last>
             <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
             {settings.showLogo && !thisIs && !band && !essentials && !artists && !dailyMix && <><div className="field-label"><RowLabel icon={Grid2x2}>{copy.logoPosition}</RowLabel></div><div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div></>}
-            {!spotify && settings.showLogo && <><div className="field-label"><RowLabel icon={Shapes}>{copy.logoStyle}</RowLabel></div><div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
+            {!spotify && !classicEssentials && settings.showLogo && <><div className="field-label"><RowLabel icon={Shapes}>{copy.logoStyle}</RowLabel></div><div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
               {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span><strong>{name}</strong></button>; })}
             </div></>}
           </Section>
