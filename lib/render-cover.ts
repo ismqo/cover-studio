@@ -1,6 +1,6 @@
 import { APPLE_GLYPH_BOX, APPLE_GLYPH_PATH, appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, DAILY_MIX_NUMBER_FACE, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, THIS_IS_TITLE_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, DAILY_MIX_NUMBER_FACE, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -252,7 +252,7 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     // The "THIS IS" heading always uses the wide face, like Spotify's own covers; the font switch only affects the name.
     spotifyTitle(ctx, THIS_IS_KICKER_FACE, s.spotifyKicker, { x: pad + reserve, y: 58, width: size - (pad + reserve) * 2, height: 178 }, s.spotifyKickerFontSize, "center", "center", 1);
     ctx.fillStyle = thisIsTitleInk(s.bandColor);
-    spotifyTitle(ctx, face, s.spotifyTitle, { x: pad, y: 995, width: size - pad * 2, height: 170 }, s.spotifyFontSize, "center", "center", Math.min(2, titleLines(s.spotifyTitle).length));
+    spotifyTitle(ctx, THIS_IS_TITLE_FACE, s.spotifyTitle, { x: pad, y: 995, width: size - pad * 2, height: 170 }, s.spotifyFontSize, "center", "center", Math.min(2, titleLines(s.spotifyTitle).length));
     return;
   }
   const align = s.spotifyAlign;
