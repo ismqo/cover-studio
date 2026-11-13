@@ -881,6 +881,8 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
   -webkit-mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;
 }
 @media(forced-colors:active){.app-shell .style-option.selected .platform-logo{outline-color:Highlight}}
+/* On phones the logo tiles hug the logos, so the platform row takes less height. */
+@media(max-width:650px){.app-shell .platform-logo{height:44px}}
 
 /* One spacing system: rows inside a section share --field-gap; sections are separated by --section-gap. */
 .app-shell .controls .control-section:not(.first-section){padding:var(--section-gap) 0}
