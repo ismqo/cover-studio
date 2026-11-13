@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
 import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Baseline, Blend, Bold, Brush, Contrast, Droplet, Droplets, Eclipse, Eye, FoldHorizontal, Frame, Grid2x2, Heading, Image as ImageIcon, ImagePlus, Layers, Layers2, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, PanelTopDashed, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Spline, Squircle, Sun, SunMoon, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { BrandMark } from "@/components/brand-mark";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DragToggle, DraggableSegments } from "@/components/drag-switch";
 import { SmoothRange } from "@/components/smooth-range";
+import { SelectMenu } from "@/components/select-menu";
 import { useI18n } from "@/components/locale-provider";
 import { CoverSettings, defaults, loadImage, releaseImage, renderCover } from "@/lib/render-cover";
 import { clearMemories, loadMemories, saveMemory, type CoverMemory } from "@/lib/cover-memories";
@@ -477,7 +478,7 @@ export default function Home() {
             {backgroundType === "picture" ? <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/> : backgroundType === "custom" ? <>
               <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.customColor} onChange={value => update("customColor", value)}/>
               <label className="toggle-row"><RowLabel icon={Eclipse}>{copy.colorShadow}</RowLabel><DragToggle checked={settings.colorShadow} onChange={value => update("colorShadow", value)}/></label>
-              {settings.colorShadow && <label className="field select-field"><RowLabel icon={Spline}>{copy.gradientType}</RowLabel><span className="select-wrap"><select value={settings.gradientType} onChange={e => update("gradientType", e.target.value as typeof settings.gradientType)}>{GRADIENT_TYPES.map(type => <option key={type} value={type}>{copy.gradientTypes[type]}</option>)}</select></span></label>}
+              {settings.colorShadow && <SelectField icon={Spline} label={copy.gradientType} value={settings.gradientType} options={GRADIENT_TYPES.map(type => [type, copy.gradientTypes[type]] as const)} onChange={value => update("gradientType", value)}/>}
             </> : <div className="swatches">{Array.from({ length: 40 }, (_, i) => { const name = copy.gradientN(i + 1); const selected = settings.gradient === i; return <button key={`${backgroundType}-${i}`} title={name} aria-label={name} aria-pressed={selected} className={`swatch ${selected ? "selected" : ""}`} onClick={() => update("gradient", i)}><img src={`/assets/gradients/${i}.png`} alt=""/></button>; })}</div>}
           </Section>}
 
@@ -525,8 +526,8 @@ function MixNumberField({ icon, label, value, onChange }: { icon?: LucideIcon; l
 }
 
 /** Row label: a small leading icon, then the text. */
-function RowLabel({ icon: Icon, children }: { icon?: LucideIcon; children: ReactNode }) {
-  return <span className="row-label">{Icon && <Icon size={15} aria-hidden="true"/>}<span>{children}</span></span>;
+function RowLabel({ icon: Icon, children, id }: { icon?: LucideIcon; children: ReactNode; id?: string }) {
+  return <span className="row-label" id={id}>{Icon && <Icon size={15} aria-hidden="true"/>}<span>{children}</span></span>;
 }
 
 /** A text input; `multiline` lets Enter add a line break, growing one row per line. */
@@ -543,9 +544,10 @@ function RangeField({ icon, label, value, defaultValue, unit, min, max, step = "
 }
 
 /** Dropdown with a row label; `options` pairs each value with its label. `optionStyle` styles each option and the shown selection,
- *  for example to set a font name in its own font. */
+ *  for example to set a font name in its own font. A div, not a label: a label would forward clicks on the options to the trigger. */
 function SelectField<T extends string>({ icon, label, value, options, onChange, optionStyle }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string])[]; onChange: (value: T) => void; optionStyle?: (value: T) => CSSProperties }) {
-  return <label className="field select-field"><RowLabel icon={icon}>{label}</RowLabel><span className="select-wrap"><select value={value} style={optionStyle?.(value)} onChange={e => onChange(e.target.value as T)}>{options.map(([option, text]) => <option key={option} value={option} style={optionStyle?.(option)}>{text}</option>)}</select></span></label>;
+  const labelId = useId();
+  return <div className="field select-field"><RowLabel icon={icon} id={labelId}>{label}</RowLabel><SelectMenu value={value} options={options} onChange={onChange} optionStyle={optionStyle} labelledBy={labelId}/></div>;
 }
 
 function SegmentField<T extends string | number | boolean>({ icon, label, value, options, onChange, className = "" }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string, LucideIcon?])[]; onChange: (value: T) => void; className?: string }) {
