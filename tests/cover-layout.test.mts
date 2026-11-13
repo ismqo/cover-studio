@@ -179,7 +179,7 @@ test("Band aligns its title left on a bottom band and right on a top band; Origi
   assert.equal(spotifyAlignFor("spotify-photo", "bottom", "right"), "right");
 });
 
-test("This Is and Band keep their logo top-left and Essentials always uses top-right; other styles use the chosen corner", () => {
+test("This Is and Band keep their logo top-left and the new Essentials uses top-right; other styles use the chosen corner", () => {
   assert.equal(logoCornerFor("spotify-this-is", "bottom-right"), "top-left");
   assert.equal(logoCornerFor("spotify-band", "bottom-right"), "top-left");
   assert.equal(logoCornerFor("spotify-photo", "bottom-right"), "bottom-right");
@@ -188,6 +188,10 @@ test("This Is and Band keep their logo top-left and Essentials always uses top-r
   assert.equal(logoCornerFor("essentials", "bottom-left"), "top-right");
   assert.equal(logoCornerFor("essentials", "bottom-right"), "top-right");
   assert.equal(logoCornerFor("essentials", "top-left"), "top-right");
+  // The classic Essentials logo sits on the photo, so it can take any corner; the new design keeps it top-right.
+  assert.equal(logoCornerFor("essentials", "bottom-left", "classic"), "bottom-left");
+  assert.equal(logoCornerFor("essentials", "top-left", "classic"), "top-left");
+  assert.equal(logoCornerFor("essentials", "bottom-left", "new"), "top-right");
 });
 
 test("Band aligns its title and subtitle to the top of the band, wherever the band sits", () => {

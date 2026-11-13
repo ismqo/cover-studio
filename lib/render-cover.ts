@@ -1,6 +1,6 @@
 import { APPLE_GLYPH_BOX, APPLE_GLYPH_PATH, appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, trackedWidth, type EssentialsDesign, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -63,16 +63,17 @@ function trackedText(ctx: CanvasRenderingContext2D, value: string, x: number, y:
   }
 }
 
-/** Classic Essentials logo: the Apple glyph and "MUSIC" in spaced capitals, in the photo's top-right corner just under the band. */
-function drawClassicEssentialsLogo(ctx: CanvasRenderingContext2D, size: number, band: number, color: string) {
+/** Classic Essentials logo: the Apple glyph and "MUSIC" in spaced capitals, in the chosen corner of the framed photo below the band. */
+function drawClassicEssentialsLogo(ctx: CanvasRenderingContext2D, size: number, band: number, corner: Corner, color: string) {
   const l = ESSENTIALS_CLASSIC.logo;
   const scale = l.glyphHeight / APPLE_GLYPH_BOX.height;
   const glyphWidth = APPLE_GLYPH_BOX.width * scale;
   ctx.font = `600 ${l.textSize}px CoverFont, Arial, sans-serif`;
   const word = "MUSIC";
   const wordWidth = trackedWidth(word, l.textSize, l.tracking, value => ctx.measureText(value).width);
-  const x = size - l.right - glyphWidth - l.gap - wordWidth;
-  const y = band + l.top;
+  const inset = ESSENTIALS_CLASSIC.photoInset;
+  const photo = { x: inset, y: band, width: size - inset * 2, height: size - band - inset };
+  const { x, y } = cornerPosition(corner, glyphWidth + l.gap + wordWidth, l.glyphHeight, photo, l.pad);
   ctx.save();
   ctx.fillStyle = color;
   ctx.save(); ctx.translate(x, y); ctx.scale(scale, scale); ctx.translate(-APPLE_GLYPH_BOX.x, -APPLE_GLYPH_BOX.y); ctx.fill(new Path2D(APPLE_GLYPH_PATH)); ctx.restore();
@@ -355,7 +356,7 @@ function fillColorBackground(ctx: CanvasRenderingContext2D, color: string, shado
 // Preview and export share this renderer, including crop and pixel-level color treatment.
 export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, photo: string | null, artistPhotos: readonly (string | null)[] = []) {
   const spotifyAlign = spotifyAlignFor(s.mode, s.spotifyTitlePosition, s.spotifyAlign);
-  s = { ...s, spotifyAlign, spotifyFont: spotifyFontFor(s.mode, s.spotifyFont), corner: allowedLogoCorner(logoCornerFor(s.mode, s.corner), titleCorner(s.mode, s.spotifyTitlePosition, spotifyAlign)) };
+  s = { ...s, spotifyAlign, spotifyFont: spotifyFontFor(s.mode, s.spotifyFont), corner: allowedLogoCorner(logoCornerFor(s.mode, s.corner, s.essentialsDesign), titleCorner(s.mode, s.spotifyTitlePosition, spotifyAlign)) };
   const size = 1200;
   const spotify = platformOf(s.mode) === "spotify";
   const backgroundType = activeBackground(s.mode, s.backgroundType, s.spotifyBackgroundType);
@@ -447,7 +448,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     const { x, y } = cornerPosition(s.corner, d, d, area, SPOTIFY_LOGO.pad);
     drawSpotifyLogo(ctx, x, y, d, logoColor(s.mode, s.textColor, s.bandColor, s.logoMatchesBand, s.dailyMixDesign));
   } else if (s.showLogo && classicEssentials) {
-    drawClassicEssentialsLogo(ctx, size, classicBand, s.textColor);
+    drawClassicEssentialsLogo(ctx, size, classicBand, s.corner, s.textColor);
   } else if (s.showLogo) {
     const logoCorner = s.corner;
     const logo = appleLogoShape(s.appleLogo);

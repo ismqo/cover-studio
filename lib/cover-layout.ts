@@ -129,12 +129,12 @@ export function essentialsDesignDefaults(design: EssentialsDesign) {
 /** Classic Essentials on the 1200px cover, measured from Apple's covers. Title: SF Mono Heavy in capitals at a fixed size (no size
  *  option), tracked so "ESSENTIALS" spans the cover from x 32. Vertical spacing is in ems of the title size: air above the capitals, their height, and air
  *  below them before the photo. The optional subtitle sits a third of the title size under it. The logo (Apple glyph and "MUSIC")
- *  sits in the photo's top-right corner, and the photo sits in a frame of the band color, its sides lined up with the title. */
+ *  sits in a corner of the photo (top-right by default), and the photo sits in a frame of the band color, its sides lined up with the title. */
 export const ESSENTIALS_CLASSIC = {
   size: 152, x: 32, maxWidth: 1136, photoInset: 34,
   tracking: .138, capHeight: .705, top: .255, bottom: .228,
   subtitleScale: .33, subtitleGap: .33, subtitleTracking: .1,
-  logo: { glyphHeight: 34, textSize: 32, gap: 9, tracking: .06, right: 68, top: 38 },
+  logo: { glyphHeight: 34, textSize: 32, gap: 9, tracking: .06, pad: 36 },
 } as const;
 
 /** Width of `value` drawn with `tracking` ems between its characters. */
@@ -318,9 +318,11 @@ export function bandLogoArea(size: number, band: number, position: "top" | "bott
     : { x: 0, y: 0, width: size, height: size };
 }
 
-/** Logo corner a style actually uses: This Is, Band, and Daily Mix pin their logo to the top-left, Essentials and Similar Artist Radio pin it to the top-right, other styles use the chosen corner. */
-export function logoCornerFor(mode: CoverMode, corner: Corner): Corner {
+/** Logo corner a style actually uses: This Is, Band, and Daily Mix pin their logo to the top-left, the new Essentials and Similar Artist Radio pin it to the top-right, other styles (classic Essentials included, whose logo sits on
+ *  the photo) use the chosen corner. */
+export function logoCornerFor(mode: CoverMode, corner: Corner, essentialsDesign?: EssentialsDesign): Corner {
   if (mode === "spotify-this-is" || mode === "spotify-band" || mode === "spotify-daily-mix") return "top-left";
+  if (mode === "essentials" && essentialsDesign === "classic") return corner;
   if (mode === "essentials" || mode === "similar-artists") return "top-right";
   return corner;
 }
