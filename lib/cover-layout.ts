@@ -66,9 +66,10 @@ export function dailyMixNumberLabel(number: number) {
  *  that meet without kinks (horizontal at the crest, the trough, and the top dips). The fit keeps every bend gentle (no radius under
  *  about 200px) and lets bends ease into each other where curves meet, and its top-left corner opens up to keep as much room around
  *  the logo as the logo keeps from the cover's edges. The color runs along
- *  the top, dipping over the middle and leaving the top-right corner to the photo, and curves down the left side around the logo;
+ *  the top in a shallow band, cresting just right of the logo, dipping softly over the middle and rising to leave the top-right
+ *  corner to the photo, and sweeps down around the logo to meet the left edge about a quarter of the way down;
  *  the bottom edge is a wave cresting left of center and dipping toward the bottom-right, above the title. */
-export const DAILY_MIX_WAVE = "M873 0L1200 0L1200 973C1147 989 1096 1011 1032 1011C799 1011 678 677 386 677C179 677 132 816 0 851L0 621C11 328 184 71 368 71C442 71 460 106 595 106C798 106 829 41 873 0Z";
+export const DAILY_MIX_WAVE = "M873 0L1200 0L1200 973C1147 989 1096 1011 1032 1011C799 1011 678 677 386 677C179 677 132 816 0 851L0 283C169 248 195 86 363 86C423 86 507 109 601 109C719 109 758 77 873 0Z";
 
 /** Default opacity (%) of the classic color outside the window: nearly opaque, so the photo still shows faintly through it, like Spotify's covers. */
 export const DAILY_MIX_TINT_OPACITY = 88;
