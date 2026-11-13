@@ -205,9 +205,9 @@ export function classicTitleYMax(titleSize: number, subtitleSize: number, gap: n
   return Math.max(15, Math.floor((900 - titleHeight - subtitleSize - gap) / 12));
 }
 
-/** Title fonts a Spotify style offers: Daily Mix has no condensed font; the others offer all three. */
+/** Title fonts a Spotify style offers: Daily Mix only the standard one; the others all three. */
 export function spotifyFonts(mode: CoverMode): readonly SpotifyFont[] {
-  return mode === "spotify-daily-mix" ? ["standard", "wide"] : ["standard", "wide", "condensed"];
+  return mode === "spotify-daily-mix" ? ["standard"] : ["standard", "wide", "condensed"];
 }
 
 /** Title font a style actually uses: This Is always uses the standard face; a font the style does not offer falls back to standard;
@@ -227,11 +227,8 @@ export function spotifyFace(font: SpotifyFont) {
   return { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" };
 }
 
-/** New Daily Mix number face: with the standard font, Unbounded Regular, whose wide round digits match Spotify's number labels;
- *  otherwise the title's own face. */
-export function dailyMixNumberFace(font: SpotifyFont) {
-  return font === "standard" ? { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" } : spotifyFace(font);
-}
+/** New Daily Mix number face: Unbounded Regular, whose wide round digits match Spotify's number labels. */
+export const DAILY_MIX_NUMBER_FACE = { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" } as const;
 
 /** Fits a title plus an optional one-line subtitle at its requested size; the title shrinks only to make room for the subtitle.
  *  The gap (default: a quarter of the subtitle size) never shrinks the title: it is capped by the room left over. */

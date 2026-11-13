@@ -1,6 +1,6 @@
 import { APPLE_GLYPH_BOX, APPLE_GLYPH_PATH, appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, dailyMixNumberFace, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, DAILY_MIX_NUMBER_FACE, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -299,7 +299,7 @@ function renderDailyMix(ctx: CanvasRenderingContext2D, s: CoverSettings, uploade
   drawPhoto(ctx, uploaded, s, 0, 0, size, size, 0);
   const margin = 40, gap = 24;
   ctx.textBaseline = "alphabetic";
-  const numberFace = dailyMixNumberFace(s.spotifyFont);
+  const numberFace = DAILY_MIX_NUMBER_FACE;
   const measure = (value: string, font: number, typeface = face) => {
     ctx.font = `${typeface.weight} ${font}px ${typeface.family}`;
     const metrics = ctx.measureText(value);

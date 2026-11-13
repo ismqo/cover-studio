@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, THIS_IS_KICKER_FACE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
+import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, DAILY_MIX_NUMBER_FACE, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, THIS_IS_KICKER_FACE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
 
 // Each character is as wide as the font size, so widths are easy to reason about.
 const measure = (value: string, size: number) => value.length * size;
@@ -415,9 +415,9 @@ test("Daily Mix's photo treatment starts from its design's treatment", () => {
   assert.equal(treatmentDefaults("spotify-photo", "classic").treatment, "mono");
 });
 
-test("Daily Mix pins the logo top-left, uses the chosen title font, and has no background choice or title corner", () => {
+test("Daily Mix pins the logo top-left, always uses the standard title font, and has no background choice or title corner", () => {
   assert.equal(logoCornerFor("spotify-daily-mix", "bottom-right"), "top-left");
-  assert.equal(spotifyFontFor("spotify-daily-mix", "wide"), "wide");
+  assert.equal(spotifyFontFor("spotify-daily-mix", "wide"), "standard");
   assert.equal(spotifyFontFor("spotify-daily-mix", "standard"), "standard");
   assert.equal(activeBackground("spotify-daily-mix", "gradients", "picture"), null);
   assert.equal(titleCorner("spotify-daily-mix", "bottom", "left"), null);
@@ -511,17 +511,16 @@ test("the classic Daily Mix wave is smooth: few curves, no kinks where they meet
   }
 });
 
-test("Daily Mix offers the standard and wide fonts but not condensed; a condensed choice from another style shows as standard", () => {
-  assert.deepEqual(spotifyFonts("spotify-daily-mix"), ["standard", "wide"]);
+test("Daily Mix offers only the standard font; a wide or condensed choice from another style shows as standard", () => {
+  assert.deepEqual(spotifyFonts("spotify-daily-mix"), ["standard"]);
   assert.equal(spotifyFontFor("spotify-daily-mix", "condensed"), "standard");
   // Other Spotify styles keep all three fonts and the condensed choice.
   assert.deepEqual(spotifyFonts("spotify-band"), ["standard", "wide", "condensed"]);
   assert.equal(spotifyFontFor("spotify-band", "condensed"), "condensed");
 });
 
-test("the new Daily Mix number uses the wide round Unbounded face with the standard font, and the title font otherwise", () => {
-  assert.deepEqual(dailyMixNumberFace("standard"), { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" });
-  assert.deepEqual(dailyMixNumberFace("wide"), spotifyFace("wide"));
+test("the new Daily Mix number uses the wide round Unbounded face", () => {
+  assert.deepEqual(DAILY_MIX_NUMBER_FACE, { weight: 400, family: "CoverFontMix, CoverFontBold, Arial, sans-serif" });
 });
 
 test("the classic Daily Mix wave leaves the top-left logo as much room as the logo has from the cover's edges", () => {
