@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
+import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, dailyMixNumberFace, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, THIS_IS_KICKER_FACE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
 
 // Each character is as wide as the font size, so widths are easy to reason about.
 const measure = (value: string, size: number) => value.length * size;
@@ -59,9 +59,13 @@ test("This Is always uses the standard title font; other Spotify styles use the 
   assert.equal(spotifyFontFor("spotify-photo", "condensed"), "condensed");
 });
 
+test("the This Is heading keeps the heavy Archivo Expanded Black, apart from the wide title font", () => {
+  assert.deepEqual(THIS_IS_KICKER_FACE, { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" });
+});
+
 test("Spotify titles use the standard bold face unless the wide or condensed font is chosen", () => {
   assert.deepEqual(spotifyFace("standard"), { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" });
-  assert.deepEqual(spotifyFace("wide"), { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" });
+  assert.deepEqual(spotifyFace("wide"), { weight: 700, family: "CoverFontSpotifyWide, CoverFontBold, Arial, sans-serif" });
   assert.deepEqual(spotifyFace("condensed"), { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" });
 });
 

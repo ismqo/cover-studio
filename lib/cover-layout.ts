@@ -216,9 +216,13 @@ export function spotifyFontFor(mode: CoverMode, font: SpotifyFont): SpotifyFont 
   return mode === "spotify-this-is" || !spotifyFonts(mode).includes(font) ? "standard" : font;
 }
 
-/** Canvas font weight and family for Spotify titles: SF Pro Bold, the wide brutalist Archivo Expanded Black, or the tall Archivo Condensed Bold. */
+/** Canvas font weight and family for Spotify titles: SF Pro Bold, Anybody at 150% width (the closest free match for Spotify Mix Wide,
+ *  which Spotify keeps exclusive), or the tall Archivo Condensed Bold. */
+/** This Is heading face: the heavy Archivo Expanded Black, kept apart from the wide title font. */
+export const THIS_IS_KICKER_FACE = { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" } as const;
+
 export function spotifyFace(font: SpotifyFont) {
-  if (font === "wide") return { weight: 900, family: "CoverFontWide, CoverFontBold, Arial, sans-serif" };
+  if (font === "wide") return { weight: 700, family: "CoverFontSpotifyWide, CoverFontBold, Arial, sans-serif" };
   if (font === "condensed") return { weight: 700, family: "CoverFontCondensed, CoverFontBold, Arial, sans-serif" };
   return { weight: 700, family: "CoverFontBold, CoverFont, Arial, sans-serif" };
 }
