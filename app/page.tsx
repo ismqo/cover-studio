@@ -14,7 +14,7 @@ import { localizeCoverSamples, type Dictionary, type NoticeKey } from "@/lib/i18
 import { APPLE_MUSIC_PICKER_PATH, APPLE_MUSIC_PICKER_VIEWBOX, appleLogoShape } from "@/lib/apple-logo";
 import { SPOTIFY_PATH } from "@/lib/spotify-logo";
 import { BASIC_COLORS, findPreset } from "@/lib/color-presets";
-import { activeBackground, artistLookAt, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, essentialsDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
+import { activeBackground, artistLookAt, spotifyFace, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, essentialsDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
 import { allowedLogoCorner, type ArtistCount, classicTitleYMax, titleLines, logoCornerFor, platformModes, titleCorner, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
 import { previewTilt } from "@/lib/preview-tilt";
 
@@ -410,7 +410,7 @@ export default function Home() {
 
           {/* 2. Typography: how the text looks, in reading order. */}
           {!artists && !classicEssentials && <Section title={copy.typography}>
-            {spotify && !thisIs && !dailyMix && <SelectField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, black: copy.fontBlack, condensed: copy.fontCondensed }[font]] as const)} onChange={value => update("spotifyFont", value)}/>}
+            {spotify && !thisIs && !dailyMix && <SelectField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, black: copy.fontBlack, condensed: copy.fontCondensed }[font]] as const)} optionStyle={font => { const face = spotifyFace(font); return { fontFamily: face.family, fontWeight: face.weight }; }} onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} defaultValue={defaults.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
             {dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="200" step="2" value={settings.dailyMixFontSize} defaultValue={dailyMixDesignDefaults(settings.dailyMixDesign).dailyMixFontSize} onChange={value => update("dailyMixFontSize", value)}/>}
             {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
@@ -542,9 +542,10 @@ function RangeField({ icon, label, value, defaultValue, unit, min, max, step = "
   return <label className="range-label"><RowLabel icon={icon}>{label}</RowLabel><span className="range-value">{value}{unit}</span><SmoothRange min={min} max={max} step={step} value={value} defaultValue={defaultValue} onValueChange={onChange}/></label>;
 }
 
-/** Dropdown with a row label; `options` pairs each value with its label. */
-function SelectField<T extends string>({ icon, label, value, options, onChange }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string])[]; onChange: (value: T) => void }) {
-  return <label className="field select-field"><RowLabel icon={icon}>{label}</RowLabel><span className="select-wrap"><select value={value} onChange={e => onChange(e.target.value as T)}>{options.map(([option, text]) => <option key={option} value={option}>{text}</option>)}</select></span></label>;
+/** Dropdown with a row label; `options` pairs each value with its label. `optionStyle` styles each option and the shown selection,
+ *  for example to set a font name in its own font. */
+function SelectField<T extends string>({ icon, label, value, options, onChange, optionStyle }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string])[]; onChange: (value: T) => void; optionStyle?: (value: T) => CSSProperties }) {
+  return <label className="field select-field"><RowLabel icon={icon}>{label}</RowLabel><span className="select-wrap"><select value={value} style={optionStyle?.(value)} onChange={e => onChange(e.target.value as T)}>{options.map(([option, text]) => <option key={option} value={option} style={optionStyle?.(option)}>{text}</option>)}</select></span></label>;
 }
 
 function SegmentField<T extends string | number | boolean>({ icon, label, value, options, onChange, className = "" }: { icon?: LucideIcon; label: string; value: T; options: readonly (readonly [T, string, LucideIcon?])[]; onChange: (value: T) => void; className?: string }) {
