@@ -1048,6 +1048,8 @@ html body .app-shell.app-shell .controls .section-body > *,
 html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0;padding:var(--row-pad-y) var(--row-pad-x)}
 html body .app-shell.app-shell .controls .section-body > :not(.hidden-input) ~ *,
 html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > * + *{border-top:1px solid var(--row-line)}
+/* Logo position and logo style: the label and its tiles read as one row, with no divider between them. */
+html body .app-shell.app-shell .controls .section-body > .field-label + :is(.corner-options,.logo-style-options){border-top:0;padding-top:0}
 html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls){
   display:flex;flex-direction:column;gap:0;padding:0;border-radius:0;border-left:0;border-right:0;border-bottom:0;background:none;box-shadow:none;
 }
