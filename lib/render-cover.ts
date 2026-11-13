@@ -385,7 +385,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
     const fonts = { title: "800 {size}px CoverFontMono, CoverFontBold, monospace", subtitle: "700 {size}px CoverFontBold, Arial, sans-serif" };
     const font = (face: "title" | "subtitle", px: number) => fonts[face].replace("{size}", String(px));
     const measure = (value: string, px: number, face: "title" | "subtitle") => { ctx.font = font(face, px); return ctx.measureText(value).width; };
-    const layout = essentialsClassicLayout(titleLines(s.essentialsTitle.toUpperCase()), s.essentialsSubtitle.toUpperCase(), s.essentialsFontSize, measure);
+    const layout = essentialsClassicLayout(titleLines(s.essentialsTitle.toUpperCase()), s.essentialsSubtitle.toUpperCase(), ESSENTIALS_CLASSIC.size, measure);
     classicBand = layout.band;
     ctx.fillStyle = s.bandColor;
     ctx.fillRect(0, 0, size, size);

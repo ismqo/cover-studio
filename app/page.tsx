@@ -409,14 +409,14 @@ export default function Home() {
           </Section>}
 
           {/* 2. Typography: how the text looks, in reading order. */}
-          {!artists && <Section title={copy.typography}>
+          {!artists && !classicEssentials && <Section title={copy.typography}>
             {spotify && !thisIs && <SegmentField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, condensed: copy.fontCondensed }[font]] as const)} optionClass={value => `font-${value}`} className="font-options" onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} defaultValue={defaults.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
             {dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="200" step="2" value={settings.dailyMixFontSize} defaultValue={dailyMixDesignDefaults(settings.dailyMixDesign).dailyMixFontSize} onChange={value => update("dailyMixFontSize", value)}/>}
             {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="200" step="2" value={settings.spotifySubtitleFontSize} defaultValue={defaults.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="120" step="2" value={settings.spotifySubtitleGap} defaultValue={defaults.spotifySubtitleGap} onChange={value => update("spotifySubtitleGap", value)}/>}
-            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="248" step="2" value={settings.essentialsFontSize} defaultValue={essentialsDesignDefaults(settings.essentialsDesign).essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
+            {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="248" step="2" value={settings.essentialsFontSize} defaultValue={defaults.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
             {classic && <>
               <RangeField icon={ALargeSmall} label={copy.bigTitleSize} unit="px" min="96" max="216" step="1" value={settings.classicFontSize} defaultValue={defaults.classicFontSize} onChange={value => updateClassicTextBlock("classicFontSize", value)}/>
               <SegmentField icon={Bold} label={copy.bigTitleWeight} value={settings.classicTitleWeight} options={[["normal", copy.normal, Baseline], ["bold", copy.bold, Bold]]} onChange={value => update("classicTitleWeight", value)}/>

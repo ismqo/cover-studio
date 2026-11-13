@@ -254,13 +254,14 @@ test("extra Essentials title lines grow upward, then grow the band once they rea
 // Monospaced stand-in: every character is 0.618em wide, like SF Mono.
 const mono = (value: string, size: number) => [...value].length * size * .618;
 
-test("Essentials designs set their own colors and title size", () => {
-  assert.deepEqual(essentialsDesignDefaults("classic"), { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6", essentialsFontSize: 152 });
+test("Essentials designs set their own colors; only the new design has a title size, the classic one draws its title at a fixed size", () => {
+  assert.deepEqual(essentialsDesignDefaults("classic"), { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6" });
+  assert.equal(ESSENTIALS_CLASSIC.size, 152);
   assert.deepEqual(essentialsDesignDefaults("new"), { essentialsDesign: "new", textColor: "#111111", bandColor: "#c4c4c4", essentialsFontSize: 136 });
 });
 
 test("the classic Essentials title spans the cover at its default size, over a band just tall enough for it", () => {
-  const layout = essentialsClassicLayout(["ESSENTIALS"], "", 152, mono);
+  const layout = essentialsClassicLayout(["ESSENTIALS"], "", ESSENTIALS_CLASSIC.size, mono);
   assert.equal(layout.size, 152);
   const width = mono("ESSENTIALS", 152) + 9 * ESSENTIALS_CLASSIC.tracking * 152;
   assert.ok(width <= ESSENTIALS_CLASSIC.maxWidth && width > ESSENTIALS_CLASSIC.maxWidth - 20, `title spans ${width}px`);
@@ -280,7 +281,7 @@ test("a classic Essentials title too wide for the cover shrinks until it fits", 
 });
 
 test("a classic Essentials subtitle sits under the title and makes the band taller", () => {
-  const plain = essentialsClassicLayout(["ESSENTIALS"], "", 152, mono);
+  const plain = essentialsClassicLayout(["ESSENTIALS"], "", ESSENTIALS_CLASSIC.size, mono);
   const withSubtitle = essentialsClassicLayout(["ESSENTIALS"], "SURF", 152, mono);
   assert.ok(withSubtitle.subtitle);
   assert.equal(withSubtitle.subtitle.text, "SURF");

@@ -122,16 +122,16 @@ export type EssentialsDesign = "classic" | "new";
 
 export function essentialsDesignDefaults(design: EssentialsDesign) {
   return design === "classic"
-    ? { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6", essentialsFontSize: 152 } as const
+    ? { essentialsDesign: "classic", textColor: "#111111", bandColor: "#e6e6e6" } as const
     : { essentialsDesign: "new", textColor: "#111111", bandColor: "#c4c4c4", essentialsFontSize: 136 } as const;
 }
 
-/** Classic Essentials on the 1200px cover, measured from Apple's covers. Title: SF Mono Heavy in capitals, tracked so the default
- *  "ESSENTIALS" spans the cover from x 32. Vertical spacing is in ems of the title size: air above the capitals, their height, and air
+/** Classic Essentials on the 1200px cover, measured from Apple's covers. Title: SF Mono Heavy in capitals at a fixed size (no size
+ *  option), tracked so "ESSENTIALS" spans the cover from x 32. Vertical spacing is in ems of the title size: air above the capitals, their height, and air
  *  below them before the photo. The optional subtitle sits a third of the title size under it. The logo (Apple glyph and "MUSIC")
  *  sits in the photo's top-right corner, and the photo sits in a frame of the band color, its sides lined up with the title. */
 export const ESSENTIALS_CLASSIC = {
-  x: 32, maxWidth: 1136, photoInset: 34,
+  size: 152, x: 32, maxWidth: 1136, photoInset: 34,
   tracking: .138, capHeight: .705, top: .255, bottom: .228,
   subtitleScale: .33, subtitleGap: .33, subtitleTracking: .1,
   logo: { glyphHeight: 34, textSize: 32, gap: 9, tracking: .06, right: 68, top: 38 },
