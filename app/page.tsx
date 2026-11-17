@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode, type RefObject } from "react";
-import { ALargeSmall, Archive, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Baseline, Blend, Bold, Brush, Contrast, Droplet, Droplets, Eclipse, Eye, FoldHorizontal, Frame, Grid2x2, Heading, Image as ImageIcon, ImagePlus, Layers, Layers2, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, PanelTopDashed, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Spline, Squircle, Sun, SunMoon, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
+import { ALargeSmall, Archive, CircleDashed, WholeWord, Hash, SeparatorHorizontal, Shapes, Trash2, AlignCenter, AlignLeft, AlignRight, ArrowDownToLine, ArrowUpToLine, Baseline, Blend, Bold, Brush, Contrast, Droplet, Droplets, Eclipse, Eye, FoldHorizontal, Frame, Grid2x2, Heading, Image as ImageIcon, ImagePlus, Layers, Layers2, Link, MoveHorizontal, MoveVertical, PaintBucket, Palette, PanelTop, PanelTopDashed, Pilcrow, RotateCcw, Ruler, SlidersHorizontal, Spline, Squircle, Sun, SunMoon, Tag, Text, Type, UserRound, Users, X, ZoomIn, type LucideIcon } from "lucide-react";
 import { NavMenu } from "@/components/nav-menu";
 import { BrandMark } from "@/components/brand-mark";
 import { ConfirmDialog } from "@/components/confirm-dialog";
@@ -15,7 +15,7 @@ import { localizeCoverSamples, type Dictionary, type NoticeKey } from "@/lib/i18
 import { APPLE_MUSIC_PICKER_PATH, APPLE_MUSIC_PICKER_VIEWBOX, appleLogoShape } from "@/lib/apple-logo";
 import { SPOTIFY_PATH } from "@/lib/spotify-logo";
 import { BASIC_COLORS, findPreset } from "@/lib/color-presets";
-import { activeBackground, artistLookAt, spotifyFace, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, essentialsDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
+import { hasArtistBubbles, activeBackground, artistLookAt, spotifyFace, spotifyFontFor, spotifyFonts, DAILY_MIX_MAX, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, dailyMixDesignDefaults, essentialsDesignDefaults, parseMixNumber, DEFAULT_ARTIST_LOOK, GRADIENT_TYPES, treatmentDefaults, treatmentDiffers, type ArtistLook } from "@/lib/cover-layout";
 import { allowedLogoCorner, type ArtistCount, classicTitleYMax, titleLines, logoCornerFor, platformModes, titleCorner, platformOf, styleDefaults, type CoverMode, type Platform } from "@/lib/cover-layout";
 import { previewTilt } from "@/lib/preview-tilt";
 
@@ -33,7 +33,7 @@ export default function Home() {
   }, [locale]);
   const [photo, setPhoto] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState("");
-  // Similar Artist Radio: photos of the second and third artists (the main artist uses `photo`).
+  // Artist bubble styles: photos of the second and third artists (the main artist uses `photo`).
   const [artistPhotos, setArtistPhotos] = useState<(string | null)[]>([null, null]);
   const [artistNames, setArtistNames] = useState<string[]>(["", ""]);
   const [artistUploading, setArtistUploading] = useState<boolean[]>([false, false]);
@@ -91,6 +91,11 @@ export default function Home() {
   const band = settings.mode === "spotify-band";
   const thisIs = settings.mode === "spotify-this-is";
   const dailyMix = settings.mode === "spotify-daily-mix";
+  const radio = settings.mode === "spotify-radio";
+  // Spotify Original and Band offer a font family and letter spacing; the other Spotify styles use fixed type.
+  const fontChoice = spotify && !thisIs && !dailyMix && !radio;
+  // Similar Artist Radio and Spotify Radio share the Artists controls: count, then each artist's photo, crop, and treatment.
+  const bubbles = hasArtistBubbles(settings.mode);
   const newDailyMix = dailyMix && settings.dailyMixDesign === "new";
   const hasSubtitle = band || settings.mode === "spotify-photo";
   const showSpotifySubtitle = hasSubtitle && settings.spotifyShowSubtitle;
@@ -349,9 +354,11 @@ export default function Home() {
   return <>
   <div className="app-shell">
     <header className="app-header">
-      <nav className="editor-nav liquid-nav" aria-label={t.nav.main}>
-      <a href="/" className="brand" aria-label={t.nav.home}><BrandMark className="brand-mark"/>Cover<span className="studio-label">STUDIO</span></a>
+      <nav className="editor-nav" aria-label={t.nav.main}>
+      <a href="/" className="brand" aria-label={t.nav.home}><BrandMark className="brand-mark"/>Cover Studio</a>
       <div className="editor-nav-actions">
+        {/* Desktop only: phones keep the download button on the preview card. */}
+        <button className="download nav-download" onClick={download} disabled={exporting || rendering || uploading || artistUploading.some(Boolean) || !!handoff}><ArrowDownToLine size={16}/>{exporting ? copy.exporting : copy.download}</button>
         <NavMenu />
       </div>
       </nav>
@@ -361,7 +368,16 @@ export default function Home() {
       <div className="workspace">
         <div className="preview-column">
         <section className="preview-panel" aria-label={copy.coverPreview}>
-          <div className="section-top"><span><span className="live-dot"/> {copy.livePreview}</span><div className="preview-actions"><button className="icon-button" onClick={() => setConfirmingReset(true)} aria-haspopup="dialog" title={copy.resetCover} aria-label={copy.resetCover}><RotateCcw size={15}/></button></div></div>
+          {/* Toolbar: platform and cover style in the top-left corner, the reset at the far end. */}
+          <div className="section-top">
+            <div className="preview-pickers">
+            <div className="platform-switch" role="group" aria-label={copy.platform}><DraggableSegments className="segmented">{(["apple", "spotify"] as const).map(value => <button key={value} className={platform === value ? "active" : ""} aria-pressed={platform === value} aria-label={value === "apple" ? copy.appleMusic : copy.spotify} title={value === "apple" ? copy.appleMusic : copy.spotify} onClick={() => selectPlatform(value)}><span className={`platform-logo ${value}-logo`} aria-hidden="true">{value === "apple" ? <svg viewBox={`0 0 ${APPLE_MUSIC_PICKER_VIEWBOX.width} ${APPLE_MUSIC_PICKER_VIEWBOX.height}`}><path d={APPLE_MUSIC_PICKER_PATH}/></svg> : <i/>}</span></button>)}</DraggableSegments></div>
+            <div key={platform} className="style-strip" role="group" aria-label={copy.coverStyle}>
+              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} aria-label={styleCopy(copy, mode)[0]} title={`${styleCopy(copy, mode)[0]} · ${styleCopy(copy, mode)[1]}`} onClick={e => { selectMode(mode); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }}><StyleThumb mode={mode} copy={copy}/></button>)}
+            </div>
+            </div>
+            <div className="preview-actions"><button className="icon-button" onClick={() => setConfirmingReset(true)} aria-haspopup="dialog" title={copy.resetCover} aria-label={copy.resetCover}><RotateCcw size={15}/></button></div>
+          </div>
           <div className="preview-stage">
             {memories.length > 0 && <div className="memory-rail"><div className="memory-list" role="group" aria-label={copy.savedVersions}>{memories.map(memory =>
               <button key={memory.id} type="button" className="memory" aria-pressed={activeMemory === memory.id} onClick={() => restoreMemory(memory)}
@@ -371,28 +387,18 @@ export default function Home() {
               <button type="button" className="download memory-delete" onClick={() => setConfirmingDelete(true)} aria-haspopup="dialog"
                 aria-label={copy.deleteAllVersions} title={copy.deleteAllVersions}><Trash2 size={16}/></button>
             </div>}
-            <canvas ref={canvas} width="1200" height="1200" aria-label={copy.coverPreviewNamed(displayTitle)} role="img" onPointerDown={grabCover} onPointerMove={tiltCover} onPointerUp={releaseCover} onPointerCancel={releaseCover} onLostPointerCapture={releaseCover}
+            <div className="cover-frame"><canvas ref={canvas} width="1200" height="1200" aria-label={copy.coverPreviewNamed(displayTitle)} role="img" onPointerDown={grabCover} onPointerMove={tiltCover} onPointerUp={releaseCover} onPointerCancel={releaseCover} onLostPointerCapture={releaseCover}
             data-reset={resetPhase ?? undefined} onAnimationEnd={onCoverAnimationEnd}/></div>
-          <button className="download mobile-preview-download" onClick={download} disabled={exporting || rendering || uploading || artistUploading.some(Boolean) || !!handoff} aria-label={exporting ? copy.exporting : copy.download} title={exporting ? copy.exporting : copy.download}><ArrowDownToLine size={16}/><span>{exporting ? copy.exporting : copy.download}</span></button>
-          <button className="download mobile-preview-archive" onClick={saveVersion} disabled={saving || rendering || uploading || artistUploading.some(Boolean) || !!handoff} aria-label={copy.saveVersion} title={copy.saveVersion}><Archive size={16}/></button>
-          <div className="preview-download"><button className="download" onClick={download} disabled={exporting || rendering || uploading || artistUploading.some(Boolean) || !!handoff}><ArrowDownToLine size={16}/>{exporting ? copy.exporting : copy.download}</button><button className="download archive-button" onClick={saveVersion} disabled={saving || rendering || uploading || artistUploading.some(Boolean) || !!handoff} aria-label={copy.saveVersion} title={copy.saveVersion}><Archive size={16}/></button></div>
+            <button className="download mobile-preview-download" onClick={download} disabled={exporting || rendering || uploading || artistUploading.some(Boolean) || !!handoff} aria-label={exporting ? copy.exporting : copy.download} title={exporting ? copy.exporting : copy.download}><ArrowDownToLine size={16}/><span>{exporting ? copy.exporting : copy.download}</span></button>
+            <button className="download mobile-preview-archive" onClick={saveVersion} disabled={saving || rendering || uploading || artistUploading.some(Boolean) || !!handoff} aria-label={copy.saveVersion} title={copy.saveVersion}><Archive size={16}/></button>
+          </div>
+          {/* Desktop only: a quiet save control in the preview's bottom-left corner. */}
+          <button className="save-version" onClick={saveVersion} aria-label={copy.saveVersion} title={copy.saveVersion} disabled={saving || rendering || uploading || artistUploading.some(Boolean) || !!handoff}><Archive size={16}/></button>
         </section>
         <p className="preview-credit">{copy.caption}</p>
         </div>
 
         <section className="controls" aria-label={copy.coverSettings} tabIndex={0}>
-          <Section title={copy.platform} className="first-section">
-            <div className="style-options">
-              {(["apple", "spotify"] as const).map(value => <button key={value} className={`style-option ${platform === value ? "selected" : ""}`} aria-pressed={platform === value} aria-label={value === "apple" ? copy.appleMusic : copy.spotify} title={value === "apple" ? copy.appleMusic : copy.spotify} onClick={() => selectPlatform(value)}><span className={`platform-logo ${value}-logo`} aria-hidden="true">{value === "apple" ? <svg viewBox={`0 0 ${APPLE_MUSIC_PICKER_VIEWBOX.width} ${APPLE_MUSIC_PICKER_VIEWBOX.height}`}><path d={APPLE_MUSIC_PICKER_PATH}/></svg> : <i/>}</span></button>)}
-            </div>
-          </Section>
-
-          <Section title={copy.coverStyle} className="first-section">
-            <div key={platform} className="style-options style-carousel" role="group" aria-label={copy.coverStyle}>
-              {platformModes[platform].map(mode => <button key={mode} className={`style-option ${settings.mode === mode ? "selected" : ""}`} aria-pressed={settings.mode === mode} onClick={e => { selectMode(mode); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }}><StyleThumb mode={mode} copy={copy}/><span><strong>{styleCopy(copy, mode)[0]}</strong><small>{styleCopy(copy, mode)[1]}</small></span></button>)}
-            </div>
-          </Section>
-
           {/* 1. Text: what the cover says. Similar Artist Radio has none. */}
           {!artists && <Section title={copy.textContent}>
             {thisIs && <TextField icon={Tag} label={copy.kicker} maxLength={40} value={settings.spotifyKicker} onChange={value => update("spotifyKicker", value)}/>}
@@ -411,10 +417,11 @@ export default function Home() {
 
           {/* 2. Typography: how the text looks, in reading order. */}
           {!artists && !classicEssentials && <Section title={copy.typography}>
-            {spotify && !thisIs && !dailyMix && <SelectField icon={Type} label={copy.titleFont} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, black: copy.fontBlack, condensed: copy.fontCondensed }[font]] as const)} optionStyle={font => { const face = spotifyFace(font); return { fontFamily: face.family, fontWeight: face.weight }; }} onChange={value => update("spotifyFont", value)}/>}
+            {fontChoice && <SelectField icon={Type} label={copy.fontFamily} value={spotifyFontFor(settings.mode, settings.spotifyFont)} options={spotifyFonts(settings.mode).map(font => [font, { standard: copy.fontStandard, wide: copy.fontWide, black: copy.fontBlack, condensed: copy.fontCondensed }[font]] as const)} optionStyle={font => { const face = spotifyFace(font); return { fontFamily: face.family, fontWeight: face.weight }; }} onChange={value => update("spotifyFont", value)}/>}
             {thisIs && <RangeField icon={ALargeSmall} label={copy.kickerSize} unit="px" min="72" max="168" step="2" value={settings.spotifyKickerFontSize} defaultValue={defaults.spotifyKickerFontSize} onChange={value => update("spotifyKickerFontSize", value)}/>}
             {dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="200" step="2" value={settings.dailyMixFontSize} defaultValue={dailyMixDesignDefaults(settings.dailyMixDesign).dailyMixFontSize} onChange={value => update("dailyMixFontSize", value)}/>}
             {spotify && !dailyMix && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="240" step="2" value={settings.spotifyFontSize} defaultValue={defaults.spotifyFontSize} onChange={value => update("spotifyFontSize", value)}/>}
+            {fontChoice && <RangeField icon={WholeWord} label={copy.letterSpacing} unit="%" min="-10" max="30" step="1" value={settings.spotifyLetterSpacing} defaultValue={defaults.spotifyLetterSpacing} onChange={value => update("spotifyLetterSpacing", value)}/>}
             {showSpotifySubtitle && <RangeField icon={ALargeSmall} label={copy.subtitleSize} unit="px" min="32" max="200" step="2" value={settings.spotifySubtitleFontSize} defaultValue={defaults.spotifySubtitleFontSize} onChange={value => update("spotifySubtitleFontSize", value)}/>}
             {showSpotifySubtitle && <RangeField icon={SeparatorHorizontal} label={copy.subtitleGap} unit="px" min="0" max="120" step="2" value={settings.spotifySubtitleGap} defaultValue={defaults.spotifySubtitleGap} onChange={value => update("spotifySubtitleGap", value)}/>}
             {essentials && <RangeField icon={ALargeSmall} label={copy.titleSize} unit="px" min="72" max="248" step="2" value={settings.essentialsFontSize} defaultValue={defaults.essentialsFontSize} onChange={fontSize => setSettings(s => ({ ...s, essentialsFontSize: fontSize, bandHeight: Math.max(s.bandHeight, 27) }))}/>}
@@ -434,8 +441,8 @@ export default function Home() {
             {newDailyMix && settings.dailyMixShowNumber && <RangeField icon={ALargeSmall} label={copy.numberSize} unit="px" min="120" max="260" step="2" value={settings.dailyMixNumberSize} defaultValue={defaults.dailyMixNumberSize} onChange={value => update("dailyMixNumberSize", value)}/>}
           </Section>}
 
-          {/* 3. Layout: where things sit. */}
-          {!thisIs && !artists && <Section title={copy.layout}>
+          {/* 3. Layout: where things sit. This Is, Similar Artist Radio, and Radio have fixed layouts. */}
+          {!thisIs && !artists && !radio && <Section title={copy.layout}>
             {dailyMix && <SegmentField icon={Shapes} label={copy.design} value={settings.dailyMixDesign} options={[["classic", copy.designClassic], ["new", copy.designNew]]} onChange={design => { setSettings(s => ({ ...s, ...dailyMixDesignDefaults(design) })); setStatus(""); }}/>}
             {spotify && !dailyMix && <>
               <SegmentField icon={PanelTop} label={band ? copy.bandPosition : copy.titlePlacement} value={settings.spotifyTitlePosition} options={[["top", copy.top, ArrowUpToLine], ["bottom", copy.bottom, ArrowDownToLine]]} onChange={value => update("spotifyTitlePosition", value)}/>
@@ -456,13 +463,15 @@ export default function Home() {
             {band && settings.showLogo && <label className="toggle-row"><RowLabel icon={Link}>{copy.logoMatchesBand}</RowLabel><DragToggle checked={settings.logoMatchesBand} onChange={value => update("logoMatchesBand", value)}/></label>}
             {(essentials || band) && <ColorField copy={copy} icon={PaintBucket} label={copy.bandColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
             {thisIs && <ColorField copy={copy} icon={Droplet} label={copy.accentColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
+            {radio && <ColorField copy={copy} icon={PaintBucket} label={copy.backgroundColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
             {dailyMix && <ColorField copy={copy} icon={newDailyMix ? Droplet : PaintBucket} label={newDailyMix ? copy.accentColor : copy.overlayColor} value={settings.bandColor} onChange={value => update("bandColor", value)}/>}
             {dailyMix && !newDailyMix && <RangeField icon={Layers2} label={copy.colorOpacity} unit="%" min="0" max="100" value={settings.dailyMixTintOpacity} defaultValue={defaults.dailyMixTintOpacity} onChange={value => update("dailyMixTintOpacity", value)}/>}
           </Section>
 
-          {/* 5. Photo or background. Similar Artist Radio: the main artist uses the regular photo controls, the others get their own photo and crop. */}
-          {artists && <Section title={copy.artists}>
+          {/* 5. Photo or background. Artist bubble styles: the main artist uses the regular photo controls, the others get their own photo and crop. */}
+          {bubbles && <Section title={copy.artists}>
             <SegmentField icon={Users} label={copy.artistCount} value={settings.artistCount} options={([1, 2, 3] as const).map(n => [n, String(n)] as const)} onChange={value => update("artistCount", value)}/>
+            {radio && settings.artistCount > 1 && <label className="toggle-row"><RowLabel icon={CircleDashed}>{copy.mainArtistBorder}</RowLabel><DragToggle checked={settings.radioMainBorder} onChange={value => update("radioMainBorder", value)}/></label>}
             <div className="field-label"><RowLabel icon={UserRound}>{copy.mainArtist}</RowLabel></div>
             <PhotoControls copy={copy} photo={photo} photoName={photoName} uploading={uploading} dragging={dragging} setDragging={setDragging} fileInput={fileInput} upload={upload} onRemove={() => { uploadId.current++; setUploading(false); setPhoto(null); setPhotoName(""); }} settings={settings} update={update} showPhotoFrame={false}/>
             {[0, 1].slice(0, settings.artistCount - 1).map(i => <ArtistPhotoControls key={i} copy={copy} label={copy.artistN(i + 2)} photo={artistPhotos[i]} photoName={artistNames[i]} uploading={artistUploading[i]} upload={file => uploadArtist(i, file)} onRemove={() => removeArtist(i)} look={artistLookAt(settings.artistLooks, i)} onChange={patch => updateArtistLook(i, patch)}/>)}
@@ -485,7 +494,7 @@ export default function Home() {
           {/* 6. Logo. */}
           <Section title={spotify ? copy.spotifyLogo : copy.appleLogo} last>
             <label className="toggle-row"><RowLabel icon={Eye}>{copy.showLogo}</RowLabel><DragToggle checked={settings.showLogo} onChange={value => update("showLogo", value)}/></label>
-            {settings.showLogo && (classicEssentials || !thisIs && !band && !essentials && !artists && !dailyMix) && <><div className="field-label"><RowLabel icon={Grid2x2}>{copy.logoPosition}</RowLabel></div><div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner, settings.essentialsDesign) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div></>}
+            {settings.showLogo && (classicEssentials || !thisIs && !band && !essentials && !artists && !dailyMix && !radio) && <><div className="field-label"><RowLabel icon={Grid2x2}>{copy.logoPosition}</RowLabel></div><div className="corner-options">{corners.map(corner => { const active = logoCornerFor(settings.mode, settings.corner, settings.essentialsDesign) === corner; const titleTaken = corner === takenCorner; return <button key={corner} disabled={titleTaken} className={active ? "active" : ""} aria-pressed={active} title={titleTaken ? copy.titleCornerHint : undefined} onClick={() => setSettings(s => ({ ...s, corner }))}><span className={`corner-icon ${corner}`}><i/></span>{copy.corners[corner]}</button>; })}</div></>}
             {!spotify && !classicEssentials && settings.showLogo && <><div className="field-label"><RowLabel icon={Shapes}>{copy.logoStyle}</RowLabel></div><div className="style-options logo-style-options" role="group" aria-label={copy.logoStyle}>
               {(["classic", "new"] as const).map(value => { const logo = appleLogoShape(value); const name = value === "classic" ? copy.logoClassic : copy.logoNew; return <button key={value} className={`style-option ${settings.appleLogo === value ? "selected" : ""}`} aria-pressed={settings.appleLogo === value} aria-label={`${copy.logoStyle}: ${name}`} onClick={() => update("appleLogo", value)}><span className="platform-logo" aria-hidden="true"><svg viewBox={`0 0 ${logo.width} ${logo.height}`}><path d={logo.path}/></svg></span></button>; })}
             </div></>}
@@ -578,6 +587,7 @@ function styleCopy(copy: Dictionary["editor"], mode: CoverMode): [string, string
     case "spotify-band": return [copy.spotifyBand, copy.spotifyBandHint];
     case "spotify-photo": return [copy.spotifyPhoto, copy.spotifyPhotoHint];
     case "spotify-daily-mix": return [copy.dailyMix, copy.dailyMixHint];
+    case "spotify-radio": return [copy.spotifyRadio, copy.spotifyRadioHint];
   }
 }
 
@@ -592,6 +602,7 @@ function StyleThumb({ mode, copy }: { mode: CoverMode; copy: Dictionary["editor"
   if (mode === "spotify-this-is") return <span className="style-thumb thumb-this-is" aria-hidden="true">{spotifyMark}<em>THIS IS</em><i/><b>{copy.sampleTitle}</b></span>;
   if (mode === "spotify-band") return <span className="style-thumb thumb-band" aria-hidden="true"><i/>{spotifyMark}<b>{copy.sampleTitle}</b></span>;
   if (mode === "spotify-daily-mix") return <span className="style-thumb thumb-daily-mix" aria-hidden="true"><svg className="thumb-wave" viewBox="0 0 1200 1200"><defs><linearGradient id="thumb-daily-mix-photo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#777"/><stop offset="1" stopColor="#262629"/></linearGradient></defs><rect width="1200" height="1200" fill="url(#thumb-daily-mix-photo)"/><path d={`M0 0H1200V1200H0Z${DAILY_MIX_WAVE}`} fill="#f06e94" fillOpacity={DAILY_MIX_TINT_OPACITY / 100} fillRule="evenodd"/></svg>{spotifyMark}<b>Daily Mix 1</b></span>;
+  if (mode === "spotify-radio") return <span className="style-thumb thumb-radio" aria-hidden="true"><em/><span/><i/>{spotifyMark}<small>RADIO</small><b>{copy.sampleTitle}</b></span>;
   return <span className="style-thumb thumb-photo" aria-hidden="true">{spotifyMark}<b>{copy.sampleTitle}</b></span>;
 }
 

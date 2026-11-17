@@ -13,812 +13,282 @@
 /* Archivo Condensed Bold (SIL OFL 1.1), bundled locally for the condensed Spotify title option. */
 @font-face{font-family:CoverFontCondensed;src:url('/assets/fonts/Archivo-CondensedBold-latin-ext.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:CoverFontCondensed;src:url('/assets/fonts/Archivo-CondensedBold-latin.woff2') format('woff2');font-weight:700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-:root{color-scheme:dark;--bg:#0c0c0e;--panel:#141416;--line:#29292d;--muted:#909096;--text:#f3f3f5;--accent:#e8e8ed;--page:#f5f5f7;--nav-bg:rgba(250,250,252,.96);--nav-fg:#1d1d1f;--nav-line:#d2d2d7;--label:#6e6e73;--label-line:#c9c9ce;--switch-track:rgba(118,118,128,.12);--switch-thumb:#fff;--switch-shadow:0 3px 1px #0000000a,0 3px 8px #0000001f;--switch-icon:#1d1d1f;--switch-icon-muted:rgba(60,60,67,.55)}
-html[data-theme="dark"]{color-scheme:dark;--page:#000;--nav-bg:rgba(22,22,23,.8);--nav-fg:#f5f5f7;--nav-line:rgba(255,255,255,.14);--label:#a1a1a6;--label-line:rgba(255,255,255,.22);--switch-track:rgba(118,118,128,.24);--switch-thumb:#636366;--switch-shadow:0 3px 8px #00000073;--switch-icon:#f5f5f7;--switch-icon-muted:rgba(235,235,245,.55)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:CoverFont,-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-size:14px}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}button{color:inherit}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}button{transition:background .15s,border-color .15s,opacity .15s}button:hover:not(:disabled){filter:brightness(1.13)}.app-shell{max-width:1100px;padding:0 36px;margin:0 auto}.app-header{height:94px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:9px;font-size:25px;font-weight:700;letter-spacing:-1px}.brand-icon{width:31px;height:31px;background:var(--text);border-radius:9px;color:#111;display:grid;place-items:center}.studio-label{font-size:9px;font-weight:500;letter-spacing:1.6px;border:1px solid #39383e;border-radius:5px;padding:5px 6px;margin-left:4px;color:#b5b3bd}.download{display:flex;align-items:center;justify-content:center;gap:9px;border:0;background:#f2f0f7;color:#161419;padding:12px 17px;border-radius:8px;font-weight:600;font-size:13px}.intro{display:flex;align-items:flex-end;justify-content:space-between;margin:45px 0 31px;gap:20px}.eyebrow{font-size:10px;font-weight:600;letter-spacing:2px;color:var(--accent);margin-bottom:12px}h1{font-size:32px;letter-spacing:-1px;margin:0 0 8px;font-weight:600}.intro p{margin:0;color:var(--muted);font-size:15px}.workspace{display:grid;grid-template-columns:1.05fr 1fr;gap:34px;align-items:start}.preview-panel{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}.section-top{padding:18px 23px;display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:1.5px;color:#a5a2ae}.section-top>span{display:flex;align-items:center;gap:8px}.live-dot{width:5px;height:5px;border-radius:50%;background:#b4d2bc;box-shadow:0 0 7px #b4d2bc44}.icon-button{background:none;border:0;padding:4px;color:var(--muted);display:grid;place-items:center}.preview-stage{padding:16px 33px 33px;background:radial-gradient(ellipse at center,#2b253340,transparent 70%)}canvas{width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 20px 40px #0005;aspect-ratio:1}.controls{min-width:0}.control-section{padding:25px 0;border-bottom:1px solid var(--line)}.first-section{padding-top:0}.last-section{border-bottom:0}.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}h2{font-size:14px;font-weight:600;margin:0;letter-spacing:.1px}.section-heading>span{color:#696570;font-size:10px;letter-spacing:1px}.style-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.style-option{border:1px solid var(--line);border-radius:9px;background:var(--panel);padding:12px 10px;display:flex;align-items:center;text-align:left;gap:10px;min-width:0}.style-option.selected{border-color:#a394c6;background:#201d28}.style-option>svg{margin-left:auto;flex-shrink:0;color:var(--accent)}.style-option strong{font-size:12px;display:block;font-weight:600}.style-option small{font-size:10px;display:block;color:var(--muted);margin-top:4px}.style-thumb{flex-shrink:0;width:39px;height:43px;border-radius:4px;overflow:hidden}.fields{display:grid;gap:12px}.field{display:block;color:#a5a2ad;font-size:11px}.field :is(input,textarea,.select-trigger){display:block;width:100%;margin-top:7px;background:#151517;border:1px solid #303035;border-radius:7px;color:var(--text);padding:11px 12px;font-size:14px;transition:border-color .15s}.field :is(input,textarea,.select-trigger):hover{border-color:#57505f}.field :is(input,textarea,.select-trigger):focus{border-color:var(--accent);outline:0;box-shadow:0 0 0 2px #e8e8ed15}.color-row{display:flex;gap:24px;margin-top:16px}.color-control{display:flex;gap:9px;align-items:center;font-size:11px;color:#aaa7b2}.color-control input,.custom-tint input{appearance:none;width:24px;height:24px;border:1px solid #4b4750;border-radius:50%;background:none;padding:3px;cursor:pointer}.color-control input::-webkit-color-swatch-wrapper,.custom-tint input::-webkit-color-swatch-wrapper{padding:0}.color-control input::-webkit-color-swatch,.custom-tint input::-webkit-color-swatch{border:0;border-radius:50%}.toggle-row{display:flex;justify-content:space-between;align-items:center;color:#bbb8c2;font-size:12px;margin:4px 0 16px}.toggle-row input{appearance:none;width:33px;height:19px;background:#414046;border:1px solid #55515d;border-radius:14px;position:relative;cursor:pointer;margin:0}.toggle-row input:before{content:'';width:13px;height:13px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .15s}.toggle-row input:checked{background:#bbaaeb;border-color:#bbaaeb}.toggle-row input:checked:before{transform:translateX(14px);background:#201b2c}.corner-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.corner-options button{display:flex;align-items:center;flex-direction:column;gap:9px;border:1px solid var(--line);border-radius:7px;padding:11px 4px;background:#141416;color:#93909c;text-transform:capitalize;font-size:10px}.corner-options button.active{background:#23202c;border-color:#6c5c89;color:#dfd1fc}.corner-icon{display:block;width:23px;height:23px;border:1px solid #66606f;border-radius:3px;position:relative}.corner-icon i{position:absolute;width:7px;height:5px;background:currentColor;border-radius:1px}.top-left i{top:3px;left:3px}.top-right i{top:3px;right:3px}.bottom-left i{bottom:3px;left:3px}.bottom-right i{bottom:3px;right:3px}.segmented{display:flex;background:#202023;padding:4px;border-radius:7px;gap:3px}.segmented button{flex:1;border:0;border-radius:5px;background:none;font-size:12px;color:#9a97a2;padding:8px}.segmented button.active{background:#3a363f;color:#fff;box-shadow:0 2px 5px #0003}.swatches{display:grid;grid-template-columns:repeat(8,1fr);gap:11px;margin-top:20px}.swatch{position:relative;padding:3px;background:transparent;border:1px solid #343038;border-radius:50%;aspect-ratio:1;min-width:0;display:grid;place-items:center}.swatch img{width:100%;height:100%;border-radius:50%;display:block}.swatch.selected{border:2px solid #dfd0ff;padding:2px;box-shadow:0 0 0 2px #8e74ba25}.swatch svg{position:absolute;filter:drop-shadow(0 1px 3px #000);color:white}.custom-background{margin-top:20px}.custom-background code{margin-left:auto}.upload-zone{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;border:1px dashed #4b4456;border-radius:9px;background:#18151e;padding:24px 14px;color:#c3b4dc;gap:8px}.upload-zone.dragging{border-color:#dfc9ff;background:#332841}.upload-zone strong{font-weight:500;color:#e2dce9;font-size:13px}.upload-zone span{color:#99909f;font-size:11px}.upload-zone small{font-size:9px;color:#746b7e;margin-top:3px}.hidden-input{display:none}.field-label{font-size:11px;color:#a5a2ad;margin:18px 0 8px}.file-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:11px;color:#aaa2b3;gap:12px}.file-row>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.range-label{display:flex;flex-wrap:wrap;justify-content:space-between;font-size:11px;color:#a5a2ad;margin-top:16px;gap:10px}.range-label span{color:#d6c9ec;font-variant-numeric:tabular-nums}.range-label input{width:100%;margin:0;accent-color:#e8e8ed;height:16px;cursor:pointer}.compact{margin:17px 0 0;font-size:11px}.tint-row{display:flex;gap:12px;align-items:center;margin-top:15px}.tint{width:24px;height:24px;border:3px solid #141416;border-radius:50%;box-shadow:0 0 0 1px #49434f}.tint.active{box-shadow:0 0 0 2px #d5c4f5}.help-text{font-size:11px;color:#89818f;line-height:1.6;margin:14px 0 0}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);max-width:calc(100% - 32px);background:#31293e;border:1px solid #79658f;color:#eee5fb;box-shadow:0 5px 30px #0008;border-radius:9px;padding:15px 18px;display:flex;align-items:center;gap:20px;z-index:10;font-size:13px}.toast button{border:0;background:none;display:flex}.toast.error{background:#382125;border-color:#9f555e}
-@media(min-width:1250px){.app-shell{max-width:1160px}.workspace{gap:50px}.preview-stage{padding:20px 36px 30px}}
-@media(max-width:850px){.app-shell{padding:0 24px}.workspace{gap:24px}.style-option{gap:6px;padding:10px 7px}.style-thumb{width:32px;height:38px}.swatches{grid-template-columns:repeat(6,1fr);gap:10px}.preview-stage{padding:12px 22px 22px}}
-@media(max-width:650px){.app-shell{max-width:520px;padding:0 22px}.app-header{height:77px}.brand{font-size:23px}.studio-label{display:none}.download{font-size:12px;padding:10px 12px}.intro{margin:29px 0 25px}h1{font-size:27px}.intro p{font-size:13px}.workspace{grid-template-columns:1fr;gap:29px}.preview-panel{position:relative}.preview-stage{padding:7px 20px 20px}.section-top{padding:12px 16px}.style-option{padding:12px;gap:11px}.style-thumb{width:39px;height:43px}.swatches{grid-template-columns:repeat(7,1fr)}.toast{width:max-content}.control-section{padding:22px 0}.first-section{padding-top:0}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 
-/* The viewport stays still; only the editing controls scroll. */
+/* Cover Studio editor.
+   Direction: a print shop light table. Quiet warm graphite chrome, the cover is the only color on screen,
+   crop marks frame it, and settings read like a spec sheet. The accent red marks selection only. */
+
+:root{
+  color-scheme:dark;
+  /* Warm graphite ramp. */
+  --bg-0:#121211;
+  --bg-1:#181817;
+  --card:#1e1d1c;
+  --raised:#282725;
+  --raised-2:#383633;
+  --line:rgba(238,235,230,.08);
+  --line-2:rgba(238,235,230,.14);
+  --text-1:#eeebe6;
+  --text-2:#aaa59d;
+  --text-3:#8a857d;
+  --accent:#fa233b;
+  --accent-fill:#e11d34;
+  --mark:rgba(238,235,230,.32);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --font:CoverFont,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  /* Controls panel rows. */
+  --row-pad-y:12px;
+  --row-pad-x:16px;
+  --control-h:36px;
+  --row-min-h:calc(var(--control-h) + 2 * var(--row-pad-y));
+  --label-col:minmax(112px,38%);
+  /* Settings panel width; notifications center in the editor area left of it. */
+  --panel-w:clamp(400px,38vw,560px);
+}
+
+*{box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
-.app-shell{height:100dvh;display:flex;flex-direction:column}
-.app-header{flex-shrink:0}
-.app-shell>main{display:flex;flex-direction:column;flex:1;min-height:0}
-.intro{flex-shrink:0}
-.workspace{flex:1;min-height:0;padding-bottom:24px;align-items:start;overflow:hidden}
-.controls{height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 12px 24px 4px;scrollbar-width:thin;scrollbar-color:#48434f transparent;scroll-padding:12px}
-.preview-column{display:flex;flex-direction:column;min-height:0;height:100%;align-self:stretch}
-.preview-credit{margin:auto 4px 0;font-size:10px;line-height:1.3;letter-spacing:2.5px;color:#c1b8cc;text-align:left}
-.preview-panel{position:relative;top:auto;max-height:100%;overflow:hidden}
-.preview-actions{display:flex;align-items:center}
-.mobile-preview-download{display:none}
-.preview-stage{display:flex;justify-content:center;padding-bottom:20px}
-.preview-stage canvas{width:min(100%,max(80px,calc(100dvh - 420px)));height:auto;aspect-ratio:1}
-.preview-download{padding:0 33px 24px}
-.preview-download .download{width:100%}
-.mobile-download{display:none}
-@media(max-height:800px) and (min-width:651px){.app-header{height:68px}.intro{margin:20px 0}.eyebrow{margin-bottom:6px}.intro h1{font-size:26px}.preview-stage canvas{width:min(100%,max(80px,calc(100dvh - 330px)))}}
-@media(max-width:650px){
-  .app-shell{padding:0 16px}
-  .app-header{height:64px;padding-top:env(safe-area-inset-top)}
-  .intro{display:none}
-  .workspace{grid-template-rows:auto minmax(0,1fr);gap:16px;padding-top:12px;padding-bottom:env(safe-area-inset-bottom)}
-  .preview-panel{position:relative;top:auto;width:100%;border-radius:12px;z-index:1}
-  .preview-stage{padding:0 16px 14px}
-  .preview-stage canvas{width:min(100%,42dvh);height:auto;aspect-ratio:1}
-  .section-top{padding:10px 16px}
-  .preview-download,.preview-credit{display:none}
-  .mobile-download{display:flex}
-  .controls{padding:4px 6px 24px 4px}
-  .controls input,.controls button{scroll-margin-top:12px}
-}
+body{margin:0;background:var(--bg-0);color:var(--text-1);font-family:var(--font);font-size:14px;line-height:1.4;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button,a,input{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.4}
+a{color:inherit;text-decoration:none}
+:is(button,a,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app-shell svg.lucide{stroke-width:1.5}
+.hidden-input{display:none}
 
-/* Compact editor heading. */
-.app-shell .intro{margin:24px 0}.app-shell .intro .eyebrow{margin:0}
-@media(min-width:651px){.app-shell .preview-stage canvas{width:min(100%,max(80px,calc(100dvh - 310px)))}}
+/* Shell: the viewport stays still; only the settings scroll. */
+.app-shell{height:100dvh;display:flex;flex-direction:column;background:var(--bg-0)}
+.app-header{flex:none;height:56px;border-bottom:1px solid var(--line);background:var(--bg-0);position:relative;z-index:20}
+.editor-nav{height:100%;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.editor-nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.brand{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;line-height:1;color:var(--text-1)}
+.brand-mark{flex:none;width:24px;height:24px;overflow:visible}
+.app-shell>main{flex:1;min-height:0;display:flex;flex-direction:column}
+.workspace{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) var(--panel-w)}
 
-/* Shared product navigation and Apple Music–inspired studio surfaces. */
-.studio-label{display:inline-flex;color:var(--label);border:1px solid var(--label-line);border-radius:20px;padding:5px 8px;font-size:9px;line-height:1;letter-spacing:1.5px;font-weight:500;margin-left:6px}
-.app-shell{max-width:none;width:100%;padding:0;background:var(--page);color:#1d1d1f;color-scheme:light;--line:#e5e5e9;--muted:#6e6e73;--text:#1d1d1f;--accent:#fa233b;--panel:#fff}
-.app-shell .app-header{height:64px;background:var(--nav-bg);color:var(--nav-fg);border-bottom:1px solid var(--nav-line);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);transition:background-color .25s ease,color .25s ease,border-color .25s ease;overflow:visible;z-index:60}
-.editor-nav{max-width:1120px;width:100%;height:100%;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.editor-nav-actions{display:flex;align-items:center;gap:16px;margin-left:auto}
-.app-shell .brand{font-size:25px;font-weight:600;letter-spacing:-1px;gap:6px}
-.editor-nav-caption{font-size:10px;letter-spacing:2.5px;color:#c1b8cc}
-.app-shell>main{width:100%;max-width:1120px;margin:0 auto;padding:0 28px}
-.app-shell .intro{margin:25px 0 22px}
-.app-shell .eyebrow{color:#86868b;font-size:9px;letter-spacing:2px}
-.app-shell .workspace{gap:30px;margin:48px 0;padding-bottom:0}
-.app-shell .preview-panel{background:#fff;border:1px solid #e5e5e9;border-radius:20px;box-shadow:0 4px 20px #1d1d1f08;color:#1d1d1f}
-.app-shell .section-top{padding:19px 25px;color:#6e6e73;font-size:9px}
-.app-shell .live-dot{background:#fa233b;box-shadow:0 0 8px #fa233b40}
-.app-shell .preview-panel .icon-button{color:#6e6e73}
-.app-shell .preview-stage{padding:14px 30px 24px;background:radial-gradient(ellipse at 50% 42%,#e7e7ec 0%,#fff 69%)}
-.app-shell .preview-stage canvas{border-radius:10px;box-shadow:0 16px 40px #1d1d1f25}
-.app-shell .download{background:#fa233b;color:white;border-radius:30px;font-weight:600;padding:13px 20px;font-size:13px}
-.app-shell .download:hover:not(:disabled){background:#e71c33;filter:none}
-.app-shell .preview-download{padding:0 30px 26px}
-.app-shell .controls{background:#fff;border:1px solid #e5e5e9;border-radius:20px;padding:24px 22px;scroll-padding:24px;scrollbar-color:#c4c4cb transparent;box-shadow:0 4px 20px #1d1d1f04}
-.app-shell .controls:focus-visible{outline:2px solid #fa233b;outline-offset:-3px}
-.app-shell .control-section{padding:23px 0;border-color:#e9e9ed}
-.app-shell .control-section{border:0}
-.app-shell .first-section{padding-top:0}
-.app-shell .last-section{padding-bottom:0}
-.app-shell h2{font-size:16px;font-weight:600;letter-spacing:-.3px}
-.app-shell .section-heading>span{color:#a1a1a6}
-.app-shell .style-option{background:#f5f5f7;border:1px solid #e1e1e6;border-radius:12px;padding:13px 10px}
-.app-shell .style-option.selected{background:#fff3f5;border-color:#fa233b}
-.app-shell .style-option small{color:#77777d}
-.app-shell .field,.app-shell .field-label{color:#6e6e73;font-size:12px}
-.app-shell .field :is(input,textarea,.select-trigger){background:#f5f5f7;color:#1d1d1f;border:1px solid #dedee3;border-radius:10px;padding:12px}
-.app-shell .field :is(input,textarea,.select-trigger):hover{border-color:#aaaab0}
-.app-shell .field :is(input,textarea,.select-trigger):focus{border-color:#fa233b;box-shadow:0 0 0 3px #fa233b12}
-.app-shell .color-control,.app-shell .toggle-row,.app-shell .range-label{color:#6e6e73;font-size:12px}
-.app-shell .color-control input,.app-shell .custom-tint input{border-color:#c7c7cd}
-.app-shell .toggle-row input{background:#d2d2d7;border-color:#d2d2d7}
-.app-shell .toggle-row input:checked{background:#fa233b;border-color:#fa233b}
-.app-shell .toggle-row input:checked:before{background:white}
-.app-shell .corner-options button{background:#f5f5f7;border-color:#e1e1e6;color:#6e6e73;border-radius:10px;padding:13px 4px}
-.app-shell .corner-options button.active{background:#fff3f5;border-color:#fa233b;color:#e51b32}
-.app-shell .corner-icon{border-color:#aaaab0}
-.app-shell .corner-options button.active .corner-icon{border-color:#fa233b80}
-.app-shell .segmented{background:#ededf0;border-radius:10px;padding:4px}
-.app-shell .segmented button{color:#6e6e73;border-radius:7px}
-.app-shell .segmented button.active{color:#1d1d1f;background:white;box-shadow:0 2px 5px #00000010}
-.app-shell .swatch{border-color:#e1e1e6}
-.app-shell .swatch.selected{border-color:#fa233b;box-shadow:0 0 0 2px #fa233b12}
-.app-shell .upload-zone{background:#fafafa;border-color:#d2d2d7;color:#fa233b;border-radius:12px}
-.app-shell .upload-zone.dragging{background:#fff3f5;border-color:#fa233b}
-.app-shell .upload-zone strong{color:#1d1d1f}
-.app-shell .upload-zone span,.app-shell .upload-zone small,.app-shell .help-text,.app-shell .file-row{color:#86868b}
-.app-shell .range-label span{color:#1d1d1f}
-.app-shell .range-label input[type="range"]{appearance:none;height:16px;background:transparent;cursor:pointer}
-.app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{height:5px;border:1px solid #dedee3;border-radius:999px;background:linear-gradient(to right,#fa233b 0 var(--range-progress),#f5f5f7 var(--range-progress) 100%)}
-.app-shell .range-label input[type="range"]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;margin-top:-5px;border:0;border-radius:50%;background:#fa233b;box-shadow:0 0 0 1px #fff}
-.app-shell .range-label input[type="range"]::-moz-range-track{height:3px;border:1px solid #dedee3;border-radius:999px;background:#f5f5f7}
-.app-shell .range-label input[type="range"]::-moz-range-progress{height:3px;border:1px solid #fa233b;border-radius:999px;background:#fa233b}
-.app-shell .range-label input[type="range"]::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:#fa233b;box-shadow:0 0 0 1px #fff}
-.app-shell .tint{border-color:#fff;box-shadow:0 0 0 1px #d2d2d7}
-.app-shell .tint.active{box-shadow:0 0 0 2px #fa233b}
-.app-shell .toast{background:#fff;color:#1d1d1f;border-color:#dedee3;box-shadow:0 8px 32px #0002}
-.app-shell .toast.error{background:#fff3f5;border-color:#fa233b80}
-@media(min-width:651px){.app-shell .preview-stage canvas{width:min(100%,max(80px,calc(100dvh - 305px)))}}
-@media(max-width:850px) and (min-width:651px){.app-shell .workspace{gap:20px}.app-shell .controls{padding:20px 15px}.app-shell .style-option{padding:10px 7px}.app-shell .preview-stage{padding:12px 22px 22px}.app-shell .preview-download{padding:0 22px 22px}}
-@media(max-width:650px){
- .app-shell .app-header{height:60px}.editor-nav{padding:0 16px;gap:8px}.editor-nav-actions{gap:10px}.app-shell .brand{font-size:23px;gap:4px}.studio-label{font-size:8px;padding:4px 6px;margin-left:4px}.editor-nav-caption{display:none}
- .app-shell>main{padding:0 12px}.app-shell .intro{display:none}.app-shell .workspace{gap:8px;margin:0;padding-top:8px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
- .app-shell .preview-panel,.app-shell .controls{border-radius:16px}.app-shell .preview-panel{position:relative}.app-shell .section-top{position:absolute;z-index:2;top:10px;left:10px;right:10px;padding:0}.app-shell .section-top>span{display:none}.app-shell .preview-actions{width:100%;justify-content:space-between}.app-shell .section-top .icon-button{width:32px;height:32px;padding:0;border:0;background:transparent;color:#6e6e73}.app-shell .mobile-preview-download{display:grid;place-items:center;position:absolute;z-index:2;right:18px;bottom:18px;width:36px;height:36px;padding:0;border-radius:50%;box-shadow:0 4px 14px #0003}.app-shell .mobile-preview-download span{display:none}
- .app-shell .preview-stage{padding:10px 14px}.app-shell .preview-stage canvas{width:min(100%,clamp(190px,30dvh,260px))}
- .app-shell .download{font-size:11px;padding:10px 12px;gap:6px}.app-shell .controls{padding:18px 15px 24px}.app-shell .preview-download,.app-shell .preview-credit{display:none}
-}
+/* Small icon buttons share one shape. */
+.icon-button{width:32px;height:32px;min-width:32px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--text-2);display:grid;place-items:center;flex:none;transition:background-color .15s var(--ease),color .15s var(--ease)}
+.icon-button:hover:not(:disabled){background:var(--raised);color:var(--text-1)}
+.icon-button svg{width:16px;height:16px}
 
-.photo-frame-controls{margin-top:20px;padding:15px 16px 17px;border:1px solid #e5e5e9;border-radius:12px;background:#fafafa}
-.photo-frame-controls .field-label{display:flex;align-items:center;justify-content:space-between;margin:0 0 2px;color:#1d1d1f;font-weight:600}
-.photo-frame-controls .icon-button{width:22px;height:22px;padding:0;color:#6e6e73}
-.photo-frame-controls .range-label{margin-top:13px}
-.photo-frame-controls .frame-toggle{margin:12px 0 0}
-.segmented ~ .upload-zone{margin-top:20px}
-.photo-treatment-label{display:flex;align-items:center;justify-content:space-between}
-.photo-treatment-label .icon-button{width:22px;height:22px;padding:0;color:#6e6e73}
-.photo-tone-controls{margin-top:12px}
-.typography-alignment{margin-top:8px}
-.title-size-range{margin:0 0 2px}
-.weight-label{margin:0}
-.weight-options{margin-bottom:2px}
+/* Buttons: one primary (download), the rest secondary. */
+.download{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border:1px solid var(--line-2);border-radius:10px;background:var(--raised);color:var(--text-1);font-size:14px;font-weight:600;transition:background-color .15s var(--ease),transform .15s var(--ease)}
+.download:hover:not(:disabled){background:var(--raised-2)}
+.download:active:not(:disabled){transform:scale(.98)}
+.download svg{width:16px;height:16px}
+.nav-download,.mobile-preview-download{background:var(--text-1);border-color:transparent;color:#171615}
+.nav-download:hover:not(:disabled),.mobile-preview-download:hover:not(:disabled){background:#fff}
 
-/* Interactive cards use the same border feedback as the text fields. */
-.app-shell .style-option:hover:not(:disabled),
-.app-shell .corner-options button:hover:not(:disabled),
-.app-shell .upload-zone:hover:not(:disabled){
-  filter:none;
-  border-color:#aaaab0;
-}
-.app-shell .style-option.selected:hover:not(:disabled),
-.app-shell .corner-options button.active:hover:not(:disabled){
-  border-color:#fa233b;
-}
-
-.app-shell{transition:filter .45s ease,background-color .25s ease,color .25s ease}
-body:has(.download-reveal){background:var(--page)}
-body:has(.download-reveal:not(.is-leaving)) .app-shell{filter:blur(40px)}
-.download-reveal{position:fixed;inset:0;z-index:30}
-.download-reveal:before{content:"";position:absolute;inset:0;background:rgba(6,6,8,.86);animation:revealFade .4s ease both}
-.download-reveal.is-leaving:before{animation:revealFade .5s ease .42s reverse forwards}
-.download-reveal.is-leaving .download-case{animation:coverSend .74s cubic-bezier(.5,.02,.78,.18) .48s both}
-.download-reveal.is-leaving .download-cd{animation:cdBack .5s cubic-bezier(.4,0,.2,1) both}
-.download-reveal.is-leaving .download-caption{animation:captionOut .32s ease both}
-.download-anchor{position:absolute;z-index:1;left:50%;top:50%;width:var(--case-size);transform:translate(-50%,-50%)}
-.download-case{position:relative;width:100%;aspect-ratio:1;animation:coverToCenter .78s cubic-bezier(.22,1,.36,1) both}
-.download-cd{position:absolute;z-index:0;top:8%;right:-24%;width:86%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 50%,#101012 0 13.5%,#f4f4f6 14% 16.6%,#7d7d86 17% 18.6%,#f7f7f8 19.2% 33%,#c5c5cc 33% 34.2%,transparent 34.6%),conic-gradient(from 200deg,#eeeaf2,#d3e2f6 40deg,#f6e4cf 85deg,#e7d0ea 130deg,#d4ebe3 175deg,#f4efe6 220deg,#d9d4ef 265deg,#f0d6d2 310deg,#eeeaf2 360deg);box-shadow:inset 0 0 0 1px #ffffff66,0 14px 28px #00000066;transform:translateX(-36%);animation:cdPeek 1.05s cubic-bezier(.16,1,.3,1) .9s both}
-.download-cd:after{content:"";position:absolute;inset:20%;border-radius:50%;background:radial-gradient(circle at 36% 30%,#ffffff80,transparent 48%);pointer-events:none}
-.download-cover{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;border-radius:12px;box-shadow:8px 0 18px #00000040,0 28px 60px #00000073}
-.download-caption{position:absolute;left:0;right:0;top:calc(100% + 28px);margin:0;text-align:center;color:#fff;font-size:26px;font-weight:500;letter-spacing:-.6px;animation:captionIn .4s ease 1.45s both}
-@keyframes revealFade{from{opacity:0}to{opacity:1}}
-@keyframes coverToCenter{from{transform:translate(var(--from-x),var(--from-y)) scale(var(--from-scale))}to{transform:none}}
-@keyframes coverSend{0%{transform:none}16%{transform:translateY(14px) scale(.975)}100%{transform:translateY(calc(-64vh - 72%)) scale(.8)}}
-@keyframes cdPeek{0%{transform:translateX(-36%)}8%{transform:translateX(-30%)}16%{transform:translateX(-40%)}24%{transform:translateX(-33%)}32%{transform:translateX(-36%)}100%{transform:none}}
-@keyframes cdBack{0%{transform:none}62%{transform:translateX(-42%)}78%{transform:translateX(-32%)}90%{transform:translateX(-37%)}100%{transform:translateX(-36%)}}
-@keyframes captionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes captionOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
-@media(max-width:650px){.download-anchor{transform:translate(calc(-50% - 12%),-50%)}.download-caption{font-size:22px;top:calc(100% + 20px)}}
-@media(prefers-reduced-motion:reduce){.app-shell{transition:none}body:has(.download-reveal:not(.is-leaving)) .app-shell{filter:none}.download-reveal:before,.download-case,.download-cd,.download-caption{animation:none}.download-cd{transform:none}.download-reveal.is-leaving{opacity:0}}
-
-html[data-theme="light"]{color-scheme:light}
-
-/* Apple UISegmentedControl: 32pt track, 2pt inset, continuous-style corners. */
-.theme-switch{position:relative;display:grid;grid-template-columns:1fr 1fr;width:68px;height:32px;padding:2px;border-radius:9px;background:var(--switch-track);flex:0 0 auto}
-.theme-switch-thumb{position:absolute;z-index:0;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);border-radius:7px;background:var(--switch-thumb);box-shadow:var(--switch-shadow);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-html[data-theme="dark"] .theme-switch-thumb{transform:translateX(100%)}
-.theme-switch button{position:relative;z-index:1;display:grid;place-items:center;border:0;border-radius:7px;background:transparent;padding:0;color:var(--switch-icon-muted)}
-html[data-theme="light"] .theme-switch button:first-of-type,
-html[data-theme="dark"] .theme-switch button:last-of-type{color:var(--switch-icon)}
-.theme-switch button:hover,.theme-switch button:hover:not(:disabled){filter:none}
-.theme-switch button:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
-.theme-switch svg{width:15px;height:15px;display:block}
-
-.nav-menu{position:relative;flex:0 0 auto}
-.nav-menu-trigger{width:32px;height:32px;padding:0;border:0;border-radius:8px;background:transparent;color:inherit;display:grid;place-items:center}
-.nav-menu-trigger:hover,.nav-menu-trigger:hover:not(:disabled){filter:none;background:rgba(118,118,128,.12)}
-.nav-menu-trigger:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
-.nav-menu-panel{position:absolute;top:calc(100% + 8px);right:0;z-index:80;width:248px;padding:14px;border-radius:14px;background:#fff;color:#1d1d1f;border:1px solid rgba(0,0,0,.08);box-shadow:0 10px 40px #00000022;display:grid;gap:14px}
-.nav-menu-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:32px}
-.nav-menu-label{font-size:13px;font-weight:600;letter-spacing:-.2px}
-.nav-menu-link{min-height:36px;padding:0 12px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#f1f1f4;color:#4b4b50;font-size:13px;font-weight:600}
-.nav-menu-link:hover{background:#e4e4e9}
-.locale-switch{position:relative;display:grid;grid-template-columns:1fr 1fr;width:68px;height:32px;padding:2px;border-radius:9px;background:var(--switch-track);flex:0 0 auto}
-.locale-switch-thumb{position:absolute;z-index:0;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);border-radius:7px;background:var(--switch-thumb);box-shadow:var(--switch-shadow);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-html[data-locale="es"] .locale-switch-thumb{transform:translateX(100%)}
-.locale-switch button{position:relative;z-index:1;border:0;border-radius:7px;background:transparent;padding:0;font-size:11px;font-weight:600;letter-spacing:-.2px;color:var(--switch-icon-muted)}
-html[data-locale="en"] .locale-switch button:first-of-type,
-html[data-locale="es"] .locale-switch button:last-of-type{color:var(--switch-icon)}
-.locale-switch button:hover,.locale-switch button:hover:not(:disabled){filter:none}
-.locale-switch button:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
-html[data-theme="dark"] .nav-menu-panel{background:#1c1c1e;color:#f5f5f7;border-color:rgba(255,255,255,.12);box-shadow:0 10px 40px #00000080}
-html[data-theme="dark"] .nav-menu-link{background:#3a3a3f;color:#f5f5f7}
-html[data-theme="dark"] .nav-menu-link:hover{background:#4a4a50}
-@media(max-width:380px){
-  .studio-label{display:none}
-  .editor-nav{padding-left:12px;padding-right:12px}
-}
-
-html[data-theme="dark"] .app-shell{background:#000;color:#f5f5f7;color-scheme:dark;--line:#38383a;--muted:#98989d;--text:#f5f5f7;--panel:#1c1c1e}
-html[data-theme="dark"] .editor-nav-caption{color:#86868b}
-html[data-theme="dark"] .app-shell .eyebrow{color:#86868b}
-html[data-theme="dark"] .app-shell .preview-panel{background:#1c1c1e;border-color:#38383a;color:#f5f5f7;box-shadow:0 4px 24px #0006}
-html[data-theme="dark"] .app-shell .section-top,
-html[data-theme="dark"] .app-shell .preview-panel .icon-button{color:#98989d}
-html[data-theme="dark"] .app-shell .preview-stage{background:radial-gradient(ellipse at 50% 42%,#2c2c2e 0%,#1c1c1e 70%)}
-html[data-theme="dark"] .app-shell .preview-stage canvas{box-shadow:0 16px 40px #0009}
-html[data-theme="dark"] .app-shell .controls{background:#1c1c1e;border-color:#38383a;scrollbar-color:#48484a transparent;box-shadow:0 4px 24px #0006}
-html[data-theme="dark"] .app-shell .control-section{border-color:#38383a}
-html[data-theme="dark"] .app-shell .section-heading>span{color:#8e8e93}
-html[data-theme="dark"] .app-shell .style-option{background:#2c2c2e;border-color:#3a3a3c}
-html[data-theme="dark"] .app-shell .style-option.selected{background:#3a2024;border-color:#fa233b}
-html[data-theme="dark"] .app-shell .style-option small,
-html[data-theme="dark"] .app-shell .field,
-html[data-theme="dark"] .app-shell .field-label,
-html[data-theme="dark"] .app-shell .color-control,
-html[data-theme="dark"] .app-shell .toggle-row,
-html[data-theme="dark"] .app-shell .range-label{color:#98989d}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger){background:#2c2c2e;color:#f5f5f7;border-color:#48484a}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger):hover,
-html[data-theme="dark"] .app-shell .style-option:hover:not(:disabled),
-html[data-theme="dark"] .app-shell .corner-options button:hover:not(:disabled),
-html[data-theme="dark"] .app-shell .upload-zone:hover:not(:disabled){border-color:#636366}
-html[data-theme="dark"] .app-shell .style-option.selected:hover:not(:disabled),
-html[data-theme="dark"] .app-shell .corner-options button.active:hover:not(:disabled){border-color:#fa233b}
-html[data-theme="dark"] .app-shell .color-control input,
-html[data-theme="dark"] .app-shell .custom-tint input{border-color:#48484a}
-html[data-theme="dark"] .app-shell .toggle-row input{background:#48484a;border-color:#48484a}
-html[data-theme="dark"] .app-shell .toggle-row input:checked{background:#fa233b;border-color:#fa233b}
-html[data-theme="dark"] .app-shell .corner-options button{background:#2c2c2e;border-color:#3a3a3c;color:#98989d}
-html[data-theme="dark"] .app-shell .corner-options button.active{background:#3a2024;border-color:#fa233b;color:#ff6b7d}
-html[data-theme="dark"] .app-shell .corner-icon{border-color:#636366}
-html[data-theme="dark"] .app-shell .segmented{background:rgba(118,118,128,.24)}
-html[data-theme="dark"] .app-shell .segmented button{color:#98989d}
-html[data-theme="dark"] .app-shell .segmented button.active{color:#f5f5f7;background:#636366;box-shadow:0 2px 6px #0006}
-html[data-theme="dark"] .app-shell .swatch{border-color:#3a3a3c}
-html[data-theme="dark"] .app-shell .upload-zone{background:#2c2c2e;border-color:#48484a}
-html[data-theme="dark"] .app-shell .upload-zone.dragging{background:#3a2024;border-color:#fa233b}
-html[data-theme="dark"] .app-shell .upload-zone strong,
-html[data-theme="dark"] .app-shell .range-label span,
-html[data-theme="dark"] .photo-frame-controls .field-label{color:#f5f5f7}
-html[data-theme="dark"] .app-shell .upload-zone span,
-html[data-theme="dark"] .app-shell .upload-zone small,
-html[data-theme="dark"] .app-shell .help-text,
-html[data-theme="dark"] .app-shell .file-row{color:#8e8e93}
-html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{border-color:#48484a;background:linear-gradient(to right,#fa233b 0 var(--range-progress),#2c2c2e var(--range-progress) 100%)}
-html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-thumb{box-shadow:0 0 0 1px #1c1c1e}
-html[data-theme="dark"] .app-shell .range-label input[type="range"]::-moz-range-track{border-color:#48484a;background:#2c2c2e}
-html[data-theme="dark"] .app-shell .tint{border-color:#1c1c1e;box-shadow:0 0 0 1px #48484a}
-html[data-theme="dark"] .app-shell .toast{background:#2c2c2e;color:#f5f5f7;border-color:#48484a;box-shadow:0 8px 32px #000a}
-html[data-theme="dark"] .app-shell .toast.error{background:#3a2024;border-color:#fa233b80}
-html[data-theme="dark"] .photo-frame-controls{background:#2c2c2e;border-color:#3a3a3c}
-html[data-theme="dark"] .photo-frame-controls .icon-button,
-html[data-theme="dark"] .photo-treatment-label .icon-button,
-html[data-theme="dark"] .app-shell .section-top .icon-button{color:#98989d}
-
-/* Layered highlights and translucent surfaces suggest refractive glass. */
-.app-shell{background:radial-gradient(ellipse at 10% 8%,#f4dce9 0,transparent 42%),radial-gradient(ellipse at 90% 80%,#d9e6fa 0,transparent 43%),#edf0f7}
-html[data-theme="dark"] .app-shell{background:radial-gradient(ellipse at 10% 8%,#342034 0,transparent 42%),radial-gradient(ellipse at 90% 80%,#192841 0,transparent 43%),#10121b}
-.app-shell .app-header{height:80px;padding:12px 20px 0;background:transparent;border:0;backdrop-filter:none;-webkit-backdrop-filter:none}
-.editor-nav{max-width:1064px;width:calc(100% - 16px);height:60px;padding:0 18px 0 24px;border:1px solid rgba(255,255,255,.8);border-radius:999px;background:linear-gradient(135deg,rgba(255,255,255,.85),rgba(255,255,255,.65) 48%,rgba(221,230,255,.72));box-shadow:inset 0 1px 1px #fff,inset 0 -1px 2px #ffffff80,0 12px 36px #3b49631c;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
-html[data-theme="dark"] .editor-nav{border-color:#ffffff38;background:linear-gradient(135deg,#ffffff48,#ffffff28 48%,#b4c8ff38);box-shadow:inset 0 1px 1px #ffffff70,inset 0 -1px 2px #ffffff1c,0 12px 36px #0005}
-.app-shell .preview-panel,.app-shell .controls{background:linear-gradient(135deg,rgba(255,255,255,.88),rgba(255,255,255,.7));border-color:#ffffffc9;box-shadow:inset 0 1px 1px #fff,0 18px 48px #53617a19;backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
-.app-shell .preview-stage{background:radial-gradient(ellipse at 50% 42%,#d9dff077,transparent 75%)}
-html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{background:linear-gradient(135deg,#ffffff38,#ffffff20);border-color:#ffffff30;box-shadow:inset 0 1px 1px #ffffff38,0 18px 48px #0004}
-html[data-theme="dark"] .app-shell .preview-stage{background:radial-gradient(ellipse at 50% 42%,#6a7ba333,transparent 75%)}
-.nav-menu-panel{background:rgba(255,255,255,.9);border-color:#fff;border-radius:20px;box-shadow:inset 0 1px 1px #fff,0 14px 40px #1b254033;backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%)}
-html[data-theme="dark"] .nav-menu-panel{background:rgba(32,33,42,.9);border-color:#ffffff38;box-shadow:inset 0 1px 1px #ffffff38,0 14px 40px #0007}
-@media(max-width:650px){.app-shell .app-header{height:72px;padding:12px 12px 0}.editor-nav{width:100%;height:58px;padding:0 14px 0 18px}}
-
-/* Glass controls retain distinct selected, hover, and focus states. */
-.nav-menu-trigger{border-radius:50%;background:rgba(255,255,255,.18);box-shadow:inset 0 1px 1px #ffffff80,0 2px 8px #00000012}
-.nav-menu-trigger:hover,.nav-menu-trigger:hover:not(:disabled){background:rgba(255,255,255,.35)}
-.theme-switch,.locale-switch{border-radius:999px;background:rgba(100,110,135,.16);box-shadow:inset 0 1px 3px #202a4026,0 1px 0 #ffffff80}
-.theme-switch-thumb,.locale-switch-thumb{border-radius:999px;background:linear-gradient(145deg,#fff,#e9edfae6);box-shadow:inset 0 1px 1px #fff,0 2px 7px #1b254033}
-.theme-switch button,.locale-switch button{border-radius:999px}
-.nav-menu-link{border:1px solid #ffffffa6;border-radius:999px;background:linear-gradient(135deg,#ffffffb3,#e3e9f580);box-shadow:inset 0 1px 1px #fff,0 3px 10px #28344b14}
-.nav-menu-link:hover{background:#fff}
-.app-shell .style-option,.app-shell .corner-options button,.app-shell .upload-zone{background:linear-gradient(135deg,#ffffffaa,#e8eef780);border-color:#ffffffc9;box-shadow:inset 0 1px 1px #fff,0 3px 12px #45577312}
-.app-shell .style-option.selected,.app-shell .corner-options button.active,.app-shell .upload-zone.dragging{background:linear-gradient(135deg,#fff5f7e6,#ffdce5aa);border-color:#fa233b}
-.app-shell .segmented{border-radius:999px;background:#8795b326;box-shadow:inset 0 1px 3px #26344d20,0 1px 0 #ffffff80}
-.app-shell .segmented button{border-radius:999px}
-.app-shell .segmented button.active{background:linear-gradient(135deg,#fff,#e8edf9d9);box-shadow:inset 0 1px 1px #fff,0 2px 8px #26344d24}
-.app-shell .toggle-row input{background:linear-gradient(135deg,#a9b4c4,#d5dce7);border-color:#ffffffa6;box-shadow:inset 0 1px 3px #25324d30,0 1px 0 #fff}
-.app-shell .toggle-row input:before{box-shadow:inset 0 1px 1px #fff,0 1px 4px #26344d55}
-.app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6a7c,#e71937);border-color:#f9596e}
-.app-shell .download{background:linear-gradient(135deg,#ff6577,#e81738);box-shadow:inset 0 1px 1px #ffffffa6,0 6px 18px #d7274940}
-.app-shell .download{transition:filter .2s,box-shadow .2s,opacity .15s}
-.app-shell .download:hover:not(:disabled){filter:brightness(1.08)}
-html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch{background:#ffffff1a;box-shadow:inset 0 1px 3px #0006,0 1px 0 #ffffff24}
-html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{background:linear-gradient(135deg,#8b8e9d,#525666);box-shadow:inset 0 1px 1px #ffffff70,0 2px 7px #0007}
-html[data-theme="dark"] .nav-menu-link{background:linear-gradient(135deg,#ffffff30,#ffffff16);border-color:#ffffff30;color:#f5f5f7}
-html[data-theme="dark"] .nav-menu-link:hover{background:#ffffff40}
-html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .upload-zone{background:linear-gradient(135deg,#ffffff20,#ffffff0c);border-color:#ffffff30;box-shadow:inset 0 1px 1px #ffffff30,0 3px 12px #0002}
-html[data-theme="dark"] .app-shell .style-option.selected,html[data-theme="dark"] .app-shell .corner-options button.active,html[data-theme="dark"] .app-shell .upload-zone.dragging{background:linear-gradient(135deg,#a3425555,#61283855);border-color:#fa233b}
-html[data-theme="dark"] .app-shell .segmented{background:#0004;box-shadow:inset 0 1px 3px #0006,0 1px 0 #ffffff18}
-html[data-theme="dark"] .app-shell .segmented button.active{background:linear-gradient(135deg,#8b8e9d,#525666);box-shadow:inset 0 1px 1px #ffffff70,0 2px 8px #0006}
-html[data-theme="dark"] .app-shell .toggle-row input{background:linear-gradient(135deg,#5a5e6d,#343743);border-color:#ffffff30;box-shadow:inset 0 1px 3px #0006}
-html[data-theme="dark"] .app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6a7c,#e71937);border-color:#f9596e}
-
-/* Translucent text fields match the glass controls without sacrificing contrast. */
-.app-shell .field :is(input,textarea,.select-trigger){background:linear-gradient(135deg,rgba(255,255,255,.74),rgba(235,241,252,.48));border-color:rgba(255,255,255,.85);box-shadow:inset 0 1px 2px rgba(65,80,110,.12),0 1px 0 rgba(255,255,255,.65);transition:border-color .15s,box-shadow .15s}
-.app-shell .field :is(input,textarea,.select-trigger)::placeholder{color:#686e7b;opacity:1}
-.app-shell .field :is(input,textarea,.select-trigger):hover{border-color:#a1aac0}
-.app-shell .field :is(input,textarea,.select-trigger):focus{border-color:#d42545;box-shadow:inset 0 1px 2px #41506e1f,0 0 0 3px #fa233b2b}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger){background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border-color:rgba(255,255,255,.2);box-shadow:inset 0 1px 2px #0004,0 1px 0 #ffffff12}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger)::placeholder{color:#b3b6c2;opacity:1}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger):hover{border-color:#ffffff70}
-html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger):focus{border-color:#ff7184;box-shadow:inset 0 1px 2px #0004,0 0 0 3px #ff718440}
-
-/* Restore the original accent in both appearances. */
-.app-shell{--accent:#fa233b}
-html[data-theme="dark"] .app-shell{--accent:#fa233b}
-.app-shell .download{background:linear-gradient(135deg,#4a4b53,#17181d);color:#fff;box-shadow:inset 0 1px 1px #ffffff70,0 6px 18px #17181d40}
-html[data-theme="dark"] .app-shell .download{background:linear-gradient(135deg,#fff,#d8dbe4);color:#17181d;box-shadow:inset 0 1px 1px #fff,0 6px 18px #0005}
-.app-shell .style-option.selected,.app-shell .corner-options button.active,.app-shell .upload-zone.dragging{background:linear-gradient(135deg,#ffffffed,#d9dce5aa);border-color:var(--accent);color:var(--text)}
-html[data-theme="dark"] .app-shell .style-option.selected,html[data-theme="dark"] .app-shell .corner-options button.active,html[data-theme="dark"] .app-shell .upload-zone.dragging{background:linear-gradient(135deg,#ffffff38,#ffffff18);border-color:var(--accent);color:var(--text)}
-.app-shell .style-option.selected:hover:not(:disabled),.app-shell .corner-options button.active:hover:not(:disabled),html[data-theme="dark"] .app-shell .style-option.selected:hover:not(:disabled),html[data-theme="dark"] .app-shell .corner-options button.active:hover:not(:disabled){border-color:var(--accent)}
-.app-shell .corner-options button.active .corner-icon{border-color:currentColor}
-.app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6577,#e81738);border-color:#ffffff66}
-html[data-theme="dark"] .app-shell .toggle-row input:checked{background:linear-gradient(135deg,#ff6577,#e81738);border-color:#ffffff66}
-html[data-theme="dark"] .app-shell .toggle-row input:checked:before{background:#303138}
-.app-shell .swatch.selected,.app-shell .tint.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-.app-shell .upload-zone{color:var(--accent)}
-.app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--accent) 0 var(--range-progress),#f5f5f7 var(--range-progress) 100%)}
-html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--accent) 0 var(--range-progress),#2c2c2e var(--range-progress) 100%)}
-.app-shell .range-label input[type="range"]::-webkit-slider-thumb{background:var(--accent)}
-.app-shell .range-label input[type="range"]::-moz-range-progress{border-color:var(--accent);background:var(--accent)}
-.app-shell .range-label input[type="range"]::-moz-range-thumb{background:var(--accent)}
-.app-shell .field :is(input,textarea,.select-trigger):focus,html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger):focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
-.app-shell .controls:focus-visible{outline-color:var(--accent)}
-.theme-switch button:focus-visible,.locale-switch button:focus-visible,.nav-menu-trigger:focus-visible{outline-color:#202127}
-html[data-theme="dark"] .theme-switch button:focus-visible,html[data-theme="dark"] .locale-switch button:focus-visible,html[data-theme="dark"] .nav-menu-trigger:focus-visible{outline-color:#f2f3f7}
-.app-shell .download:hover:not(:disabled){background:linear-gradient(135deg,#4a4b53,#17181d)}
-html[data-theme="dark"] .app-shell .download:hover:not(:disabled){background:linear-gradient(135deg,#fff,#d8dbe4)}
-
-/* Switch thumbs glide between states and compress subtly while pressed. */
-.theme-switch-thumb,.locale-switch-thumb{transition:transform .38s cubic-bezier(.22,1.35,.36,1),box-shadow .2s ease}
-.theme-switch:active .theme-switch-thumb,.locale-switch:active .locale-switch-thumb{box-shadow:inset 0 1px 1px #ffffffb3,0 1px 4px #1b25404d}
-.app-shell .toggle-row input{transition:border-color .25s ease,box-shadow .25s ease}
-.app-shell .toggle-row input:before{transition:transform .38s cubic-bezier(.22,1.35,.36,1),background-color .25s ease,box-shadow .2s ease}
-.app-shell .toggle-row input:active:before{scale:.85}
-@media(prefers-reduced-motion:reduce){.app-shell .toggle-row input:active:before{scale:1}}
-
-/* One persistent highlight slides beneath the field selector labels. */
-.app-shell .segmented {
-  position: relative;
-  isolation: isolate;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3px;
-}
-.app-shell .segmented:has(> button:nth-child(3)) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.app-shell .segmented:has(> button:nth-child(4)) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.app-shell .segmented::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 11px) / 2);
-  border-radius: 999px;
-  background: linear-gradient(120deg, rgba(255,255,255,.55), rgba(210,225,255,.3));
-  box-shadow: inset 0 1px 1px #ffffffb3, inset 0 -1px 3px #ffffff40, 0 2px 8px #26344d24;
-  -webkit-backdrop-filter: blur(6px) saturate(160%);
-  backdrop-filter: blur(6px) saturate(160%);
-  transform: translateX(calc(var(--segment-index, 0) * (100% + 3px)));
-  transition: transform .32s cubic-bezier(.22, 1, .36, 1);
-}
-.app-shell .segmented:has(> button:nth-child(3))::before { width: calc((100% - 14px) / 3); }
-.app-shell .segmented:has(> button:nth-child(4))::before { width: calc((100% - 17px) / 4); }
-.app-shell .segmented:has(> button:nth-child(2).active) { --segment-index: 1; }
-.app-shell .segmented:has(> button:nth-child(3).active) { --segment-index: 2; }
-.app-shell .segmented:has(> button:nth-child(4).active) { --segment-index: 3; }
-.app-shell .segmented > button { min-width: 0; transition: color .2s ease; }
-.app-shell .segmented > button.active,
-html[data-theme="dark"] .app-shell .segmented > button.active { background: transparent; box-shadow: none; }
-html[data-theme="dark"] .app-shell .segmented::before {
-  background: linear-gradient(120deg, rgba(255,255,255,.3), rgba(160,185,255,.17));
-  box-shadow: inset 0 1px 1px #ffffff80, inset 0 -1px 3px #ffffff20, 0 2px 8px #0005;
-}
-@media (prefers-reduced-motion: reduce) {
-  .app-shell .segmented::before,
-  .app-shell .toggle-row input::before { transition: none; }
-}
-
-/* Glass slider thumbs enlarge without shifting the track or changing the value. */
-.app-shell {
-  --slider-glass: linear-gradient(145deg, #ffffff, #eef1f7 48%, #cbd3e0);
-  --slider-edge: #8c97ab;
-  --slider-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #5c69854d, 0 2px 6px #26344d40;
-}
-html[data-theme="dark"] .app-shell {
-  --slider-glass: linear-gradient(145deg, #ffffff, #dce4f1 48%, #8794ad);
-  --slider-edge: #ffffffb3;
-  --slider-shadow: inset 0 1px 1px #fff, inset 0 -1px 2px #ffffff40, 0 2px 7px #0008;
-}
-.app-shell .range-label input[type="range"]::-webkit-slider-thumb {
-  width: 20px;
-  height: 12px;
-  margin-top: -4.5px;
-  border-radius: 999px;
-  border: 1px solid var(--slider-edge);
-  background: var(--slider-glass);
-  box-shadow: var(--slider-shadow);
-  transition: transform .18s cubic-bezier(.2,.8,.2,1);
-}
-html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-thumb { box-shadow: var(--slider-shadow); }
-.app-shell .range-label input[type="range"]::-moz-range-thumb {
-  box-sizing: border-box;
-  width: 22px;
-  height: 14px;
-  border-radius: 999px;
-  border: 1px solid var(--slider-edge);
-  background: var(--slider-glass);
-  box-shadow: var(--slider-shadow);
-  transition: transform .18s cubic-bezier(.2,.8,.2,1);
-}
-.app-shell .range-label input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.5); }
-.app-shell .range-label input[type="range"]:active::-moz-range-thumb { transform: scale(1.5); }
-@media (prefers-reduced-motion: reduce) {
-  .app-shell .range-label input[type="range"]::-webkit-slider-thumb { transition: none; }
-  .app-shell .range-label input[type="range"]::-moz-range-thumb { transition: none; }
-  .app-shell .range-label input[type="range"]:active::-webkit-slider-thumb { transform: none; }
-  .app-shell .range-label input[type="range"]:active::-moz-range-thumb { transform: none; }
-}
-
-/* A separate glass layer keeps the navigation and its popover interactive. */
-html .liquid-nav.liquid-nav{
-  position:relative;
-  isolation:isolate;
-  border:0;
-  background:transparent;
-  box-shadow:none;
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
-  --liquid-fill:linear-gradient(120deg,rgba(255,255,255,.66),rgba(239,244,255,.44) 48%,rgba(210,225,255,.55));
-  --liquid-edge:rgba(255,255,255,.8);
-  --liquid-shadow:0 12px 36px rgba(39,52,78,.15);
-}
-html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.23),rgba(210,225,255,.12) 48%,rgba(160,185,255,.18));--liquid-edge:rgba(255,255,255,.28);--liquid-shadow:0 12px 36px rgba(0,0,0,.35)}
-.liquid-nav::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  border:1px solid var(--liquid-edge);
-  border-radius:inherit;
-  background:var(--liquid-fill);
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.65),inset 0 -2px 5px rgba(255,255,255,.16),inset 3px 0 8px rgba(255,255,255,.1),var(--liquid-shadow);
-  -webkit-backdrop-filter:blur(18px) saturate(160%);
-  backdrop-filter:blur(18px) saturate(160%);
-}
-@supports (backdrop-filter: url("#liquid-nav-distortion")){
-  .liquid-nav::before{backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%)}
-}
-@media(forced-colors:active){
-  .liquid-nav::before{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
-}
-
-/* Shared liquid-glass interface surfaces; the cover canvas is not filtered. */
-.app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
-  -webkit-backdrop-filter:blur(18px) saturate(160%);
-  backdrop-filter:blur(18px) saturate(160%);
-}
-.app-shell .preview-panel,.app-shell .controls{
-  box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -2px 8px #ffffff40,0 18px 48px #53617a24;
-}
-html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
-  box-shadow:inset 0 1px 1px #ffffff60,inset 0 -2px 8px #ffffff10,0 18px 48px #0005;
-}
-.app-shell .photo-frame-controls{
-  background:linear-gradient(135deg,#ffffffa6,#e3eaf77a);
-  border-color:#ffffffb3;
-  box-shadow:inset 0 1px 1px #fff,0 6px 18px #45577314;
-}
-html[data-theme="dark"] .app-shell .photo-frame-controls{
-  background:linear-gradient(135deg,#ffffff20,#ffffff0a);
-  border-color:#ffffff30;
-  box-shadow:inset 0 1px 1px #ffffff30,0 6px 18px #0003;
-}
-.app-shell .style-option,.app-shell .corner-options button,.app-shell .upload-zone,.app-shell .field :is(input,textarea,.select-trigger){
-  box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -1px 3px #ffffff40,0 3px 12px #45577314;
-}
-html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .upload-zone,html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger){
-  box-shadow:inset 0 1px 1px #ffffff38,inset 0 -1px 3px #ffffff0d,0 3px 12px #0003;
-}
-.app-shell .field :is(input,textarea,.select-trigger):focus,html[data-theme="dark"] .app-shell .field :is(input,textarea,.select-trigger):focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
-@supports (backdrop-filter:url("#liquid-nav-distortion")){
-  .app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
-    backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%);
-  }
-}
-@media(forced-colors:active){
-  .app-shell .preview-panel,.app-shell .controls,.nav-menu-panel,.app-shell .photo-frame-controls,.app-shell .toast{
-    background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none;
-  }
-}
-
-/* Refract the backdrop of controls as well as the larger glass surfaces. */
-:is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
-.app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
-  -webkit-backdrop-filter:blur(18px) saturate(160%);
-  backdrop-filter:blur(18px) saturate(160%);
-}
-.app-shell .download,.app-shell .download:hover:not(:disabled){
-  color:#1d1d1f;
-  border:1px solid rgba(255,255,255,.65);
-  background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
-  box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -2px 5px #ffffff29,0 6px 18px #1b254026;
-}
-html[data-theme="dark"] .app-shell .download,html[data-theme="dark"] .app-shell .download:hover:not(:disabled){
-  color:#fff;
-  border-color:rgba(255,255,255,.4);
-  background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
-  box-shadow:inset 0 1px 1px #ffffff80,inset 0 -2px 5px #ffffff20,0 6px 18px #0005;
-}
-@supports (backdrop-filter:url("#liquid-nav-distortion")){
-  :is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
-  .app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
-    backdrop-filter:url("#liquid-nav-distortion") blur(18px) saturate(160%);
-  }
-}
-@media(forced-colors:active){
-  :is(.nav-menu-trigger,.nav-menu-link,.theme-switch,.locale-switch),
-  .app-shell :is(.download,.style-option,.corner-options button,.upload-zone,.segmented,.toggle-row input){
-    backdrop-filter:none;-webkit-backdrop-filter:none;
-  }
-}
-
-@media(forced-colors:active){.app-shell,html[data-theme="dark"] .app-shell{background:Canvas}}
-
-/* Keep the editor background visible through its glass panels. */
-.app-shell .preview-panel,.app-shell .controls{
-  background:linear-gradient(120deg,rgba(255,255,255,.38),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
-  -webkit-backdrop-filter:blur(2px) saturate(160%);
-  backdrop-filter:blur(2px) saturate(160%);
-}
-html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
-  background:linear-gradient(120deg,rgba(255,255,255,.23),rgba(210,225,255,.12) 48%,rgba(160,185,255,.18));
-}
-@supports (backdrop-filter:url("#liquid-nav-distortion")){
-  .app-shell .preview-panel,.app-shell .controls{backdrop-filter:url("#liquid-nav-distortion") blur(2px) saturate(160%)}
-  .app-shell .segmented::before{backdrop-filter:url("#liquid-nav-distortion") blur(6px) saturate(160%)}
-}
-@media(forced-colors:active){
-  .app-shell .preview-panel,.app-shell .controls,html[data-theme="dark"] .app-shell .preview-panel,html[data-theme="dark"] .app-shell .controls{
-    background:Canvas;backdrop-filter:none;-webkit-backdrop-filter:none;
-  }
-}
-@media(forced-colors:active){
-  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before{
-    background:Highlight;backdrop-filter:none;-webkit-backdrop-filter:none;
-  }
-  .app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active{color:HighlightText}
-}
-
-/* Keep the background visible through the editor navigation. */
-html .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.24),rgba(239,244,255,.1) 48%,rgba(210,225,255,.16))}
-html[data-theme="dark"] .editor-nav.liquid-nav{--liquid-fill:linear-gradient(120deg,rgba(255,255,255,.13),rgba(210,225,255,.06) 48%,rgba(160,185,255,.1))}
-.editor-nav.liquid-nav::before{-webkit-backdrop-filter:blur(2px) saturate(160%);backdrop-filter:blur(2px) saturate(160%)}
-@supports (backdrop-filter:url("#liquid-nav-distortion")){
-  .editor-nav.liquid-nav::before{backdrop-filter:url("#liquid-nav-distortion") blur(2px) saturate(160%)}
-}
-@media(forced-colors:active){.editor-nav.liquid-nav::before{backdrop-filter:none;-webkit-backdrop-filter:none}}
-
-/* Draggable switch thumbs follow the pointer without changing click semantics. */
-.theme-switch,.locale-switch,.app-shell .toggle-row input{touch-action:pan-y}
-.theme-switch[data-dragging="true"] .theme-switch-thumb,.locale-switch[data-dragging="true"] .locale-switch-thumb{
-  transform:translateX(calc(var(--drag-progress) * 100%)) scaleX(var(--drag-stretch,1));transition:none;
-}
-.app-shell .toggle-row input[data-dragging="true"]::before{
-  transform:translateX(calc(var(--drag-progress) * 14px)) scaleX(var(--drag-stretch,1));scale:1;transition:none;
-}
-
-/* Settings and range handles use the same translucent glass as the editor. */
-.nav-menu-panel{background:linear-gradient(120deg,rgba(255,255,255,.72),rgba(220,230,247,.6));border-color:#ffffffa6}
-html[data-theme="dark"] .nav-menu-panel{background:linear-gradient(120deg,rgba(76,88,107,.76),rgba(35,48,67,.82));border-color:#ffffff52}
-.app-shell{--slider-active-glass:linear-gradient(145deg,rgba(255,255,255,.7),rgba(222,232,249,.45) 48%,rgba(170,185,210,.4))}
-html[data-theme="dark"] .app-shell{--slider-active-glass:linear-gradient(145deg,rgba(255,255,255,.68),rgba(205,221,245,.42) 48%,rgba(140,160,193,.38))}
-.app-shell .range-label input[type="range"]:active::-webkit-slider-thumb{background:var(--slider-active-glass)}
-.app-shell .range-label input[type="range"]:active::-moz-range-thumb{background:var(--slider-active-glass)}
-@media(forced-colors:active){.nav-menu-panel,html[data-theme="dark"] .nav-menu-panel{background:Canvas;border-color:CanvasText}}
-
-/* Slightly larger interface text without changing the cover artwork. */
-body{font-size:15px}
-.app-shell h2{font-size:17px}
-.app-shell :is(.field,.field-label,.color-control,.toggle-row,.range-label){font-size:13px}
-.app-shell .field :is(input,textarea,.select-trigger){font-size:15px}
-.app-shell .style-option strong,.app-shell .segmented button{font-size:13px}
-.app-shell .style-option small,.app-shell .corner-options button{font-size:11px}
-.app-shell .help-text{font-size:12px}
-.app-shell .download,.nav-menu-label,.nav-menu-link{font-size:14px}
-.app-shell .section-top{font-size:10px}
-.locale-switch button{font-size:12px}
-@media(max-width:650px){.app-shell .download{font-size:12px}}
-
-/* Keep switch indicators consistent with the translucent download button. */
-.app-shell .segmented::before,.theme-switch-thumb,.locale-switch-thumb,.app-shell .toggle-row input::before{
-  background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
-  box-shadow:inset 0 1px 1px #ffffffa6,inset 0 -1px 3px #ffffff40,0 2px 8px #1b254026;
-  -webkit-backdrop-filter:blur(6px) saturate(160%);
-  backdrop-filter:blur(6px) saturate(160%);
-}
-html[data-theme="dark"] :is(.theme-switch-thumb,.locale-switch-thumb),
-html[data-theme="dark"] .app-shell .segmented::before,
-html[data-theme="dark"] .app-shell .toggle-row input::before,
-html[data-theme="dark"] .app-shell .toggle-row input:checked::before{
-  background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
-  box-shadow:inset 0 1px 1px #ffffff80,inset 0 -1px 3px #ffffff20,0 2px 8px #0005;
-}
-.app-shell .toggle-row input::before,html[data-theme="dark"] .app-shell .toggle-row input::before,
-.app-shell .toggle-row input:checked::before,html[data-theme="dark"] .app-shell .toggle-row input:checked::before{
-  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(240,245,255,.78));
-}
-.app-shell .corner-options button:not(.active):not(:disabled){color:#434b5a}
-.app-shell .corner-options button:not(.active):not(:disabled) .corner-icon{border-color:currentColor}
-html[data-theme="dark"] .app-shell .corner-options button:not(.active):not(:disabled){color:#e0e5f0}
-@media(forced-colors:active){
-  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before{background:Highlight;backdrop-filter:none;-webkit-backdrop-filter:none}
-}
-
-/* Borderless tracks with start, midpoint, and end guides. */
-.app-shell{--range-tick:rgba(70,78,91,.4)}
-html[data-theme="dark"] .app-shell{--range-tick:rgba(192,200,213,.35)}
-.app-shell .range-label input[type="range"]{
-  height:24px;
-  background-image:linear-gradient(var(--range-tick),var(--range-tick)),linear-gradient(var(--range-tick),var(--range-tick)),linear-gradient(var(--range-tick),var(--range-tick));
-  background-size:2px 4px;
-  background-position:11px bottom,center bottom,calc(100% - 11px) bottom;
+/* Preview: the cover on a light table, framed by crop marks. */
+.preview-column{position:relative;min-height:0;display:flex;flex-direction:column;padding:64px 32px 48px;background:var(--bg-0)}
+.preview-panel{position:static;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.section-top{position:absolute;z-index:2;top:12px;left:20px;right:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+/* Platform switch, a hairline, then the platform's cover styles, all in one toolbar row. */
+.preview-pickers{display:flex;align-items:center;gap:12px;min-width:0}
+.platform-switch{flex:none;display:flex;align-items:center;gap:12px}
+.platform-switch::after{content:"";width:1px;height:24px;background:var(--line-2)}
+.preview-actions{flex:none;display:flex;align-items:center}
+/* Platform switch: the two logos in a segmented control. */
+.platform-switch .segmented{width:208px;height:40px}
+.platform-switch .segmented > button{padding:0 12px}
+.platform-switch .platform-logo{width:100%;height:100%;background:none;outline:0;border-radius:0;color:inherit}
+/* The wordmarks have different proportions, so each gets its own height to read at the same size. */
+.platform-switch .platform-logo svg{width:auto;height:14px;max-width:100%}
+.platform-switch .spotify-logo i{width:auto;height:20px;max-width:100%}
+.platform-switch .spotify-logo i{aspect-ratio:266/73}
+/* Cover styles: a strip of thumbnails under the cover. Auto margins center it without clipping when it scrolls. */
+.style-strip{display:flex;gap:8px;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;padding:4px;margin:-4px;scrollbar-width:none}
+.style-strip::-webkit-scrollbar{display:none}
+.style-strip > .style-option{flex:none}
+.style-strip .style-thumb{width:40px;border-radius:6px}
+.preview-stage{position:relative;display:flex;justify-content:center;align-items:center;padding:28px}
+.cover-frame{position:relative;width:min(100%,max(160px,calc(100dvh - 232px)),720px)}
+/* Crop marks: short hairlines on the trim lines, 8px clear of each corner. */
+.cover-frame::before{
+  content:"";position:absolute;inset:-24px;pointer-events:none;
+  background:
+    linear-gradient(var(--mark),var(--mark)) left 0 top 24px/16px 1px,
+    linear-gradient(var(--mark),var(--mark)) left 24px top 0/1px 16px,
+    linear-gradient(var(--mark),var(--mark)) right 0 top 24px/16px 1px,
+    linear-gradient(var(--mark),var(--mark)) right 24px top 0/1px 16px,
+    linear-gradient(var(--mark),var(--mark)) left 0 bottom 24px/16px 1px,
+    linear-gradient(var(--mark),var(--mark)) left 24px bottom 0/1px 16px,
+    linear-gradient(var(--mark),var(--mark)) right 0 bottom 24px/16px 1px,
+    linear-gradient(var(--mark),var(--mark)) right 24px bottom 0/1px 16px;
   background-repeat:no-repeat;
 }
-.app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{border:0}
-.app-shell .range-label input[type="range"]::-moz-range-track{height:5px;border:0}
-.app-shell .range-label input[type="range"]::-moz-range-progress{height:5px;border:0}
-.app-shell .range-label > span{display:none}
-.app-shell .toggle-row input,html[data-theme="dark"] .app-shell .toggle-row input{border:0}
-.app-shell .toggle-row input::before{top:3px;left:3px}
-@media(forced-colors:active){.app-shell,html[data-theme="dark"] .app-shell{--range-tick:CanvasText}}
+.preview-stage canvas{
+  display:block;width:100%;height:auto;aspect-ratio:1;border-radius:8px;box-shadow:0 12px 32px rgba(0,0,0,.45);
+  cursor:grab;touch-action:none;
+  transform:perspective(1000px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
+  transition:transform .4s var(--ease);
+}
+.preview-stage canvas[data-grabbing="true"]{cursor:grabbing;transition:transform .12s var(--ease)}
+/* Reset: the cover is tossed aside, then the fresh one fades in. Individual transform properties stack on the tilt. */
+.preview-stage canvas[data-reset="throw"]{pointer-events:none;animation:coverThrow .4s cubic-bezier(.5,0,.75,0) forwards}
+.preview-stage canvas[data-reset="land"]{pointer-events:none;animation:coverLand .32s var(--ease)}
+@keyframes coverThrow{100%{translate:120% -6%;rotate:16deg;opacity:0}}
+@keyframes coverLand{from{scale:.96;opacity:0}}
+/* Download lives in the navbar; save and the copyright sit in the preview's bottom corners. */
+.nav-download{height:36px;padding:0 16px;border-radius:8px;font-size:13px}
+.save-version{position:absolute;z-index:2;left:20px;bottom:16px;display:grid;place-items:center;width:24px;height:24px;padding:0;border:0;background:none;color:var(--text-2);font-size:13px;transition:color .15s var(--ease)}
+.save-version:hover:not(:disabled){color:var(--text-1)}
+.save-version svg{width:16px;height:16px}
+.mobile-preview-download,.mobile-preview-archive{display:none}
+.preview-credit{position:absolute;right:20px;bottom:16px;margin:0;font-size:12px;line-height:24px;color:var(--text-3)}
 
-/* The selected segment follows pointer drags and snaps on release. */
-.app-shell .segmented{touch-action:pan-y}
-.app-shell .segmented[data-dragging="true"]::before{
-  transform:translateX(calc(var(--drag-index) * (100% + 3px))) scaleX(var(--drag-stretch,1));
-  transition:none;
-}
-@media(prefers-reduced-motion:reduce){
-  .theme-switch[data-dragging="true"],.locale-switch[data-dragging="true"],
-  .app-shell .toggle-row input[data-dragging="true"],.app-shell .segmented[data-dragging="true"]{--drag-stretch:1 !important}
-}
+/* Saved versions: a column of thumbnails left of the cover. */
+.memory-rail{position:absolute;z-index:2;left:0;top:50%;translate:0 -50%;display:flex;flex-direction:column;align-items:center;gap:8px}
+.memory-list{display:flex;flex-direction:column;gap:8px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--card);animation:fadeRise .3s var(--ease)}
+.memory{width:56px;height:56px;padding:0;border:0;border-radius:4px;overflow:hidden;background:var(--raised);outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease)}
+.memory img{display:block;width:100%;height:100%;object-fit:cover}
+.memory:hover{outline-color:var(--line-2)}
+.memory[aria-pressed="true"]{outline-color:var(--accent)}
+.memory-delete{width:40px;height:40px;padding:0}
+.preview-stage:has(.memory-list) .cover-frame{max-width:calc(100% - 232px)}
 
-/* Separate fields without adding dividers between related controls. */
-.app-shell .fields{gap:18px}
-.app-shell .field :is(input,textarea,.select-trigger){margin-top:9px}
-.app-shell .range-label{margin-top:20px}
-.app-shell .photo-frame-controls .range-label{margin-top:18px}
+/* Settings panel. */
+.controls{
+  min-height:0;height:100%;overflow-y:auto;overscroll-behavior:contain;
+  display:flex;flex-direction:column;gap:24px;padding:20px 16px 32px;
+  background:var(--bg-1);border-left:1px solid var(--line);
+  scrollbar-width:thin;scrollbar-color:var(--raised-2) transparent;scroll-padding:16px;
+}
+.controls:focus-visible{outline-offset:-2px}
+.control-section{flex:none}
+.section-heading{margin:0 0 8px;padding:0 4px}
+.section-heading h2{margin:0;font-size:13px;line-height:16px;font-weight:600;color:var(--text-2)}
+/* A section is one card; every setting is a row split by hairlines. Rows pull up 1px so the first hairline
+   hides under the card's border. Nested groups render as plain rows. */
+.section-body{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+.section-body :is(.artist-photo,.photo-frame-controls,.photo-tone-controls,.crop-controls){display:contents}
+.section-body > *,
+.section-body :is(.artist-photo,.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{
+  margin:-1px 0 0;padding:var(--row-pad-y) var(--row-pad-x);border-top:1px solid var(--line);
+}
+.section-body:has(.select-menu.open){overflow:visible}
+.control-section:has(.select-menu.open){position:relative;z-index:5}
+/* Surfaces that draw their own edge sit inset, with no hairline above or below. */
+.section-body > .segmented{margin:var(--row-pad-y) var(--row-pad-x) 0;border-top:0}
+.section-body :is(.upload-zone),
+.section-body .artist-photo > .upload-zone{margin:var(--row-pad-y) var(--row-pad-x);border:1px dashed var(--line-2)}
+.section-body :is(.segmented,.upload-zone) + *{border-top-color:transparent}
+.section-body :is(.field-label) + .hidden-input + .upload-zone{margin-top:0}
+.section-body .field-label + :is(.corner-options,.logo-style-options){border-top-color:transparent;padding-top:0}
 
-/* Visual choices: the selected thumbnail is framed, with its label underneath. */
-.app-shell .style-options{gap:20px}
-.app-shell .control-section.first-section{padding-bottom:8px}
-.app-shell .first-section .section-heading{margin-bottom:9px}
-.app-shell .style-option,.app-shell .style-option.selected,
-.app-shell .corner-options button,.app-shell .corner-options button.active,
-html[data-theme="dark"] .app-shell .style-option,html[data-theme="dark"] .app-shell .style-option.selected,
-html[data-theme="dark"] .app-shell .corner-options button,html[data-theme="dark"] .app-shell .corner-options button.active{
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-  gap:10px;padding:5px 2px;border:0;background:transparent;box-shadow:none;text-align:center;
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-}
-.app-shell .first-section .style-option,html[data-theme="dark"] .app-shell .first-section .style-option{gap:6px;padding-top:3px;padding-bottom:3px}
-.app-shell .style-thumb{
-  width:min(100%,112px);height:auto;aspect-ratio:1;border-radius:12px;
-  box-shadow:0 5px 16px #0004;outline:2px solid transparent;outline-offset:3px;
-}
-.app-shell .style-option strong{font-size:14px}
-.app-shell .style-option small{display:none}
-.app-shell .corner-options{gap:8px}
-.app-shell .corner-options button{font-size:12px;line-height:1.2}
-.app-shell .corner-icon{
-  width:min(100%,68px);height:auto;aspect-ratio:1;border:0;border-radius:10px;
-  background:linear-gradient(145deg,#9d5a88,#554d93 46%,#267a78);
-  box-shadow:0 5px 16px #0004;outline:2px solid transparent;outline-offset:3px;
-}
-.app-shell .corner-icon::before{
-  content:"";position:absolute;left:18%;right:18%;top:39%;height:15%;border-radius:2px;background:#ffffffbd;
-}
-.app-shell .corner-icon i{width:18%;height:12%;border-radius:2px;background:#fff}
-.app-shell .corner-icon.top-left i,.app-shell .corner-icon.top-right i{top:11%}
-.app-shell .corner-icon.bottom-left i,.app-shell .corner-icon.bottom-right i{bottom:11%}
-.app-shell .corner-icon.top-left i,.app-shell .corner-icon.bottom-left i{left:11%}
-.app-shell .corner-icon.top-right i,.app-shell .corner-icon.bottom-right i{right:11%}
-.app-shell .style-option.selected .style-thumb,.app-shell .corner-options button.active .corner-icon{outline-color:var(--accent)}
-.app-shell .corner-options button:disabled{opacity:.45}
-@media(forced-colors:active){
-  .app-shell .style-option.selected .style-thumb,.app-shell .corner-options button.active .corner-icon{outline-color:Highlight}
-}
+/* Row anatomy: label column, then the control. */
+.section-body :is(.field,.inline-row,.color-control,.range-label){display:grid;grid-template-columns:var(--label-col) minmax(0,1fr);align-items:center;gap:12px;min-height:var(--row-min-h)}
+.section-body .range-label{grid-template-columns:var(--label-col) minmax(0,1fr) 48px}
+.section-body .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:var(--row-min-h)}
+.section-body .field-label{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.row-label{display:flex;align-items:center;gap:8px;min-width:0;font-size:13px;line-height:16px;color:var(--text-1)}
+.row-label > svg{flex:none;width:16px;height:16px;color:var(--text-3)}
+.row-label > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.range-value{display:block;order:3;text-align:right;font-family:var(--mono);font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.photo-treatment-label{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.help-text{margin:0;font-size:13px;line-height:20px;color:var(--text-2)}
+.file-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--text-2)}
+.file-row > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* Selected switch buttons use the accent rather than a glass fill. */
-.app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before,
-.theme-switch-thumb,.locale-switch-thumb,html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{
-  background:#fa233b;
-  box-shadow:0 2px 6px #0003;
-  backdrop-filter:none;-webkit-backdrop-filter:none;
-}
-.app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active,
-html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .locale-switch button[aria-checked="true"]{color:#fff}
-@media(forced-colors:active){
-  .app-shell .segmented::before,html[data-theme="dark"] .app-shell .segmented::before,
-  .theme-switch-thumb,.locale-switch-thumb,html[data-theme="dark"] .theme-switch-thumb,html[data-theme="dark"] .locale-switch-thumb{background:Highlight}
-  .app-shell .segmented > button.active,html[data-theme="dark"] .app-shell .segmented > button.active,
-  html[data-theme] .theme-switch button[aria-checked="true"],html[data-theme] .locale-switch button[aria-checked="true"]{color:HighlightText}
-}
+/* Text, number and dropdown fields. */
+.field :is(input,textarea,.select-trigger){display:block;width:100%;margin:0;padding:0 12px;height:var(--control-h);border:1px solid var(--line-2);border-radius:8px;background:var(--raised);color:var(--text-1);font-size:13px;transition:border-color .15s var(--ease)}
+.field :is(input,textarea,.select-trigger):hover{border-color:rgba(238,235,230,.24)}
+.field :is(input,textarea):focus,.field .select-trigger:focus-visible{outline:0;border-color:var(--accent)}
+.field :is(input,textarea)::placeholder{color:var(--text-3);opacity:1}
+.section-body .field textarea{height:auto;min-height:var(--control-h);padding-top:calc((var(--control-h) - 2px - 1.3em) / 2);padding-bottom:calc((var(--control-h) - 2px - 1.3em) / 2);line-height:1.3;resize:none;overflow:hidden}
+.field input[type="number"]{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.select-menu{position:relative;display:block;min-width:0}
+.select-menu::after{content:"";position:absolute;right:14px;top:50%;width:6px;height:6px;margin-top:-1px;border-right:1.5px solid var(--text-2);border-bottom:1.5px solid var(--text-2);transform:translateY(-50%) rotate(45deg);transition:transform .15s var(--ease);pointer-events:none}
+.select-menu.open::after{margin-top:2px;transform:translateY(-50%) rotate(-135deg)}
+.field .select-trigger{display:flex;align-items:center;text-align:left;padding-right:36px}
+.select-trigger > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.select-menu-list{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;display:grid;gap:2px;margin:0;padding:4px;list-style:none;border:1px solid var(--line-2);border-radius:10px;background:var(--raised);box-shadow:0 12px 32px rgba(0,0,0,.5);outline:none;animation:fadeRise .18s var(--ease)}
+.select-menu.up .select-menu-list{top:auto;bottom:calc(100% + 4px)}
+.select-menu-list [role="option"]{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 8px;border-radius:6px;font-size:13px;color:var(--text-1);cursor:pointer}
+.select-menu-list [role="option"].active{background:var(--raised-2)}
+.select-menu-list [role="option"] > svg{flex:none;width:16px;height:16px;color:var(--text-1)}
 
-/* Share a darker track color across inactive switches and sliders. */
-@media(forced-colors:none){
-  :root{--inactive-track:#aeb5c1;--inactive-label:#303744}
-  html[data-theme="dark"]{--inactive-track:#252a34;--inactive-label:#d2d9e4}
-  .theme-switch,.locale-switch,html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch,
-  .app-shell .segmented,html[data-theme="dark"] .app-shell .segmented,
-  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){background:var(--inactive-track)}
-  .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track,
-  html[data-theme="dark"] .app-shell .range-label input[type="range"]::-webkit-slider-runnable-track{
-    background:linear-gradient(to right,var(--accent) 0 var(--range-progress),var(--inactive-track) var(--range-progress) 100%);
-  }
-  .app-shell .range-label input[type="range"]::-moz-range-track,
-  html[data-theme="dark"] .app-shell .range-label input[type="range"]::-moz-range-track{background:var(--inactive-track)}
-  .app-shell .segmented button:not(.active),html[data-theme="dark"] .app-shell .segmented button:not(.active),
-  html[data-theme] .theme-switch button[aria-checked="false"],html[data-theme] .locale-switch button[aria-checked="false"]{color:var(--inactive-label)}
+/* Segmented control: one surface step slides under the chosen option. */
+.segmented{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));height:var(--control-h);min-width:0;padding:2px;border-radius:8px;background:var(--raised);touch-action:pan-y;--segments:2}
+.segmented:has(> button:nth-child(3)){grid-template-columns:repeat(3,minmax(0,1fr));--segments:3}
+.segmented:has(> button:nth-child(4)){grid-template-columns:repeat(4,minmax(0,1fr));--segments:4}
+.segmented::before{
+  content:"";position:absolute;z-index:-1;top:2px;bottom:2px;left:2px;width:calc((100% - 4px) / var(--segments));
+  border-radius:6px;background:var(--raised-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);pointer-events:none;
+  transform:translateX(calc(var(--segment-index,0) * 100%));transition:transform .18s var(--ease);
 }
+.segmented:has(> button:nth-child(2).active){--segment-index:1}
+.segmented:has(> button:nth-child(3).active){--segment-index:2}
+.segmented:has(> button:nth-child(4).active){--segment-index:3}
+.segmented[data-dragging="true"]::before{transform:translateX(calc(var(--drag-index) * 100%));transition:none}
+.segmented > button{min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 8px;border:0;border-radius:6px;background:transparent;color:var(--text-2);font-size:13px;white-space:nowrap;transition:color .15s var(--ease)}
+.segmented > button:hover:not(.active){color:var(--text-1)}
+.segmented > button.active{color:var(--text-1)}
+.segmented > button svg{flex:none;width:16px;height:16px}
 
-/* Match switch tracks to the translucent download button. */
-@media(forced-colors:none){
-  .theme-switch,.locale-switch,.app-shell .segmented,.app-shell .toggle-row input:not(:checked){
-    background:linear-gradient(120deg,rgba(255,255,255,.36),rgba(239,244,255,.2) 48%,rgba(210,225,255,.28));
-    box-shadow:inset 0 0 0 1px #ffffff70,inset 0 1px 1px #ffffffa6,0 3px 10px #1b254026;
-  }
-  html[data-theme="dark"] .theme-switch,html[data-theme="dark"] .locale-switch,
-  html[data-theme="dark"] .app-shell .segmented,html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
-    background:linear-gradient(120deg,rgba(255,255,255,.18),rgba(210,225,255,.08) 48%,rgba(160,185,255,.14));
-    box-shadow:inset 0 0 0 1px #ffffff40,inset 0 1px 1px #ffffff80,0 3px 10px #0003;
-  }
-  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
-    box-shadow:inset 0 1px 1px #ffffff80,0 3px 10px #0003;
-  }
-}
+/* Switches. --drag-travel is read by the drag handler: track width minus thumb minus both insets. */
+.toggle-row input{appearance:none;position:relative;flex:none;width:36px;height:20px;margin:0;border:0;border-radius:10px;background:var(--raised-2);cursor:pointer;touch-action:pan-y;--drag-travel:16px;transition:background-color .15s var(--ease)}
+.toggle-row input::before{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--text-1);box-shadow:0 1px 2px rgba(0,0,0,.35);transition:transform .18s var(--ease)}
+.toggle-row input:checked{background:var(--accent-fill)}
+.toggle-row input:checked::before{transform:translateX(var(--drag-travel))}
+.toggle-row input[data-dragging="true"]::before{transform:translateX(calc(var(--drag-progress) * var(--drag-travel)));transition:none}
 
-/* Toggle handles share the slider thumb's pill shape and pressed feedback. */
-/* --drag-travel = track width - thumb width - 2 * inset. */
-.app-shell .toggle-row input{width:44px;height:22px;--drag-travel:18px}
-.app-shell .toggle-row input::before{width:20px;height:12px;top:5px;left:3px;border-radius:999px;box-shadow:var(--slider-shadow)}
-.app-shell .toggle-row input:checked::before{transform:translateX(var(--drag-travel))}
-.app-shell .toggle-row input[data-dragging="true"]::before{transform:translateX(calc(var(--drag-progress) * var(--drag-travel))) scaleX(var(--drag-stretch,1))}
-.app-shell .toggle-row input:active::before,
-.app-shell .toggle-row input[data-dragging="true"]:active::before,
-html[data-theme="dark"] .app-shell .toggle-row input:active::before,
-html[data-theme="dark"] .app-shell .toggle-row input:checked:active::before{
-  background:var(--slider-active-glass);scale:1.8;
-}
-@media(prefers-reduced-motion:reduce){
-  .app-shell .toggle-row input:active::before,.app-shell .toggle-row input[data-dragging="true"]:active::before{scale:1}
-}
+/* Sliders: a quiet track, a neutral fill and a round thumb. The fill edge (--range-progress) follows the 16px thumb. */
+.range-label input[type="range"]{appearance:none;width:100%;height:20px;margin:0;background:transparent;cursor:pointer}
+.range-label input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(to right,var(--text-2) 0 var(--range-progress),var(--raised-2) var(--range-progress) 100%)}
+.range-label input[type="range"]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;margin-top:-6px;border:0;border-radius:50%;background:var(--text-1);box-shadow:0 1px 3px rgba(0,0,0,.45);transition:transform .15s var(--ease)}
+.range-label input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.1)}
+.range-label input[type="range"]::-moz-range-track{height:4px;border:0;border-radius:2px;background:var(--raised-2)}
+.range-label input[type="range"]::-moz-range-progress{height:4px;border-radius:2px;background:var(--text-2)}
+.range-label input[type="range"]::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--text-1);box-shadow:0 1px 3px rgba(0,0,0,.45)}
+.range-label input[type="range"]:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
 
-@media(forced-colors:none){
-  .app-shell .toggle-row input:not(:checked),html[data-theme="dark"] .app-shell .toggle-row input:not(:checked){
-    background:var(--inactive-track);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
-  }
-}
+/* Color rows: the any-color swatch first, then presets. Rings are off-white so they read on every color, red included. */
+.color-swatches{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,24px);justify-content:end;align-items:center;gap:8px;padding:2px}
+.color-swatch{position:relative;width:100%;height:auto;aspect-ratio:1;padding:0;border:0;border-radius:50%;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease)}
+.color-swatch:hover{outline-color:var(--line-2)}
+.color-swatch.selected{outline-color:var(--text-1)}
+.custom-swatch{background:conic-gradient(from 90deg,#ff3b30,#ff9500,#ffcc00,#34c759,#5ac8fa,#007aff,#af52de,#ff2d55,#ff3b30)}
+.custom-swatch:focus-within{outline-color:var(--accent)}
+.custom-swatch input{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;opacity:0;cursor:pointer}
 
-/* Make preview actions and editor labels easy to see in both appearances. */
-.app-shell .preview-panel .preview-actions .icon-button{
-  width:34px;height:34px;border:1px solid #ffffff80;border-radius:50%;
-  color:#fff;background:rgba(37,43,56,.7);
-  box-shadow:inset 0 1px 1px #ffffff66,0 3px 12px #0003;
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-}
-.app-shell .preview-panel .preview-actions .icon-button:hover:not(:disabled){background:rgba(55,63,80,.85)}
-html[data-theme="dark"] .app-shell .preview-panel .preview-actions .icon-button{color:#fff}
-html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-control,.toggle-row,.help-text){color:#fff}
-@media(forced-colors:active){
-  .app-shell .preview-panel .preview-actions .icon-button,html[data-theme="dark"] .app-shell .preview-panel .preview-actions .icon-button{color:ButtonText;background:ButtonFace;border-color:ButtonText;backdrop-filter:none;-webkit-backdrop-filter:none}
-}
+/* Background gradients: ten to a row. */
+.swatches{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}
+.swatch{display:block;padding:0;border:0;border-radius:50%;aspect-ratio:1;background:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease)}
+.swatch img{display:block;width:100%;height:100%;border-radius:50%}
+.swatch:hover:not(:disabled,.selected){outline-color:var(--line-2)}
+.swatch.selected{outline-color:var(--text-1)}
 
+/* Photo drop zone. */
+.upload-zone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:auto;padding:20px 16px;border-radius:8px;background:transparent;color:var(--text-2);text-align:center;transition:background-color .15s var(--ease),border-color .15s var(--ease)}
+.upload-zone svg{width:20px;height:20px;margin-bottom:4px}
+.upload-zone strong{font-size:13px;font-weight:600;color:var(--text-1)}
+.upload-zone span{font-size:12px;color:var(--text-2)}
+.upload-zone small{font-size:12px;color:var(--text-3)}
+.upload-zone:hover:not(:disabled){background:var(--raised)}
+.section-body .upload-zone.dragging{background:var(--raised);border-color:var(--accent)}
 
-/* Platform and Spotify style thumbnails. */
-/* Cover styles scroll sideways: about three fit, the next one peeks in to show there is more. Padding keeps the selected outline from being clipped. */
-.app-shell .style-options.style-carousel{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:6px;padding:6px 6px 10px;margin:-6px -6px -4px;scrollbar-width:thin}
-.app-shell .style-carousel>.style-option{flex:0 0 calc((100% - 16px) / 3.35);scroll-snap-align:start}
-/* Like the logo position tiles: no side padding and thumbnails fill their slot, so they sit 8px apart. */
-.app-shell .controls .style-carousel>.style-option,html[data-theme="dark"] .app-shell .controls .style-carousel>.style-option{padding-left:0;padding-right:0}
-.app-shell .controls .style-carousel .style-thumb{width:100%}
+/* Visual choices: platform logos, cover styles, logo positions. The chosen one gets an accent outline. */
+.style-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.style-option{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;padding:0;border:0;background:transparent;text-align:center;color:var(--text-2)}
+.style-option strong{display:block;font-size:13px;font-weight:400;line-height:16px;color:var(--text-2);transition:color .15s var(--ease)}
+.style-option small{display:none}
+.style-option.selected strong{color:var(--text-1)}
+.style-option:hover strong{color:var(--text-1)}
+.platform-logo{display:grid;place-items:center;width:100%;height:56px;border-radius:8px;background:var(--raised);color:var(--text-2);outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease),color .15s var(--ease)}
+.style-option:hover .platform-logo{color:var(--text-1)}
+.style-option.selected .platform-logo{color:var(--text-1);outline-color:var(--accent)}
+.platform-logo svg{display:block;width:min(56%,128px);height:auto;fill:currentColor}
+.spotify-logo i{display:block;width:min(56%,128px);aspect-ratio:266/73;background:currentColor;-webkit-mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat}
+.style-thumb{display:block;width:100%;aspect-ratio:1;border-radius:8px;outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease)}
+.style-option:hover .style-thumb{outline-color:var(--line-2)}
+.style-option.selected .style-thumb{outline-color:var(--accent)}
+
 /* Style thumbnails: each style's default cover in miniature. Positions and sizes are the 1200px canvas values as % and cqw (canvas px / 12). */
-.app-shell .style-thumb:is(.thumb-classic,.thumb-essentials,.thumb-artists,.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix){position:relative;display:block;container-type:inline-size;overflow:hidden;line-height:1;white-space:nowrap}
+.app-shell .style-thumb:is(.thumb-classic,.thumb-essentials,.thumb-artists,.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix,.thumb-radio){position:relative;display:block;container-type:inline-size;overflow:hidden;line-height:1;white-space:nowrap}
 .app-shell .style-thumb :is(b,span,small,em,i,.thumb-logo){position:absolute;display:block;margin:0;font-style:normal}
 .app-shell .style-thumb .thumb-logo{top:4%;left:4%;height:auto;fill:currentColor}
 .app-shell .style-thumb .thumb-logo.spotify{width:8.667%}
@@ -839,7 +309,7 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .thumb-artists :is(em,span){width:26.167%;height:26.167%;box-shadow:0 0 0 1.167cqw #3a3836}
 .app-shell .thumb-artists em{top:11.583%;left:10.333%}
 .app-shell .thumb-artists span{top:63%;left:62.417%}
-.app-shell :is(.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix) b{font-family:CoverFontBold,CoverFont,sans-serif;font-weight:700;font-size:12.5cqw}
+.app-shell :is(.thumb-this-is,.thumb-band,.thumb-photo,.thumb-daily-mix,.thumb-radio) b{font-family:CoverFontBold,CoverFont,sans-serif;font-weight:700;font-size:12.5cqw}
 .app-shell .thumb-this-is{background:linear-gradient(#fff 50%,#e0a988 50%);color:#111}
 .app-shell .thumb-this-is em{top:7.25%;left:0;right:0;text-align:center;font-family:CoverFontWide,CoverFontBold,sans-serif;font-weight:900;font-size:10cqw}
 .app-shell .thumb-this-is i{top:20.833%;left:20%;width:60%;height:60%;background:linear-gradient(135deg,#777,#262629)}
@@ -849,521 +319,157 @@ html[data-theme="dark"] .app-shell :is(.field,.field-label,.range-label,.color-c
 .app-shell .thumb-band b{top:73%;left:4%}
 .app-shell .thumb-photo{background:linear-gradient(135deg,#777,#262629);color:#ff4632}
 .app-shell .thumb-photo b{top:3.333%;right:4%}
+.app-shell .thumb-radio{background:#f4766b;color:#111}
+.app-shell .thumb-radio :is(i,em,span){border-radius:50%;background:linear-gradient(135deg,#777,#262629)}
+.app-shell .thumb-radio i{top:17.5%;left:20.417%;width:59.167%;height:59.167%}
+.app-shell .thumb-radio :is(em,span){top:24.917%;width:44.333%;height:44.333%}
+.app-shell .thumb-radio em{left:-17.167%}
+.app-shell .thumb-radio span{left:72.833%}
+.app-shell .thumb-radio small{top:5.5%;right:4%;font-family:CoverFontBold,CoverFont,sans-serif;font-weight:700;font-size:6cqw;letter-spacing:.11em;margin-right:-.11em}
+/* The style picker greys its small hint text, in both themes; Radio's label keeps the cover ink. */
+.app-shell .style-option .style-thumb.thumb-radio small{color:#111}
+.app-shell .thumb-radio b{top:83.4%;left:4%}
 .app-shell .thumb-daily-mix{background:#f06e94;color:#111}
-.app-shell .thumb-daily-mix .thumb-wave{position:absolute;inset:0;width:100%;height:100%}
-.app-shell .thumb-daily-mix b{top:80%;left:10.667%;font-size:10cqw}
 
-/* Single-line controls: label on the left, field on the right. */
-.app-shell .controls{--label-col:minmax(96px,34%);--field-gap:16px;--section-gap:28px}
-.app-shell .controls .field{display:grid;grid-template-columns:var(--label-col) 1fr;align-items:center;gap:12px}
-.app-shell .controls .field :is(input,textarea,.select-trigger){margin-top:0}
-.app-shell .controls .range-label{display:grid;grid-template-columns:var(--label-col) 1fr;align-items:center;gap:12px;margin-top:var(--field-gap)}
-.app-shell .controls .range-label input{width:100%}
-.app-shell .controls .inline-row{display:grid;grid-template-columns:var(--label-col) 1fr;align-items:center;gap:12px;margin-top:var(--field-gap)}
-.app-shell .controls .inline-row .field-label{margin:0;display:flex;align-items:center;gap:6px;justify-content:flex-start}
-.app-shell .controls .inline-row .segmented{margin:0;min-width:0}
-.app-shell .controls .fields{gap:var(--field-gap)}
-.app-shell .controls .color-row{display:grid;gap:var(--field-gap);margin-top:var(--field-gap)}
-.app-shell .controls .color-control{display:grid;grid-template-columns:var(--label-col) auto 1fr;align-items:center;gap:12px}
-.app-shell .controls .color-control span{order:-1}
-.app-shell .controls .color-control code{justify-self:start}
-.app-shell .controls :is(.field,.range-label,.inline-row,.color-control,.toggle-row){min-height:44px}
-/* Logo position tiles span the full control width, edge to edge. */
-.app-shell .controls .corner-options button,html[data-theme="dark"] .app-shell .controls .corner-options button{padding-left:0;padding-right:0}
-.app-shell .controls .corner-icon{width:100%}
+/* Logo position: four miniature covers with the logo mark in each corner. */
+.corner-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.corner-options button{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;padding:0;border:0;background:transparent;color:var(--text-2);font-size:12px;line-height:16px;transition:color .15s var(--ease)}
+.corner-options button:hover:not(:disabled),.corner-options button.active{color:var(--text-1)}
+.corner-icon{position:relative;display:block;width:100%;aspect-ratio:1;border-radius:8px;background:var(--raised);outline:2px solid transparent;outline-offset:2px;transition:outline-color .15s var(--ease)}
+.corner-icon::before{content:"";position:absolute;left:18%;right:18%;top:42%;height:12%;border-radius:2px;background:var(--raised-2)}
+.corner-icon i{position:absolute;width:18%;height:12%;border-radius:2px;background:var(--text-3)}
+.corner-icon.top-left i,.corner-icon.top-right i{top:12%}
+.corner-icon.bottom-left i,.corner-icon.bottom-right i{bottom:12%}
+.corner-icon.top-left i,.corner-icon.bottom-left i{left:12%}
+.corner-icon.top-right i,.corner-icon.bottom-right i{right:12%}
+.corner-options button:hover:not(:disabled,.active) .corner-icon{outline-color:var(--line-2)}
+.corner-options button.active .corner-icon{outline-color:var(--accent)}
+.corner-options button.active .corner-icon i{background:var(--text-1)}
+.logo-style-options{grid-template-columns:repeat(2,minmax(0,1fr))}
 
-/* Platform picker: the logo alone, outlined when selected. */
-.app-shell .platform-logo{
-  display:grid;place-items:center;width:100%;height:64px;border-radius:12px;color:var(--nav-fg);
-  outline:2px solid transparent;outline-offset:3px;transition:outline-color .15s;
-}
-.app-shell .style-option.selected .platform-logo{outline-color:var(--accent)}
-.app-shell .platform-logo svg{width:min(62%,150px);height:auto;fill:currentColor;display:block}
-.app-shell .spotify-logo i{
-  display:block;width:min(62%,150px);aspect-ratio:266/73;background:currentColor;
-  -webkit-mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;mask:url('/assets/brand/spotify-logo.png') center/contain no-repeat;
-}
-@media(forced-colors:active){.app-shell .style-option.selected .platform-logo{outline-color:Highlight}}
-/* On phones the logo tiles hug the logos, so the platform row takes less height. */
-@media(max-width:650px){.app-shell .platform-logo{height:44px}}
+/* Options menu in the navigation. */
+.nav-menu{position:relative;flex:none}
+.nav-menu-trigger{width:32px;height:32px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--text-2);display:grid;place-items:center;transition:background-color .15s var(--ease),color .15s var(--ease)}
+.nav-menu-trigger svg{width:18px;height:18px}
+.nav-menu-trigger:hover,.nav-menu-trigger[aria-expanded="true"]{background:var(--raised);color:var(--text-1)}
+.nav-menu-panel{position:absolute;top:calc(100% + 8px);right:0;z-index:80;width:240px;padding:4px;border:1px solid var(--line-2);border-radius:12px;background:var(--card);box-shadow:0 12px 32px rgba(0,0,0,.5);display:grid;gap:2px;animation:fadeRise .18s var(--ease)}
+.nav-menu-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px;padding:0 4px 0 8px}
+.nav-menu-label{font-size:13px;color:var(--text-1)}
+.nav-menu-link{display:flex;align-items:center;min-height:36px;padding:0 8px;border-radius:8px;font-size:13px;color:var(--text-1);transition:background-color .15s var(--ease)}
+.nav-menu-link:hover{background:var(--raised)}
 
-/* One spacing system: rows inside a section share --field-gap; sections are separated by --section-gap. */
-.app-shell .controls .control-section:not(.first-section){padding:var(--section-gap) 0}
-.app-shell .controls .control-section:not(.first-section) .section-heading{margin-bottom:var(--field-gap)}
-.app-shell .controls .section-body,
-.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls){display:flex;flex-direction:column;gap:var(--field-gap)}
-.app-shell .controls .section-body > *,
-.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0}
-.app-shell .controls .section-body .photo-frame-controls .field-label{min-height:0}
+/* Two-way switches (language, appearance): the same sliding surface step as the segmented control. */
+.locale-switch,.theme-switch{position:relative;display:grid;grid-template-columns:1fr 1fr;flex:none;width:72px;height:28px;padding:2px;border-radius:8px;background:var(--raised);touch-action:pan-y}
+.locale-switch-thumb,.theme-switch-thumb{position:absolute;z-index:0;top:2px;left:2px;width:calc(50% - 2px);height:calc(100% - 4px);border-radius:6px;background:var(--raised-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:transform .18s var(--ease)}
+html[data-locale="es"] .locale-switch-thumb,html[data-theme="dark"] .theme-switch-thumb{transform:translateX(100%)}
+:is(.locale-switch,.theme-switch)[data-dragging="true"] :is(.locale-switch-thumb,.theme-switch-thumb){transform:translateX(calc(var(--drag-progress) * 100%));transition:none}
+:is(.locale-switch,.theme-switch) button{position:relative;z-index:1;display:grid;place-items:center;padding:0;border:0;border-radius:6px;background:transparent;color:var(--text-2);font-family:var(--mono);font-size:12px;transition:color .15s var(--ease)}
+:is(.locale-switch,.theme-switch) button[aria-checked="true"]{color:var(--text-1)}
+.theme-switch svg{width:16px;height:16px}
 
-/* Color rows: rainbow custom swatch first, then preset swatches; the selected one gets an accent ring. */
-.app-shell .controls .color-control{grid-template-columns:var(--label-col) 1fr}
-.app-shell .color-swatches{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,24px);align-items:center;gap:6px;padding:4px}
-.app-shell .color-swatch{
-  position:relative;width:100%;height:auto;aspect-ratio:1;padding:0;border:0;border-radius:50%;cursor:pointer;
-  box-shadow:inset 0 0 0 1px #0000001f;transition:box-shadow .15s,transform .15s;
-}
-.app-shell .color-swatch:hover{transform:scale(1.1)}
-.app-shell .color-swatch.selected{outline:2px solid var(--accent);outline-offset:2px}
-.app-shell .color-swatch:focus-visible,.app-shell .custom-swatch:focus-within{outline:2px solid var(--accent);outline-offset:3px}
-.app-shell .custom-swatch{background:conic-gradient(from 90deg,#ff3b30,#ff9500,#ffcc00,#34c759,#5ac8fa,#007aff,#af52de,#ff2d55,#ff3b30)}
-.app-shell .custom-swatch::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#ffffff66,transparent 62%);pointer-events:none}
-.app-shell .controls .custom-swatch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0;border:0}
-@media(forced-colors:active){.app-shell .color-swatch.selected{outline:2px solid Highlight;outline-offset:2px}}
-@media(prefers-reduced-motion:reduce){.app-shell .color-swatch:hover{transform:none}}
-/* Background gradients use the color circles' size, spacing, hover and selection ring. --swatch-size repeats the
-   size a basic color row gives its 11 circles: with 6px gaps and 4px padding they fill the control column beside the
-   label (38% of the row, at least 110px, plus a 12px gap), up to 24px each. */
-html body .app-shell.app-shell .controls .section-body{
-  container-type:inline-size;
-  --swatch-size:min(24px,(100cqw - 2 * var(--row-pad-x) - 12px - max(110px,.38 * (100cqw - 2 * var(--row-pad-x))) - 64px) / 11);
-}
-html body .app-shell.app-shell .controls .section-body .swatches{display:flex;flex-wrap:wrap;gap:6px;margin:0}
-html body .app-shell.app-shell .controls .section-body .swatches > .swatch{
-  flex:none;width:var(--swatch-size);height:var(--swatch-size);aspect-ratio:auto;padding:0;border:0;border-radius:50%;
-  box-shadow:inset 0 0 0 1px #0000001f;transition:transform .15s;
-}
-html body .app-shell.app-shell .controls .section-body .swatches > .swatch img{border-radius:50%}
-html body .app-shell.app-shell .controls .section-body .swatches > .swatch:hover:not(:disabled){transform:scale(1.1);filter:none}
-html body .app-shell.app-shell .controls .section-body .swatches > .swatch.selected{outline:2px solid var(--accent);outline-offset:2px;box-shadow:inset 0 0 0 1px #0000001f}
-html body .app-shell.app-shell .controls .section-body .swatches > .swatch:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media(forced-colors:active){html body .app-shell.app-shell .controls .section-body .swatches > .swatch.selected{outline-color:Highlight}}
-@media(prefers-reduced-motion:reduce){html body .app-shell.app-shell .controls .section-body .swatches > .swatch:hover:not(:disabled){transform:none}}
-.app-shell .controls .logo-style-options .platform-logo{margin:4px 0}
+/* Notifications. */
+.toast{position:fixed;z-index:40;left:calc((100vw - var(--panel-w)) / 2);bottom:24px;transform:translateX(-50%);max-width:calc(100vw - var(--panel-w) - 32px);display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border:1px solid var(--line-2);border-radius:12px;background:var(--card);color:var(--text-1);font-size:13px;box-shadow:0 12px 32px rgba(0,0,0,.5);animation:toastRise .3s var(--ease)}
+.toast.error{border-color:rgba(250,35,59,.5)}
+.toast button{width:28px;height:28px;flex:none;display:grid;place-items:center;padding:0;border:0;border-radius:6px;background:transparent;color:var(--text-2);transition:background-color .15s var(--ease),color .15s var(--ease)}
+.toast button:hover{background:var(--raised);color:var(--text-1)}
 
-/* Live preview dot: a soft red glow that slowly breathes. */
-@keyframes live-dot-breathe{
-  0%,100%{opacity:.75;transform:scale(.85);box-shadow:0 0 4px 1px #fa233b55,0 0 0 0 #fa233b33}
-  50%{opacity:1;transform:scale(1.15);box-shadow:0 0 10px 3px #fa233baa,0 0 0 5px #fa233b00}
-}
-.app-shell .live-dot{width:6px;height:6px;background:#ff2d48;animation:live-dot-breathe 2.4s ease-in-out infinite}
-@media(prefers-reduced-motion:reduce){.app-shell .live-dot{animation:none;box-shadow:0 0 8px 2px #fa233b88}}
+/* Confirmation dialog. */
+.confirm-dialog{width:min(360px,calc(100% - 32px));padding:0;border:1px solid var(--line-2);border-radius:16px;background:var(--card);color:var(--text-1);box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.confirm-dialog::backdrop{background:rgba(8,8,7,.6)}
+.confirm-dialog[open]{animation:fadeRise .22s var(--ease)}
+.confirm-dialog[open]::backdrop{animation:fadeIn .22s var(--ease)}
+.confirm-dialog-content{padding:24px 20px 20px}
+.confirm-dialog h2{margin:0 0 8px;font-size:17px;line-height:24px;font-weight:600}
+.confirm-dialog p{margin:0 0 20px;font-size:13px;line-height:20px;color:var(--text-2)}
+.confirm-dialog-actions{display:flex;gap:8px}
+.confirm-dialog-actions button{flex:1;height:40px;padding:0 16px;border:1px solid var(--line-2);border-radius:10px;background:var(--raised);color:var(--text-1);font-size:14px;font-weight:600;transition:background-color .15s var(--ease)}
+.confirm-dialog-actions button:hover{background:var(--raised-2)}
+.confirm-dialog-actions .confirm-dialog-danger{border-color:transparent;background:var(--accent-fill);color:#fff}
+.confirm-dialog-actions .confirm-dialog-danger:hover{background:#c8172b}
 
-/* Editor background artwork, shared by both themes and slightly dimmed (20% black); the glass panels sit on top of it. */
+/* Download: the cover flies to the center and a disc slides out of its sleeve before the file is saved. */
+.download-reveal{position:fixed;inset:0;z-index:30}
+.download-reveal::before{content:"";position:absolute;inset:0;background:rgba(10,10,9,.92);animation:fadeIn .4s var(--ease) both}
+.download-reveal.is-leaving::before{animation:fadeIn .5s var(--ease) .42s reverse forwards}
+.download-anchor{position:absolute;z-index:1;left:50%;top:50%;width:var(--case-size);transform:translate(-50%,-50%)}
+.download-case{position:relative;width:100%;aspect-ratio:1;animation:coverToCenter .7s var(--ease) both}
+.download-cd{position:absolute;z-index:0;top:8%;right:-24%;width:86%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#101012 0 13.5%,#f4f4f6 14% 16.6%,#7d7d86 17% 18.6%,#f7f7f8 19.2% 33%,#c5c5cc 33% 34.2%,transparent 34.6%),conic-gradient(from 200deg,#eeeaf2,#d3e2f6 40deg,#f6e4cf 85deg,#e7d0ea 130deg,#d4ebe3 175deg,#f4efe6 220deg,#d9d4ef 265deg,#f0d6d2 310deg,#eeeaf2 360deg);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),0 12px 28px rgba(0,0,0,.5);transform:translateX(-36%);animation:cdOut .8s var(--ease) .8s both}
+.download-cover{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:cover;border-radius:8px;box-shadow:0 24px 56px rgba(0,0,0,.5)}
+.download-caption{position:absolute;left:0;right:0;top:calc(100% + 24px);margin:0;text-align:center;color:var(--text-1);font-size:20px;line-height:28px;font-weight:400;animation:fadeRise .4s var(--ease) 1.3s both}
+.download-reveal.is-leaving .download-case{animation:coverSend .7s cubic-bezier(.5,0,.75,0) .48s both}
+.download-reveal.is-leaving .download-cd{animation:cdIn .4s var(--ease) both}
+.download-reveal.is-leaving .download-caption{animation:fadeIn .3s var(--ease) reverse both}
+@keyframes coverToCenter{from{transform:translate(var(--from-x),var(--from-y)) scale(var(--from-scale))}to{transform:none}}
+@keyframes coverSend{to{transform:translateY(calc(-64vh - 72%)) scale(.8)}}
+@keyframes cdOut{from{transform:translateX(-36%)}to{transform:none}}
+@keyframes cdIn{from{transform:none}to{transform:translateX(-36%)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeRise{from{opacity:0;transform:translateY(6px)}}
+@keyframes toastRise{from{opacity:0;transform:translate(-50%,6px)}}
 
-/* One glass system over the artwork.
-   Tier 1 (nav, panels): translucent tint + strong blur. Tier 2 (everything inside): one flat, lighter fill. */
-.app-shell{
-  --glass-panel:rgba(255,255,255,.5);--glass-fill:rgba(255,255,255,.42);--glass-line:rgba(255,255,255,.62);
-  --glass-blur:blur(40px) saturate(1.5);
-  /* Depth without outer shadows: a diagonal sheen plus a 1px inner top highlight. */
-  --glass-sheen:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.06) 55%,rgba(255,255,255,.14));
-  --glass-highlight:inset 0 1px 0 rgba(255,255,255,.85);
-}
-html[data-theme="dark"] .app-shell{
-  --glass-panel:rgba(16,16,20,.5);--glass-fill:rgba(255,255,255,.08);--glass-line:rgba(255,255,255,.14);
-  --glass-sheen:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 55%,rgba(255,255,255,.06));
-  --glass-highlight:inset 0 1px 0 rgba(255,255,255,.22);
-}
-html body .app-shell.app-shell :is(.preview-panel,.controls){
-  background:var(--glass-sheen),var(--glass-panel);border:1px solid var(--glass-line);
-  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-}
-html body .app-shell.app-shell :is(.field :is(input,textarea,.select-trigger),.segmented,.download,.icon-button,.nav-menu-trigger,.upload-zone,.photo-frame-controls),
-html body .app-shell.app-shell .preview-panel .preview-actions .icon-button{
-  background:var(--glass-sheen),var(--glass-fill);border:1px solid var(--glass-line);box-shadow:var(--glass-highlight);
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-}
-html body .app-shell.app-shell .preview-stage{background:none}
-html body .app-shell.app-shell :is(.icon-button,.download),html body .app-shell.app-shell .preview-panel .preview-actions .icon-button{color:var(--text)}
-html body .app-shell.app-shell :is(.download,.icon-button):hover:not(:disabled),html body .app-shell.app-shell .preview-panel .preview-actions .icon-button:hover:not(:disabled){background:var(--glass-sheen),var(--glass-line)}
-html body .app-shell.app-shell :is(.style-option,.corner-options button):not(:disabled){background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-html body .app-shell.app-shell .controls :is(.field,.field-label,.range-label,.color-control > span,.toggle-row > span){color:var(--text)}
-/* The navbar uses the same glass as the panels: no liquid overlay, same corners, inner highlight only (no outer shadow). */
-html body .app-shell.app-shell .liquid-nav.liquid-nav::before{display:none}
-html body .app-shell.app-shell .liquid-nav.liquid-nav{border-radius:20px}
-html body .app-shell.app-shell :is(.preview-panel,.controls){
-  border-radius:20px;box-shadow:var(--glass-highlight);
+/* Mid widths: a narrower settings panel. */
+@media(max-width:900px) and (min-width:651px){
+  :root{--panel-w:380px}
+  .preview-column{padding:16px 20px}
+  .preview-stage{padding:28px}
 }
 
-/* Navbar geometry and brand colors. */
-.app-shell .app-header.app-header{height:88px;padding-top:20px;padding-bottom:4px}
-.app-shell .editor-nav.editor-nav{height:64px}
-html[data-theme="dark"] .app-shell .editor-nav .brand{color:#fff}
-html[data-theme="dark"] .app-shell .editor-nav .studio-label{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.35)}
-/* The site name uses the wide cover font; the STUDIO badge keeps the interface font. */
-.app-shell .editor-nav .brand{font-family:CoverFontWide,CoverFontBold,sans-serif;font-weight:900;font-size:20px;letter-spacing:0}
-.app-shell .editor-nav .brand .studio-label{font-family:CoverFont,-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-.app-shell .editor-nav .brand-mark{flex:none;width:32px;height:32px;overflow:visible}
-@media(max-width:650px){.app-shell .editor-nav .brand{font-size:18px}.app-shell .editor-nav .brand-mark{width:28px;height:28px}}
-@media(max-width:650px){.app-shell .app-header.app-header{height:74px;padding-top:12px;padding-bottom:4px}.app-shell .editor-nav.editor-nav{height:58px}}
-
-/* The options menu uses the same glass as the panels; its links and switches use the control fill.
-   The --glass-* values come from the editor's theme. */
-html body .nav-menu-panel.nav-menu-panel{
-  background:var(--glass-sheen),var(--glass-panel);border:1px solid var(--glass-line);border-radius:20px;
-  box-shadow:var(--glass-highlight);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-}
-html body .nav-menu-panel :is(.nav-menu-link,.theme-switch,.locale-switch){
-  background:var(--glass-sheen),var(--glass-fill);border:1px solid var(--glass-line);box-shadow:var(--glass-highlight);
-  -webkit-backdrop-filter:none;backdrop-filter:none;
-}
-html body .nav-menu-panel .nav-menu-link:hover{background:var(--glass-sheen),var(--glass-line)}
-/* A blurred element can't blur through a blurred parent, so the navbar's glass lives on a ::after layer
-   behind its content. The navbar itself has no backdrop-filter, letting the options menu blur the page. */
-html body .liquid-nav.liquid-nav.liquid-nav{background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;isolation:isolate}
-html body .app-shell .editor-nav.liquid-nav{position:relative}
-html body .liquid-nav.liquid-nav.liquid-nav::after{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
-  background:var(--glass-sheen),var(--glass-panel);border:1px solid var(--glass-line);box-shadow:var(--glass-highlight);
-  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-}
-@media(forced-colors:active){html body .liquid-nav.liquid-nav.liquid-nav::after{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}}
-
-/* All small icon buttons (cover reset, remove photo, frame and treatment resets) share one circular shape. */
-html body .app-shell.app-shell .icon-button,
-html body .app-shell.app-shell .preview-panel .preview-actions .icon-button{
-  width:32px;height:32px;min-width:32px;padding:0;border-radius:50%;display:grid;place-items:center;flex:none;
-}
-html body .app-shell.app-shell .icon-button:disabled{opacity:.4}
-
-/* Settings panel scrollbar: white thumb, clear track, inset 20px at both ends to clear the panel's rounded corners. */
-html body .app-shell.app-shell .controls{scrollbar-color:auto;scrollbar-width:auto}
-html body .app-shell.app-shell .controls::-webkit-scrollbar{width:12px}
-html body .app-shell.app-shell .controls::-webkit-scrollbar-track{background:transparent;margin-block:20px}
-html body .app-shell.app-shell .controls::-webkit-scrollbar-thumb{background:rgba(255,255,255,.7);border-radius:999px;border:4px solid transparent;background-clip:padding-box}
-html body .app-shell.app-shell .controls::-webkit-scrollbar-thumb:hover{background-color:#fff}
-/* Browsers without ::-webkit-scrollbar (Firefox) get a thin white scrollbar; they can't inset its ends. */
-@supports not selector(::-webkit-scrollbar){
-  html body .app-shell.app-shell .controls{scrollbar-color:rgba(255,255,255,.7) transparent;scrollbar-width:thin}
-}
-
-/* Inspector categories (Icon Composer style): a small muted title above one grouped glass card.
-   Inside the card every setting is a row (icon + label on the left, control on the right), split by hairlines. */
-.app-shell{--row-line:rgba(29,29,31,.1)}
-html[data-theme="dark"] .app-shell{--row-line:rgba(255,255,255,.1)}
-/* Every row shares one padding (--row-pad-*), and text, number and select fields take the segmented switches'
-   height (--control-h), so labelled rows line up at the same height. */
-html body .app-shell.app-shell .controls{--row-pad-y:12px;--row-pad-x:16px;--control-h:38px;--row-min-h:calc(var(--control-h) + 2 * var(--row-pad-y))}
-html body .app-shell.app-shell .controls{--field-gap:0px;display:flex;flex-direction:column;gap:28px;padding:16px 14px 24px}
-html body .app-shell.app-shell .controls .control-section{flex:none;padding:0;border:0;background:none;box-shadow:none}
-html body .app-shell.app-shell .controls .control-section .section-heading{display:flex;align-items:center;justify-content:flex-start;margin:0 0 6px;padding:0 8px}
-html body .app-shell.app-shell .controls .control-section .section-heading h2{
-  margin:0;font-size:11px;line-height:1.3;font-weight:600;letter-spacing:.1px;color:var(--text);opacity:.6;
-}
-/* The card. */
-html body .app-shell.app-shell .controls .section-body{
-  display:flex;flex-direction:column;gap:0;border:1px solid var(--glass-line);border-radius:14px;overflow:hidden;
-  background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
-}
-/* Rows: every direct child is a row; nested groups are transparent and split their own rows. */
-html body .app-shell.app-shell .controls .section-body > *,
-html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > *{margin:0;padding:var(--row-pad-y) var(--row-pad-x)}
-html body .app-shell.app-shell .controls .section-body > :not(.hidden-input) ~ *,
-html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls) > * + *{border-top:1px solid var(--row-line)}
-/* Logo position and logo style: the label and its tiles read as one row, with no divider between them. */
-html body .app-shell.app-shell .controls .section-body > .field-label + :is(.corner-options,.logo-style-options){border-top:0;padding-top:0}
-html body .app-shell.app-shell .controls .section-body :is(.photo-frame-controls,.photo-tone-controls,.crop-controls){
-  display:flex;flex-direction:column;gap:0;padding:0;border-radius:0;border-left:0;border-right:0;border-bottom:0;background:none;box-shadow:none;
-}
-/* Controls that draw their own surface (switch track, drop zone) sit inset as rows, keeping their own border. */
-html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone){margin:var(--row-pad-y) var(--row-pad-x);width:auto;align-self:stretch}
-html body .app-shell.app-shell .controls .section-body > .segmented{padding:3px}
-html body .app-shell.app-shell .controls .section-body > .upload-zone{padding:18px 12px;border:1px solid var(--glass-line)}
-html body .app-shell.app-shell .controls .section-body > :is(.segmented,.upload-zone) + *{border-top:0}
-/* Labelled rows: label column, then the control. */
-html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control,.range-label){
-  display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr);align-items:center;gap:12px;min-height:var(--row-min-h);
-}
-html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(110px,38%) minmax(0,1fr) 44px}
-html body .app-shell.app-shell .controls .section-body .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:var(--row-min-h)}
-html body .app-shell.app-shell .controls .section-body .row-label{
-  display:flex;align-items:center;gap:9px;min-width:0;order:0;font-size:13px;font-weight:500;color:var(--text);
-}
-html body .app-shell.app-shell .controls .section-body .row-label > *{order:0}
-html body .app-shell.app-shell .controls .section-body .row-label > svg{flex:none;opacity:.75}
-html body .app-shell.app-shell .controls .section-body .row-label > span{min-width:0;overflow:hidden;text-overflow:ellipsis}
-html body .app-shell.app-shell .controls .section-body .range-label > .range-value{
-  display:block;order:3;text-align:right;font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--text);opacity:.7;
-}
-/* Rows with a reset button keep it at the far right. */
-html body .app-shell.app-shell .controls .section-body .photo-frame-controls > .field-label{display:flex;align-items:center;justify-content:space-between;min-height:var(--row-min-h)}
-html body .app-shell.app-shell .controls .section-body .photo-treatment-label{display:flex;align-items:center;justify-content:space-between;gap:6px}
-/* Compact controls, like inspector value fields. */
-html body .app-shell.app-shell .controls .section-body .field :is(input,textarea,.select-trigger){padding:0 10px;font-size:13px;border-radius:8px}
-html body .app-shell.app-shell .controls .section-body .field :is(input,.select-trigger){height:var(--control-h)}
-html body .app-shell.app-shell .controls .section-body .field textarea{min-height:var(--control-h);padding-top:calc((var(--control-h) - 2px - 1.3em) / 2);padding-bottom:calc((var(--control-h) - 2px - 1.3em) / 2)}
-html body .app-shell.app-shell .controls .section-body .segmented{height:var(--control-h);padding:3px}
-html body .app-shell.app-shell .controls .section-body .segmented > button{min-height:0;height:100%;padding-top:0;padding-bottom:0;font-size:12px}
-html body .app-shell.app-shell .segmented > button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
-html body .app-shell.app-shell .segmented > button svg{flex:none}
-html body .app-shell.app-shell .controls .section-body .color-swatches{justify-content:end;padding:2px}
-html body .app-shell.app-shell .controls .section-body .help-text{font-size:12px;opacity:.75}
+/* Phones: the cover sits in a card on top, the settings scroll below it, and every field drops under its label. */
 @media(max-width:650px){
-  html body .app-shell.app-shell .controls{padding:12px 10px 20px;gap:22px}
-  html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(96px,38%) minmax(0,1fr) 40px}
-}
-@media(forced-colors:active){
-  html body .app-shell.app-shell .controls .section-body{background:Canvas;border-color:CanvasText}
-}
+  :root{--panel-w:0px}
+  .app-header{height:calc(56px + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
+  .editor-nav{padding:0 16px}
+  .app-shell>main{padding:0 12px}
+  .workspace{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:12px;padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+  .preview-column{padding:0;background:none}
+  .preview-panel{position:relative;flex:none;border:1px solid var(--line);border-radius:16px;background:var(--bg-1)}
+  .section-top{top:12px;left:12px;right:12px;align-items:flex-start}
+  .preview-pickers{flex:1;flex-direction:column;align-items:flex-start;gap:12px}
+  .platform-switch::after{display:none}
+  .platform-switch .segmented{width:200px;height:36px}
+  .style-strip{width:100%}
+  /* The card frames the cover here, and its corner buttons take the crop marks' place. */
+  .preview-stage{padding:116px 16px 16px}
+  .cover-frame{width:min(100%,clamp(160px,26dvh,240px))}
+  .cover-frame::before{display:none}
+  .preview-stage:has(.memory-list) .cover-frame{max-width:calc(100% - 128px)}
+  .memory-rail{left:8px;gap:4px}
+  .memory-list{gap:4px;padding:4px;border-radius:8px}
+  .memory{width:40px;height:40px}
+  .memory-delete{width:32px;height:32px;border-radius:8px}
+  .nav-download,.save-version,.preview-credit{display:none}
+  .mobile-preview-download,.mobile-preview-archive{display:grid;place-items:center;position:absolute;z-index:2;bottom:16px;width:40px;height:40px;padding:0}
 
-/* Inspector layout (Icon Composer style): a full-width navbar, the cover floating on the artwork,
-   and the options in a full-height band flush against the right edge, with no outer margins. */
-html body .app-shell.app-shell .app-header.app-header{height:56px;padding:0;margin:0;border:0}
-html body .app-shell.app-shell .editor-nav.editor-nav{max-width:none;width:100%;height:56px;margin:0;padding:0 20px;border-radius:0}
-html body .app-shell.app-shell .editor-nav.liquid-nav::after{border-width:0 0 1px;border-radius:0}
-@media(min-width:651px){
-  html body .app-shell.app-shell>main{max-width:none;width:100%;margin:0;padding:0}
-  html body .app-shell.app-shell .workspace{
-    display:grid;grid-template-columns:minmax(0,1fr) clamp(400px,40vw,600px);gap:0;margin:0;padding:0;align-items:stretch;
-  }
-  html body .app-shell.app-shell .preview-column{height:100%;min-height:0;padding:24px 32px 18px;justify-content:center}
-  html body .app-shell.app-shell .preview-panel{
-    flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;
-    background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;overflow:visible;
-  }
-  html body .app-shell.app-shell .preview-stage{padding:12px 0 20px}
-  /* "Live preview" and the reset button sit in the preview area's top corners, out of the cover's way. */
-  html body .app-shell.app-shell .preview-column{position:relative}
-  html body .app-shell.app-shell .preview-panel{position:static}
-  html body .app-shell.app-shell .preview-panel .section-top{
-    position:absolute;z-index:2;top:16px;left:20px;right:20px;margin:0;padding:0;
-    display:flex;align-items:center;justify-content:space-between;
-  }
-  /* The cover keeps its square and fits the space left by the navbar, the toolbar row and the download button. */
-  html body .app-shell.app-shell .preview-stage canvas{width:min(100%,max(160px,calc(100dvh - 280px)),720px)}
-  html body .app-shell.app-shell .preview-download{width:min(100%,360px);margin:0 auto;padding:0}
-  html body .app-shell.app-shell .preview-credit{margin:0;text-align:left}
-  html body .app-shell.app-shell .controls{
-    height:100%;border:0;border-left:1px solid var(--glass-line);border-radius:0;
-  }
+  .mobile-preview-download{right:12px}
+  .mobile-preview-archive{left:12px}
+  .mobile-preview-download span{display:none}
+  .controls{padding:0 0 24px;gap:20px;background:none;border:0}
+  .controls :is(input,button){scroll-margin-top:12px}
+  .controls{--row-pad-y:16px}
+  .section-body :is(.field,.inline-row,.color-control){grid-template-columns:minmax(0,1fr);align-items:stretch}
+  .section-body .range-label{grid-template-columns:minmax(0,1fr) auto;row-gap:12px}
+  .section-body .range-label > .row-label{grid-row:1;grid-column:1}
+  .section-body .range-label > .range-value{grid-row:1;grid-column:2}
+  .section-body .range-label > :not(.row-label,.range-value){grid-row:2;grid-column:1 / -1}
+  .color-swatches{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:12px}
+  .color-swatch{flex:none;width:32px}
+  .swatches{grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+  .download-anchor{transform:translate(calc(-50% - 12%),-50%)}
 }
+@media(max-width:380px){.editor-nav{padding:0 12px}}
 
-/* Toggle motion. Gradients can't be animated, so the "on" fill lives on its own layer and fades in,
-   while the glass thumb slides and grows on press along one soft spring. Size and glass styling are unchanged. */
-@media(forced-colors:none){
-  html body .app-shell.app-shell .toggle-row input{isolation:isolate;transition:box-shadow .3s ease}
-  html body .app-shell.app-shell .toggle-row input:checked{background:var(--inactive-track)}
-  html body .app-shell.app-shell .toggle-row input::after{
-    content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
-    background:linear-gradient(135deg,#ff6577,#e81738);box-shadow:inset 0 1px 2px rgba(0,0,0,.25);
-    opacity:0;transition:opacity .32s cubic-bezier(.4,0,.2,1);
-  }
-  html body .app-shell.app-shell .toggle-row input:checked::after{opacity:1}
-}
-html body .app-shell.app-shell .toggle-row input::before{
-  z-index:1;transform-origin:0 50%;
-  transition:transform .42s cubic-bezier(.32,1.2,.5,1),scale .28s cubic-bezier(.32,1.35,.5,1),
-    transform-origin .42s cubic-bezier(.32,1.2,.5,1),box-shadow .2s ease;
-}
-/* The press growth is anchored at the track end the thumb rests against, so the enlarged thumb stays inside
-   the track. The origin is in the thumb's own box, so it adds the travel: 100% + travel is the track's right end. */
-html body .app-shell.app-shell .toggle-row input:checked::before{transform-origin:calc(100% + var(--drag-travel)) 50%}
-/* While dragging, the thumb follows the pointer directly; only the press growth stays animated. */
-html body .app-shell.app-shell .toggle-row input[data-dragging="true"]::before{
-  transform-origin:calc(var(--drag-progress) * (100% + var(--drag-travel))) 50%;
-  transition:scale .28s cubic-bezier(.32,1.35,.5,1);
-}
 @media(prefers-reduced-motion:reduce){
-  html body .app-shell.app-shell .toggle-row input::before,
-  html body .app-shell.app-shell .toggle-row input::after{transition:none}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .preview-stage canvas{transform:none;cursor:auto;touch-action:auto}
+  .download-cd{transform:none}
+  .download-reveal.is-leaving{opacity:0}
 }
 
-/* Segmented switches get the toggle's motion: the red highlight slides on the same soft spring and, while pressed
-   or dragged, swells slightly and turns into translucent red glass, then settles back to solid red. */
-@media(forced-colors:none){
-  html body .app-shell.app-shell .segmented::before{
-    transition:transform .42s cubic-bezier(.32,1.2,.5,1),scale .28s cubic-bezier(.32,1.35,.5,1),
-      background-color .25s ease,box-shadow .25s ease;
-  }
-  html body .app-shell.app-shell .segmented:active::before,
-  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{
-    scale:1.025 1.28;
-    background-color:color-mix(in srgb,#ff1a3c 80%,transparent);
-    box-shadow:inset 0 1px 1px rgba(255,255,255,.55),inset 0 -1px 3px rgba(255,255,255,.18),0 4px 14px rgba(0,0,0,.22);
-  }
-  /* While dragging, the highlight follows the pointer directly; only its size and glass stay animated. */
-  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{
-    transition:scale .28s cubic-bezier(.32,1.35,.5,1),background-color .25s ease,box-shadow .25s ease;
-  }
-}
-@media(prefers-reduced-motion:reduce){
-  html body .app-shell.app-shell .segmented::before{transition:none}
-  html body .app-shell.app-shell .segmented:active::before,
-  html body .app-shell.app-shell .segmented[data-dragging="true"]::before{scale:1}
-}
-
-/* The preview is lifted only visually; the exported canvas remains unchanged. */
-.app-shell .preview-stage{perspective:1000px}
-.app-shell .preview-stage canvas{
-  cursor:grab;touch-action:none;
-  transform:perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1);
-  transition:transform .55s cubic-bezier(.2,1.3,.4,1),box-shadow .3s ease;
-}
-.app-shell .preview-stage canvas[data-grabbing="true"]{
-  cursor:grabbing;
-  transform:perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1.025);
-  transition:transform .12s ease-out,box-shadow .3s ease;
-}
-@media(prefers-reduced-motion:reduce){
-  .app-shell .preview-stage canvas,.app-shell .preview-stage canvas[data-grabbing="true"]{transform:none;transition:none;cursor:auto;touch-action:auto}
-}
-
-/* Reset: the cover is thrown off to the right with a spin, then the fresh cover pops in. These use the individual
-   translate/rotate/scale properties so they stack on top of the tilt transform instead of replacing it. */
-.app-shell .preview-stage canvas[data-reset="throw"]{pointer-events:none;animation:coverThrow .46s cubic-bezier(.5,0,.75,0) forwards}
-.app-shell .preview-stage canvas[data-reset="land"]{pointer-events:none;animation:coverLand .42s cubic-bezier(.32,1.3,.5,1)}
-@keyframes coverThrow{
-  20%{translate:-3% 1%;rotate:-3deg}
-  100%{translate:135% -10%;rotate:28deg;opacity:0}
-}
-@keyframes coverLand{from{scale:.82;opacity:0}}
-@media(prefers-reduced-motion:reduce){.app-shell .preview-stage canvas[data-reset]{animation:none}}
-
-/* Reset confirmation: a glass card over a dimmed, blurred page. */
-.confirm-dialog{
-  width:min(340px,calc(100% - 32px));padding:0;border:1px solid var(--glass-line);border-radius:22px;color:inherit;
-  background:var(--glass-sheen),var(--glass-panel);box-shadow:var(--glass-highlight),0 24px 60px rgba(0,0,0,.35);
-  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-}
-.confirm-dialog::backdrop{background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.confirm-dialog[open]{animation:confirmIn .22s cubic-bezier(.32,1.2,.5,1)}
-.confirm-dialog[open]::backdrop{animation:confirmFade .22s ease}
-@keyframes confirmIn{from{opacity:0;transform:scale(.94)}}
-@keyframes confirmFade{from{opacity:0}}
-.confirm-dialog-content{padding:22px 20px 18px;text-align:center}
-.confirm-dialog h2{margin:0 0 8px;font-size:17px;font-weight:600;letter-spacing:-.2px}
-.confirm-dialog p{margin:0 0 20px;font-size:13px;line-height:1.45;opacity:.75}
-.confirm-dialog-actions{display:flex;gap:10px}
-.confirm-dialog-actions button{
-  flex:1;padding:10px 14px;border:1px solid var(--glass-line);border-radius:999px;font-size:14px;font-weight:600;
-  background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
-}
-.confirm-dialog-actions .confirm-dialog-danger{border-color:transparent;color:#fff;background:linear-gradient(135deg,#ff6577,#e81738)}
-.confirm-dialog-actions button:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
-@media(prefers-reduced-motion:reduce){.confirm-dialog[open],.confirm-dialog[open]::backdrop{animation:none}}
 @media(forced-colors:active){
-  .confirm-dialog{background:Canvas;color:CanvasText;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
-  .confirm-dialog-actions button,.confirm-dialog-actions .confirm-dialog-danger{background:ButtonFace;color:ButtonText;border-color:ButtonText}
-}
-
-/* Notifications use the editor's liquid glass: a floating pill over the page, with a round glass close button. */
-html body .app-shell.app-shell .toast{
-  bottom:28px;padding:10px 10px 10px 20px;gap:14px;border:1px solid var(--glass-line);border-radius:999px;
-  color:inherit;font-size:13px;font-weight:500;
-  background:var(--glass-sheen),var(--glass-panel);
-  box-shadow:var(--glass-highlight),inset 0 -2px 8px rgba(255,255,255,.08),0 16px 40px rgba(0,0,0,.28);
-  -webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-  animation:toastIn .36s cubic-bezier(.32,1.3,.5,1);
-}
-@supports (backdrop-filter:url("#liquid-nav-distortion")){
-  html body .app-shell.app-shell .toast{backdrop-filter:url("#liquid-nav-distortion") var(--glass-blur)}
-}
-html body .app-shell.app-shell .toast.error{
-  border-color:rgba(250,35,59,.45);
-  background:linear-gradient(120deg,rgba(255,101,119,.28),rgba(232,23,56,.14)),var(--glass-panel);
-}
-html body .app-shell.app-shell .toast button{
-  width:28px;height:28px;flex:none;display:grid;place-items:center;padding:0;border:1px solid var(--glass-line);border-radius:50%;
-  color:inherit;background:var(--glass-sheen),var(--glass-fill);box-shadow:var(--glass-highlight);
-}
-html body .app-shell.app-shell .toast button:hover{background:var(--glass-sheen),var(--glass-line)}
-@keyframes toastIn{from{opacity:0;translate:0 14px;scale:.94}}
-@media(prefers-reduced-motion:reduce){html body .app-shell.app-shell .toast{animation:none}}
-@media(forced-colors:active){
-  html body .app-shell.app-shell .toast,html body .app-shell.app-shell .toast.error{background:Canvas;color:CanvasText;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
-  html body .app-shell.app-shell .toast button{background:ButtonFace;color:ButtonText;border-color:ButtonText}
-}
-
-/* Save version: an archive button beside Download, and the saved versions as a glass column left of the cover. */
-html body .app-shell.app-shell .preview-download{display:flex;gap:10px}
-html body .app-shell.app-shell .preview-download .download:not(.archive-button){flex:1;width:auto}
-html body .app-shell.app-shell .preview-download .archive-button{flex:none;width:auto;padding-left:14px;padding-right:14px}
-.mobile-preview-archive{display:none}
-html body .app-shell.app-shell .preview-stage{position:relative}
-/* The rail holds the glass box of versions and, below it, the trash button. */
-html body .app-shell.app-shell .memory-rail{
-  position:absolute;z-index:2;left:0;top:50%;translate:0 -50%;display:flex;flex-direction:column;align-items:center;gap:12px;
-}
-html body .app-shell.app-shell .memory-list{
-  display:flex;flex-direction:column;gap:10px;padding:8px;
-  border:1px solid var(--glass-line);border-radius:18px;background:var(--glass-sheen),var(--glass-panel);
-  box-shadow:var(--glass-highlight),0 12px 32px rgba(0,0,0,.22);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);
-  animation:toastIn .36s cubic-bezier(.32,1.3,.5,1);
-}
-html body .app-shell.app-shell .memory{
-  width:56px;height:56px;padding:0;border:2px solid transparent;border-radius:11px;overflow:hidden;background:var(--glass-fill);
-  box-shadow:0 4px 12px rgba(0,0,0,.2);transition:scale .25s cubic-bezier(.32,1.35,.5,1),border-color .2s ease;
-}
-html body .app-shell.app-shell .memory img{display:block;width:100%;height:100%;object-fit:cover}
-html body .app-shell.app-shell .memory:hover{scale:1.06;filter:none}
-html body .app-shell.app-shell .memory:active{scale:.96}
-html body .app-shell.app-shell .memory[aria-pressed="true"]{border-color:#fa233b}
-html body .app-shell.app-shell .memory:focus-visible{outline:2px solid #fa233b;outline-offset:2px}
-/* Leave room for the column so it never covers the artwork. */
-html body .app-shell.app-shell .preview-stage:has(.memory-list) canvas{max-width:calc(100% - 168px)}
-@media(max-width:650px){
-  html body .app-shell.app-shell .mobile-preview-archive{
-    display:grid;place-items:center;position:absolute;z-index:2;right:62px;bottom:18px;width:36px;height:36px;padding:0;border-radius:50%;box-shadow:0 4px 14px #0003;
-  }
-  html body .app-shell.app-shell .memory-rail{left:6px;gap:8px}
-  html body .app-shell.app-shell .memory-list{gap:7px;padding:6px;border-radius:14px}
-  html body .app-shell.app-shell .memory{width:40px;height:40px;border-radius:8px}
-  html body .app-shell.app-shell .preview-stage:has(.memory-list) canvas{max-width:calc(100% - 128px)}
-}
-@media(prefers-reduced-motion:reduce){html body .app-shell.app-shell :is(.memory-list,.memory){animation:none;transition:none}}
-@media(forced-colors:active){
-  html body .app-shell.app-shell .memory-list{background:Canvas;border-color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none}
-  html body .app-shell.app-shell .memory[aria-pressed="true"]{border-color:Highlight}
-}
-/* Trash below the box: deletes all saved versions. It is a .download button sized like the archive button beside Download. */
-html body .app-shell.app-shell .memory-delete{flex:none;padding-left:14px;padding-right:14px}
-@media(max-width:650px){
-  html body .app-shell.app-shell .memory-delete{display:grid;place-items:center;width:36px;height:36px;padding:0;border-radius:50%;box-shadow:0 4px 14px #0003}
-}
-
-/* Live preview backdrop: a subtle grid behind the cover. It is page styling only, so exported images are unaffected. */
-html body .app-shell.app-shell{
-  --preview-grid-line:rgba(29,29,31,.06);
-  --preview-grid:linear-gradient(var(--preview-grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--preview-grid-line) 1px,transparent 1px);
-}
-html[data-theme="dark"] body .app-shell.app-shell{--preview-grid-line:rgba(255,255,255,.06)}
-@media(min-width:651px){
-  html body .app-shell.app-shell .preview-column{background-image:var(--preview-grid);background-size:64px 64px;background-position:center}
-}
-@media(max-width:650px){
-  html body .app-shell.app-shell .preview-panel{background:var(--preview-grid),var(--glass-sheen),var(--glass-panel);background-size:48px 48px,auto,auto;background-position:center}
-}
-
-/* Multiline titles: same look as the inputs, one row per line, no manual resize. */
-.app-shell .field textarea{display:block;width:100%;font:inherit;line-height:1.3;resize:none;overflow:hidden}
-/* Dropdowns (SelectMenu): the trigger looks like the text inputs, with a chevron drawn by its wrapper that flips while open.
-   The option list is a glass card like the options menu, nearly opaque because it can't blur through the blurred panel behind it. */
-.app-shell{--select-menu-bg:rgba(248,248,251,.96);--select-menu-shadow:0 12px 32px rgba(27,37,64,.18)}
-html[data-theme="dark"] .app-shell{--select-menu-bg:rgba(36,37,44,.96);--select-menu-shadow:0 12px 32px rgba(0,0,0,.45)}
-.app-shell .select-menu{position:relative;display:block;min-width:0}
-.app-shell .select-menu::after{content:"";position:absolute;right:15px;top:50%;width:7px;height:7px;margin-top:-1px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;opacity:.55;transform:translateY(-50%) rotate(45deg);transition:transform .15s;pointer-events:none}
-.app-shell .select-menu.open::after{margin-top:2px;transform:translateY(-50%) rotate(-135deg)}
-.app-shell .field .select-trigger{display:flex;align-items:center;width:100%;font:inherit;text-align:left;cursor:pointer;padding-right:36px}
-.app-shell .field .select-trigger:hover:not(:disabled){filter:none}
-.app-shell .field .select-trigger > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.app-shell .select-menu-list{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;display:grid;gap:2px;margin:0;padding:4px;list-style:none;border:1px solid var(--glass-line);border-radius:12px;background:var(--glass-sheen),var(--select-menu-bg);box-shadow:var(--glass-highlight),var(--select-menu-shadow);outline:none}
-.app-shell .select-menu.up .select-menu-list{top:auto;bottom:calc(100% + 6px)}
-.app-shell .select-menu-list [role="option"]{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 10px;border-radius:8px;font-size:13px;color:var(--text);cursor:pointer}
-.app-shell .select-menu-list [role="option"].active{background:color-mix(in srgb,var(--accent) 14%,transparent)}
-.app-shell .select-menu-list [role="option"] > svg{flex:none;color:var(--accent)}
-/* While a menu is open its card stops clipping (it clips only to round its row hairlines), and its section paints above the
-   sections after it, so the list is never cut off or covered. */
-html body .app-shell.app-shell .controls .section-body:has(.select-menu.open){overflow:visible}
-.app-shell .control-section:has(.select-menu.open){position:relative;z-index:5}
-@media(forced-colors:active){
-  .app-shell .select-menu-list{background:Canvas;border-color:CanvasText}
-  .app-shell .select-menu-list [role="option"].active{background:Highlight;color:HighlightText}
-}
-
-/* Mobile: only the small round buttons act on the cover (reset top-left, save bottom-left, download bottom-right),
-   every field sits below its label, and color swatches are bigger touch targets. */
-@media(max-width:650px){
-  html body .app-shell.app-shell .preview-download{display:none}
-  html body .app-shell.app-shell .mobile-preview-archive{left:18px;right:auto}
-  html body .app-shell.app-shell .controls{--row-pad-y:16px;--row-pad-x:18px}
-  html body .app-shell.app-shell .controls .section-body :is(.field,.inline-row,.color-control){grid-template-columns:minmax(0,1fr);align-items:stretch;gap:12px}
-  html body .app-shell.app-shell .controls .section-body .range-label{grid-template-columns:minmax(0,1fr) auto;row-gap:12px}
-  html body .app-shell.app-shell .controls .section-body .range-label > .row-label{grid-row:1;grid-column:1}
-  html body .app-shell.app-shell .controls .section-body .range-label > .range-value{grid-row:1;grid-column:2}
-  html body .app-shell.app-shell .controls .section-body .range-label > :not(.row-label,.range-value){grid-row:2;grid-column:1 / -1}
-  html body .app-shell.app-shell .controls .section-body .color-swatches{display:flex;flex-wrap:wrap;justify-content:start;gap:12px;padding:4px}
-  html body .app-shell.app-shell .controls .section-body .color-swatch{flex:none;width:36px;height:36px}
-  html body .app-shell.app-shell .controls .section-body{--swatch-size:36px}
-  html body .app-shell.app-shell .controls .section-body .swatches{gap:12px}
+  .segmented::before,.locale-switch-thumb,.theme-switch-thumb{background:Highlight}
+  .segmented > button.active,:is(.locale-switch,.theme-switch) button[aria-checked="true"]{color:HighlightText}
+  :is(.style-option.selected .style-thumb,.style-option.selected .platform-logo,.corner-options button.active .corner-icon,.color-swatch.selected,.swatch.selected,.memory[aria-pressed="true"]){outline-color:Highlight}
+  .cover-frame::before{display:none}
 }

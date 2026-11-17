@@ -44,9 +44,10 @@ Pick a platform (Apple Music or Spotify), then one of its styles. Each style sta
   - Daily Mix offers the standard and wide fonts only; a condensed choice made in another style shows as standard.
   - The title size is adjustable (Classic 120px and New 112px by default), and so is the New design's number size (190px by default). A long title shrinks to stay clear of the number.
   - The mix number has its own section in the editor: show or hide it, set it, and (New design) size it.
+- **Radio**: 1, 2, or 3 artist circles on a flat color (coral by default), like Similar Artist Radio but in Spotify's Radio layout. The main artist is a large centered circle; a second artist sits on the left edge and a third on the right edge, both running off the cover and tucked behind the main one. Every artist has its own photo, photo treatment, and crop. An optional border rings the main artist with a 14px gap of background, like Similar Artist Radio. A spaced "RADIO" label sits level with the logo at the top-right, and the title (always in the standard font, up to 2 lines) sits at the bottom-left.
   - Switching design restores that design's colors, photo treatment, and title size.
 
-Spotify titles have three fonts: Standard (SF Pro Bold), Wide (Archivo Expanded Black), and Condensed (Archivo Condensed Bold). Title and subtitle sizes and the gap between them are adjustable. Long titles wrap across lines.
+Spotify titles have three fonts: Standard (SF Pro Bold), Wide (Archivo Expanded Black), and Condensed (Archivo Condensed Bold). Title and subtitle sizes and the gap between them are adjustable. Original and Band also have a letter spacing slider (-10% to 30% of the font size) for the title and subtitle. Long titles wrap across lines, and shrink to fit, with the spacing included.
 
 ## Editing
 
@@ -65,18 +66,18 @@ Spotify titles have three fonts: Standard (SF Pro Bold), Wide (Archivo Expanded 
 - **Logo**: show or hide it.
   - Apple Music has a classic or a new logo.
   - Original and Spotify Full photo let you choose the corner. In Full photo, the title's corner is taken, so the logo moves to the other side.
-  - The other styles pin the logo: top-right for Essentials and Similar Artist Radio, top-left for This Is, Band, and Daily Mix.
+  - The other styles pin the logo: top-right for Essentials and Similar Artist Radio, top-left for This Is, Band, Daily Mix, and Radio.
 - **Sliders**: double-click (or double-tap) a slider's thumb to glide it back to its default value.
 
 ## Editor
 
-- **Inspector layout**: the live preview takes the main area, and the settings are a full-height panel on the right. On phones, the preview sits above the settings, and each field sits below its label.
-- **Save versions**: the archive button saves the cover. The newest 3 versions are kept in the browser's IndexedDB with their photos, and appear as thumbnails beside the preview. Click one to restore it; the trash button deletes them all after a confirmation.
-- **Download**: a full-resolution 1200 × 1200 PNG, drawn by the same renderer as the preview, revealed with a short CD-case animation. On phones, small round buttons in the preview's corners reset, save, and download.
+- **Inspector layout**: the live preview takes the main area, and the settings are a full-height panel on the right. The platform switch and the current platform's cover styles sit in the preview's top-left corner, so you pick a style while looking at the result. Hover a style to see its name. On phones, the preview sits above the settings, and each field sits below its label.
+- **Save versions**: the archive icon in the preview's bottom-left corner (a button on the cover on phones) saves the cover. The newest 3 versions are kept in the browser's IndexedDB with their photos, and appear as thumbnails beside the preview. Click one to restore it; the trash button deletes them all after a confirmation.
+- **Download**: a full-resolution 1200 × 1200 PNG, drawn by the same renderer as the preview, revealed with a short CD-case animation. On desktop the Download button sits in the navbar; on phones, small buttons in the preview's corners reset, save, and download.
 - **Reset**: restores the default cover after a confirmation.
 - **Preview tilt**: drag the preview to tilt it. This respects reduced-motion settings.
 - **Language**: English or Spanish, from the menu in the navbar. It defaults to the browser language and is remembered in `localStorage`.
-- **Accessibility**: keyboard-accessible controls, reduced-motion and forced-colors support, and a dark glass interface.
+- **Accessibility**: keyboard-accessible controls, reduced-motion and forced-colors support, and a dark interface.
 
 Photos are processed locally in the browser: there is no upload service, analytics, or external font request. Unsaved edits reset when the page reloads; saved versions stay until deleted.
 

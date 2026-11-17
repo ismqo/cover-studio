@@ -12,8 +12,8 @@ type SmoothRangeProps = {
   defaultValue?: number;
 };
 
-/** The thumb is 22px wide, so its center travels from 11px to (width - 11px). */
-const THUMB = 22;
+/** The thumb is 16px wide, so its center travels from 8px to (width - 8px). */
+const THUMB = 16;
 /** How close (px) a press must land to the thumb, and to the previous press, to count as a double press on it. */
 const NEAR = 18;
 const DOUBLE_PRESS_MS = 350;
@@ -29,7 +29,7 @@ export function SmoothRange({ min, max, step = 1, value, onValueChange, defaultV
   const increment = Number(step);
   const current = draft ?? value;
   const fraction = upper === lower ? 0 : (current - lower) / (upper - lower);
-  const style = { "--range-progress": `calc(${fraction * 100}% + ${11 - 22 * fraction}px)` } as CSSProperties;
+  const style = { "--range-progress": `calc(${fraction * 100}% + ${THUMB / 2 - THUMB * fraction}px)` } as CSSProperties;
 
   useEffect(() => () => { if (reset.current !== null) cancelAnimationFrame(reset.current); }, []);
 

@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, DAILY_MIX_NUMBER_FACE, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, THIS_IS_KICKER_FACE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
+import { artistBubbles, radioBubbles, radioMainRing, ARTIST_BUBBLE_GAP, spotifyLetterSpacingFor, trackedMeasure, trackedWidth, hasArtistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, treatmentDiffers, colorGradientStops, diamondPosition, GRADIENT_TYPES, CLASSIC_LINE_HEIGHT, essentialsTitleBlock, titleLines, THIS_IS_INK, thisIsTitleInk, spotifyFontFor, activeBackground, logoCornerFor, allowedLogoCorner, classicTitleYMax, spotifyAlignFor, titleCorner, treatmentChanged, treatmentDefaults, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformModes, platformOf, spotifyFace, styleDefaults, dailyMixDesignDefaults, dailyMixHeading, dailyMixNumberLabel, dailyMixLabels, parseMixNumber, DAILY_MIX_WAVE, DAILY_MIX_NUMBER_FACE, spotifyFonts, SPOTIFY_LOGO, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, THIS_IS_KICKER_FACE, essentialsDesignDefaults, essentialsClassicLayout, ESSENTIALS_CLASSIC } from "../lib/cover-layout.ts";
 
 // Each character is as wide as the font size, so widths are easy to reason about.
 const measure = (value: string, size: number) => value.length * size;
@@ -160,7 +160,7 @@ test("Band keeps the logo relative to the cover on the band side or without a ma
 });
 
 test("Spotify lists its Original (full photo) style first, so choosing Spotify starts there", () => {
-  assert.deepEqual(platformModes.spotify, ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix"]);
+  assert.deepEqual(platformModes.spotify, ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix", "spotify-radio"]);
 });
 
 test("Original's title takes the logo corner on its position and alignment side; other styles take none", () => {
@@ -391,7 +391,7 @@ test("an artist's treatment counts as changed only when it differs from its own 
 });
 
 test("Spotify lists Daily Mix after Band", () => {
-  assert.equal(platformModes.spotify.at(-1), "spotify-daily-mix");
+  assert.equal(platformModes.spotify.indexOf("spotify-daily-mix"), platformModes.spotify.indexOf("spotify-band") + 1);
   assert.equal(platformOf("spotify-daily-mix"), "spotify");
 });
 
@@ -587,4 +587,85 @@ test("the classic Daily Mix title keeps its bottom edge at any size and grows up
   }
   // The default size keeps the box it had before the size became adjustable.
   assert.deepEqual(dailyMixTitleBox(120), { x: 128, y: 852, width: 944, height: 250 });
+});
+
+test("Spotify lists Radio last, after Daily Mix", () => {
+  assert.equal(platformModes.spotify.at(-1), "spotify-radio");
+  assert.equal(platformOf("spotify-radio"), "spotify");
+});
+
+test("Radio starts with color photos, near-black text and logo, and a coral background", () => {
+  const style = styleDefaults("spotify-radio");
+  assert.equal(style.treatment, "original");
+  assert.equal(style.textColor, "#111111");
+  assert.equal(style.bandColor, "#f4766b");
+  assert.equal(style.corner, "top-left");
+});
+
+test("Radio pins the logo top-left, always uses the standard title font, and has no background choice", () => {
+  assert.equal(logoCornerFor("spotify-radio", "bottom-right"), "top-left");
+  assert.deepEqual(spotifyFonts("spotify-radio"), ["standard"]);
+  // A font picked in another Spotify style does not carry over to Radio.
+  for (const font of ["standard", "wide", "black", "condensed"] as const) assert.equal(spotifyFontFor("spotify-radio", font), "standard");
+  assert.equal(activeBackground("spotify-radio", "gradients", "picture"), null);
+  assert.equal(titleCorner("spotify-radio", "bottom", "left"), null);
+  assert.equal(logoColor("spotify-radio", "#111111", "#f4766b", false), "#111111");
+});
+
+test("Similar Artist Radio and Radio have artist bubbles; other styles do not", () => {
+  assert.equal(hasArtistBubbles("similar-artists"), true);
+  assert.equal(hasArtistBubbles("spotify-radio"), true);
+  assert.equal(hasArtistBubbles("spotify-photo"), false);
+  assert.equal(hasArtistBubbles("spotify-daily-mix"), false);
+  assert.equal(hasArtistBubbles("classic"), false);
+});
+
+test("Radio centers the main artist and puts the second and third artists on the left and right edges", () => {
+  const [main, left, right] = radioBubbles(3);
+  assert.deepEqual(main, { x: 600, y: 565, r: 355 });
+  assert.equal(left.y, main.y);
+  assert.equal(right.y, main.y);
+  assert.equal(left.r, right.r);
+  assert.ok(left.r < main.r);
+  // The side bubbles run off the cover's edges, mirrored around the center, and tuck under the main bubble.
+  assert.ok(left.x - left.r < 0);
+  assert.equal(right.x, 1200 - left.x);
+  assert.ok(left.x + left.r > main.x - main.r);
+});
+
+test("Radio's optional border rings the main artist with Similar Artist Radio's 14px gap", () => {
+  const main = radioBubbles(3)[0];
+  assert.equal(ARTIST_BUBBLE_GAP, 14);
+  assert.deepEqual(radioMainRing(3, true), { x: main.x, y: main.y, r: main.r + ARTIST_BUBBLE_GAP });
+  assert.deepEqual(radioMainRing(2, true), { x: main.x, y: main.y, r: main.r + ARTIST_BUBBLE_GAP });
+});
+
+test("Radio draws no border when it is off or there are no side artists to cut into", () => {
+  assert.equal(radioMainRing(3, false), null);
+  assert.equal(radioMainRing(1, true), null);
+});
+
+test("Radio shows only as many bubbles as artists, main artist first", () => {
+  assert.equal(radioBubbles(1).length, 1);
+  assert.deepEqual(radioBubbles(1)[0], radioBubbles(3)[0]);
+  assert.deepEqual(radioBubbles(2), radioBubbles(3).slice(0, 2));
+});
+
+test("Letter spacing applies only to Spotify Original and Band, the styles with a font family", () => {
+  assert.equal(spotifyLetterSpacingFor("spotify-photo", 10), .1);
+  assert.equal(spotifyLetterSpacingFor("spotify-band", -5), -.05);
+  for (const mode of ["spotify-this-is", "spotify-daily-mix", "spotify-radio", "classic", "essentials", "similar-artists"] as const) assert.equal(spotifyLetterSpacingFor(mode, 20), 0);
+});
+
+test("Letter spacing adds its share of the font size between characters, and none when it is 0", () => {
+  assert.equal(trackedMeasure(measure, .1)("ABC", 100), 320);
+  assert.equal(trackedMeasure(measure, -.05)("ABC", 100), 290);
+  assert.equal(trackedMeasure(measure, 0)("ABC", 100), measure("ABC", 100));
+  assert.equal(trackedMeasure(measure, .1)("ABC", 100), trackedWidth("ABC", 100, .1, measure));
+});
+
+test("Wider letter spacing makes a title shrink sooner to stay inside its box", () => {
+  const box = { size: 100, minSize: 20, maxWidth: 1050, maxHeight: 200, maxLines: 1, lineHeight: 1 };
+  assert.equal(fitTitle("AAAAAAAAAA", measure, box).size, 100);
+  assert.equal(fitTitle("AAAAAAAAAA", trackedMeasure(measure, .1), box).size, 96);
 });

@@ -1,10 +1,15 @@
-export type CoverMode = "classic" | "essentials" | "similar-artists" | "spotify-this-is" | "spotify-band" | "spotify-photo" | "spotify-daily-mix";
+export type CoverMode = "classic" | "essentials" | "similar-artists" | "spotify-this-is" | "spotify-band" | "spotify-photo" | "spotify-daily-mix" | "spotify-radio";
 export type Platform = "apple" | "spotify";
 
 export const platformModes: Record<Platform, readonly CoverMode[]> = {
   apple: ["classic", "essentials", "similar-artists"],
-  spotify: ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix"],
+  spotify: ["spotify-photo", "spotify-this-is", "spotify-band", "spotify-daily-mix", "spotify-radio"],
 };
+
+/** Styles built from artist bubbles, each artist with its own photo, crop, and treatment: Similar Artist Radio and Spotify Radio. */
+export function hasArtistBubbles(mode: CoverMode) {
+  return mode === "similar-artists" || mode === "spotify-radio";
+}
 
 export function platformOf(mode: CoverMode): Platform {
   return mode.startsWith("spotify") ? "spotify" : "apple";
@@ -20,6 +25,7 @@ export function styleDefaults(mode: CoverMode) {
     case "spotify-band": return { corner: "top-left", textColor: "#111111", bandColor: "#5aa05a", spotifyTitlePosition: "bottom", spotifyAlign: "left" } as const;
     case "spotify-photo": return { corner: "top-left", textColor: "#ff4632", spotifyTitlePosition: "top", spotifyAlign: "right", treatment: "mono" } as const;
     case "spotify-daily-mix": return { corner: "top-left", ...dailyMixDesignDefaults("classic") } as const;
+    case "spotify-radio": return { corner: "top-left", textColor: "#111111", bandColor: "#f4766b", treatment: "original" } as const;
   }
 }
 
@@ -142,6 +148,17 @@ export function trackedWidth(value: string, size: number, tracking: number, meas
   return measure(value, size) + Math.max(0, [...value].length - 1) * tracking * size;
 }
 
+/** `measure` with `tracking` ems between characters, so wrapping and shrinking account for letter spacing. */
+export function trackedMeasure(measure: (value: string, size: number) => number, tracking: number) {
+  return (value: string, size: number) => trackedWidth(value, size, tracking, measure);
+}
+
+/** Title letter spacing a style actually uses, in ems, from the slider's percent of the font size: Spotify Original and Band
+ *  (the styles with a font family choice) use it; every other style keeps its natural spacing. */
+export function spotifyLetterSpacingFor(mode: CoverMode, percent: number) {
+  return mode === "spotify-photo" || mode === "spotify-band" ? percent / 100 : 0;
+}
+
 /** Classic Essentials title block: shrinks the title (and, with it, the subtitle) until every line fits the cover's width, then places
  *  the baselines and ends the band below the last line. `measure` gets "title" or "subtitle" to pick the face. */
 export function essentialsClassicLayout(title: string[], subtitle: string, fontSize: number, measure: (value: string, size: number, face: "title" | "subtitle") => number) {
@@ -207,10 +224,10 @@ export function classicTitleYMax(titleSize: number, subtitleSize: number, gap: n
 
 /** Title fonts a Spotify style offers: Daily Mix only the standard one; the others all four. */
 export function spotifyFonts(mode: CoverMode): readonly SpotifyFont[] {
-  return mode === "spotify-daily-mix" ? ["standard"] : ["standard", "wide", "black", "condensed"];
+  return mode === "spotify-daily-mix" || mode === "spotify-radio" ? ["standard"] : ["standard", "wide", "black", "condensed"];
 }
 
-/** Title font a style actually uses: This Is always uses the standard face; a font the style does not offer falls back to standard;
+/** Title font a style actually uses: This Is always uses the standard face; a font the style does not offer (Daily Mix and Radio offer only standard) falls back to standard;
  *  other Spotify styles use the chosen font. */
 export function spotifyFontFor(mode: CoverMode, font: SpotifyFont): SpotifyFont {
   return mode === "spotify-this-is" || !spotifyFonts(mode).includes(font) ? "standard" : font;
@@ -320,10 +337,10 @@ export function bandLogoArea(size: number, band: number, position: "top" | "bott
     : { x: 0, y: 0, width: size, height: size };
 }
 
-/** Logo corner a style actually uses: This Is, Band, and Daily Mix pin their logo to the top-left, the new Essentials and Similar Artist Radio pin it to the top-right, other styles (classic Essentials included, whose logo sits on
+/** Logo corner a style actually uses: This Is, Band, Daily Mix, and Radio pin their logo to the top-left, the new Essentials and Similar Artist Radio pin it to the top-right, other styles (classic Essentials included, whose logo sits on
  *  the photo) use the chosen corner. */
 export function logoCornerFor(mode: CoverMode, corner: Corner, essentialsDesign?: EssentialsDesign): Corner {
-  if (mode === "spotify-this-is" || mode === "spotify-band" || mode === "spotify-daily-mix") return "top-left";
+  if (mode === "spotify-this-is" || mode === "spotify-band" || mode === "spotify-daily-mix" || mode === "spotify-radio") return "top-left";
   if (mode === "essentials" && essentialsDesign === "classic") return corner;
   if (mode === "essentials" || mode === "similar-artists") return "top-right";
   return corner;
@@ -386,4 +403,21 @@ export type Circle = { x: number; y: number; r: number };
  *  a second artist on its top-left edge and a third on its bottom-right edge, like Apple's own covers. */
 export function artistBubbles(count: ArtistCount): Circle[] {
   return [{ x: 600, y: 600, r: 440 }, { x: 281, y: 296, r: 157 }, { x: 906, y: 913, r: 157 }].slice(0, count);
+}
+
+/** Space between an artist bubble and the bubble it overlaps, in 1200px cover pixels: the background shows through it. */
+export const ARTIST_BUBBLE_GAP = 14;
+
+/** Spotify Radio's optional border: a ring of background, `ARTIST_BUBBLE_GAP` wide, cut around the main artist into the side
+ *  artists, like the gaps in Similar Artist Radio. None when the border is off or there are no side artists. */
+export function radioMainRing(count: ArtistCount, border: boolean): Circle | null {
+  if (!border || count < 2) return null;
+  const main = radioBubbles(count)[0];
+  return { ...main, r: main.r + ARTIST_BUBBLE_GAP };
+}
+
+/** Spotify Radio bubbles on the 1200px cover: the main artist centered, then a second artist on the left edge and a third
+ *  on the right edge, both running off the cover and tucked under the main bubble, like Spotify's own Radio covers. */
+export function radioBubbles(count: ArtistCount): Circle[] {
+  return [{ x: 600, y: 565, r: 355 }, { x: 60, y: 565, r: 266 }, { x: 1140, y: 565, r: 266 }].slice(0, count);
 }

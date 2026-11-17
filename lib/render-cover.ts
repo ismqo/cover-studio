@@ -1,6 +1,6 @@
 import { APPLE_GLYPH_BOX, APPLE_GLYPH_PATH, appleLogoShape, type AppleLogoStyle } from "./apple-logo";
 import { SPOTIFY_PATH } from "./spotify-logo";
-import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, DAILY_MIX_NUMBER_FACE, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
+import { CLASSIC_LINE_HEIGHT, essentialsTitleBlock, essentialsClassicLayout, ESSENTIALS_CLASSIC, THIS_IS_KICKER_FACE, trackedWidth, type EssentialsDesign, type Corner, titleLines, THIS_IS_INK, activeBackground, spotifyFontFor, thisIsTitleInk, allowedLogoCorner, logoCornerFor, spotifyAlignFor, titleCorner, classicTitleYMax, colorShade, bandLogoArea, bandPhotoRect, bandTitleBox, cornerPosition, fitTitle, fitTitleBlock, logoColor, platformOf, spotifyFace, artistBubbles, radioBubbles, radioMainRing, ARTIST_BUBBLE_GAP, spotifyLetterSpacingFor, trackedMeasure, hasArtistBubbles, artistLookAt, DEFAULT_ARTIST_LOOK, type ArtistLook, colorGradientStops, diamondPosition, SPOTIFY_LOGO, dailyMixHeading, dailyMixLabels, dailyMixTitleBox, DAILY_MIX_NUMBER_SIZE, DAILY_MIX_NUMBER_FACE, dailyMixNumberLabel, DAILY_MIX_TINT_OPACITY, DAILY_MIX_WAVE, type DailyMixDesign, type GradientType, type ArtistCount, type Circle, type BackgroundType, type CoverMode, type SpotifyFont } from "./cover-layout";
 
 export type CoverSettings = {
   mode: CoverMode;
@@ -8,6 +8,8 @@ export type CoverSettings = {
   spotifyTitle: string; spotifyKicker: string; spotifyFontSize: number;
   spotifyTitlePosition: "top" | "bottom"; spotifyAlign: "left" | "right";
   spotifySubtitle: string; spotifyShowSubtitle: boolean; spotifyFont: SpotifyFont;
+  /** Spotify Original and Band: letter spacing of the title and subtitle, in percent of the font size. */
+  spotifyLetterSpacing: number;
   spotifyKickerFontSize: number; spotifySubtitleFontSize: number; spotifySubtitleGap: number;
   appleLogo: AppleLogoStyle; logoMatchesBand: boolean;
   classicAlign: "left" | "center"; classicTitleY: number;
@@ -23,8 +25,10 @@ export type CoverSettings = {
   brightness: number; contrast: number;
   photoMargin: number; photoTopMargin: boolean; photoRadius: number;
   zoom: number; offsetX: number; offsetY: number;
-  /** Similar Artist Radio: how many artist bubbles, and the crop and treatment of the second and third artists (the main artist uses the fields above). */
+  /** Similar Artist Radio and Radio: how many artist bubbles, and the crop and treatment of the second and third artists (the main artist uses the fields above). */
   artistCount: ArtistCount; artistLooks: ArtistLook[];
+  /** Radio: whether a ring of background separates the main artist from the side artists. */
+  radioMainBorder: boolean;
   /** Daily Mix: its design, its title and title size, its mix number with whether it shows and its size (new design), and the classic color's opacity (%) over the photo. */
   dailyMixDesign: DailyMixDesign; dailyMixTitle: string; dailyMixFontSize: number; dailyMixNumber: number; dailyMixShowNumber: boolean; dailyMixNumberSize: number; dailyMixTintOpacity: number;
 };
@@ -34,12 +38,13 @@ export const defaults: CoverSettings = {
   classicAlign: "left", classicTitleY: 22, classicFontSize: 192, classicSubtitleFontSize: 160, classicSubtitleGap: 0,
   classicTitleWeight: "bold", classicSubtitleWeight: "normal",
   essentialsTitle: "Essentials", spotifyTitle: "Title", spotifyKicker: "THIS IS", spotifyFontSize: 150,
-  spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, spotifySubtitleGap: 16, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
+  spotifyTitlePosition: "bottom", spotifyAlign: "left", spotifySubtitle: "Subtitle", spotifyShowSubtitle: false, spotifyFont: "standard", spotifyLetterSpacing: 0, spotifyKickerFontSize: 120, spotifySubtitleFontSize: 64, spotifySubtitleGap: 16, appleLogo: "classic", logoMatchesBand: false, showLogo: true, corner: "top-left",
   backgroundType: "gradients", spotifyBackgroundType: "picture", gradient: 0, customColor: "#7865a8", colorShadow: true, gradientType: "linear",
   textColor: "#ffffff", bandColor: "#c4c4c4", bandHeight: 31, essentialsFontSize: 136, essentialsDesign: "new", essentialsSubtitle: "",
   treatment: "original", tint: "#e8e8ed", brightness: 0, contrast: 0, photoMargin: 0, photoTopMargin: false, photoRadius: 0,
   zoom: 1, offsetX: 50, offsetY: 50,
   artistCount: 3, artistLooks: [DEFAULT_ARTIST_LOOK, DEFAULT_ARTIST_LOOK],
+  radioMainBorder: false,
   dailyMixDesign: "classic", dailyMixTitle: "Daily Mix", dailyMixFontSize: 120, dailyMixNumber: 1, dailyMixNumberSize: DAILY_MIX_NUMBER_SIZE, dailyMixShowNumber: true, dailyMixTintOpacity: DAILY_MIX_TINT_OPACITY,
 };
 
@@ -175,18 +180,20 @@ function drawPhoto(
 }
 
 
-/** Space between a small artist bubble and the main bubble it overlaps, in 1200px cover pixels. */
-const ARTIST_BUBBLE_GAP = 14;
+const circlePath = (target: CanvasRenderingContext2D, c: Circle) => { target.beginPath(); target.arc(c.x, c.y, c.r, 0, Math.PI * 2); target.closePath(); };
+
+/** Draws artist `i`'s photo (0 = main artist) inside a bubble, with that artist's own crop and treatment. */
+function drawArtistBubble(target: CanvasRenderingContext2D, s: CoverSettings, bubble: Circle, i: number, main: HTMLImageElement | null, others: (HTMLImageElement | null)[]) {
+  const photo = i === 0 ? main : others[i - 1] ?? null;
+  const look = i === 0 ? s : { ...s, ...artistLookAt(s.artistLooks, i - 1) };
+  drawPhoto(target, photo, look, bubble.x - bubble.r, bubble.y - bubble.r, bubble.r * 2, bubble.r * 2, 0, () => circlePath(target, bubble));
+}
 
 /** Similar Artist Radio bubbles: the main artist, cut away around the smaller artists so the background shows between them,
  *  then the smaller artists. Each artist has its own crop and treatment; bubbles have no shadow or border. */
 function renderArtists(ctx: CanvasRenderingContext2D, s: CoverSettings, main: HTMLImageElement | null, others: (HTMLImageElement | null)[]) {
-  const circle = (target: CanvasRenderingContext2D, c: Circle) => { target.beginPath(); target.arc(c.x, c.y, c.r, 0, Math.PI * 2); target.closePath(); };
-  const drawBubble = (target: CanvasRenderingContext2D, bubble: Circle, i: number) => {
-    const photo = i === 0 ? main : others[i - 1] ?? null;
-    const look = i === 0 ? s : { ...s, ...artistLookAt(s.artistLooks, i - 1) };
-    drawPhoto(target, photo, look, bubble.x - bubble.r, bubble.y - bubble.r, bubble.r * 2, bubble.r * 2, 0, () => circle(target, bubble));
-  };
+  const circle = circlePath;
+  const drawBubble = (target: CanvasRenderingContext2D, bubble: Circle, i: number) => drawArtistBubble(target, s, bubble, i, main, others);
   // The main bubble is drawn on its own layer so the gaps around the smaller bubbles erase only it, not the background.
   const [mainBubble, ...smallBubbles] = artistBubbles(s.artistCount);
   const layer = document.createElement("canvas");
@@ -210,25 +217,62 @@ function drawSpotifyLogo(ctx: CanvasRenderingContext2D, x: number, y: number, di
   ctx.restore();
 }
 
-/** Draws a wrapped Spotify title, plus an optional smaller subtitle line under it, inside a box. */
-function spotifyTitle(ctx: CanvasRenderingContext2D, face: { weight: number; family: string }, value: string, box: { x: number; y: number; width: number; height: number }, size: number, align: "left" | "right" | "center", vertical: "top" | "center" | "bottom", maxLines: number, subtitle = "", subtitleSize = 0, gap?: number) {
+/** Draws a wrapped Spotify title, plus an optional smaller subtitle line under it, inside a box. `tracking` is the letter spacing
+ *  in ems; wrapping and shrinking account for it. */
+function spotifyTitle(ctx: CanvasRenderingContext2D, face: { weight: number; family: string }, value: string, box: { x: number; y: number; width: number; height: number }, size: number, align: "left" | "right" | "center", vertical: "top" | "center" | "bottom", maxLines: number, subtitle = "", subtitleSize = 0, gap?: number, tracking = 0) {
   const lineHeight = 1.02;
-  const measure = (line: string, fontSize: number) => { ctx.font = `${face.weight} ${fontSize}px ${face.family}`; return ctx.measureText(line).width; };
+  // Spaced lines are drawn one character at a time, so they are measured the same way (no kerning between pairs).
+  const natural = (line: string, fontSize: number) => {
+    ctx.font = `${face.weight} ${fontSize}px ${face.family}`;
+    return tracking ? [...line].reduce((sum, char) => sum + ctx.measureText(char).width, 0) : ctx.measureText(line).width;
+  };
+  const measure = trackedMeasure(natural, tracking);
   const fitted = fitTitleBlock(value, subtitle, measure, { size, minSize: 24, maxWidth: box.width, maxHeight: box.height, maxLines, lineHeight, subtitleSize, gap });
   const top = vertical === "top" ? box.y : vertical === "bottom" ? box.y + box.height - fitted.height : box.y + (box.height - fitted.height) / 2;
-  ctx.textAlign = align;
   const x = align === "left" ? box.x : align === "right" ? box.x + box.width : box.x + box.width / 2;
+  // Without spacing the browser aligns each line; with it, each line is placed from its tracked width and drawn character by character.
+  const drawLine = (line: string, fontSize: number, y: number) => {
+    ctx.font = `${face.weight} ${fontSize}px ${face.family}`;
+    if (!tracking) { ctx.textAlign = align; ctx.fillText(line, x, y); return; }
+    const width = measure(line, fontSize);
+    ctx.textAlign = "left";
+    trackedText(ctx, line, align === "left" ? x : align === "right" ? x - width : x - width / 2, y, tracking * fontSize);
+  };
   const { title, subtitle: sub } = fitted;
-  ctx.font = `${face.weight} ${title.size}px ${face.family}`;
-  title.lines.forEach((line, i) => ctx.fillText(line, x, top + i * title.size * lineHeight));
-  if (sub) {
-    ctx.font = `${face.weight} ${sub.size}px ${face.family}`;
-    ctx.fillText(sub.lines[0], x, top + title.lines.length * title.size * lineHeight + fitted.gap);
-  }
+  title.lines.forEach((line, i) => drawLine(line, title.size, top + i * title.size * lineHeight));
+  if (sub) drawLine(sub.lines[0], sub.size, top + title.lines.length * title.size * lineHeight + fitted.gap);
   ctx.textAlign = "left";
 }
 
-function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded: HTMLImageElement | null, size: number) {
+/** Spotify Radio: a flat background, the side artists tucked under the centered main artist, a letter-spaced "RADIO" label
+ *  level with the logo at the top-right, and the title at the bottom-left. */
+function renderRadio(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded: HTMLImageElement | null, size: number, artists: (HTMLImageElement | null)[], face: { weight: number; family: string }) {
+  const pad = 48;
+  ctx.fillStyle = s.bandColor;
+  ctx.fillRect(0, 0, size, size);
+  const [main, ...sides] = radioBubbles(s.artistCount);
+  sides.forEach((bubble, i) => drawArtistBubble(ctx, s, bubble, i + 1, uploaded, artists));
+  // The optional border: the flat background painted around the main artist, cutting into the side artists.
+  const ring = radioMainRing(s.artistCount, s.radioMainBorder);
+  if (ring) { ctx.fillStyle = s.bandColor; circlePath(ctx, ring); ctx.fill(); }
+  drawArtistBubble(ctx, s, main, 0, uploaded, artists);
+  ctx.fillStyle = s.textColor;
+  const label = spotifyFace("standard");
+  const labelSize = 72, tracking = .11;
+  ctx.font = `${label.weight} ${labelSize}px ${label.family}`;
+  ctx.textBaseline = "alphabetic";
+  const width = trackedWidth(RADIO_LABEL, labelSize, tracking, value => ctx.measureText(value).width);
+  // Capitals centered on the logo's middle (the logo is 104px tall at the top padding).
+  const baseline = pad + 52 + ctx.measureText(RADIO_LABEL).actualBoundingBoxAscent / 2;
+  trackedText(ctx, RADIO_LABEL, size - pad - width, baseline, tracking * labelSize);
+  ctx.textBaseline = "top";
+  spotifyTitle(ctx, face, s.spotifyTitle, { x: pad, y: 940, width: size - pad * 2, height: size - pad - 940 }, s.spotifyFontSize, "left", "bottom", 2);
+}
+
+/** Radio's top-right label, the same in every language like Spotify's own covers. */
+const RADIO_LABEL = "RADIO";
+
+function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded: HTMLImageElement | null, size: number, artists: (HTMLImageElement | null)[]) {
   const pad = 48;
   const face = spotifyFace(s.spotifyFont);
   // Keep titles clear of a logo sitting on the same edge.
@@ -239,6 +283,10 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
   ctx.fillStyle = s.textColor;
   if (s.mode === "spotify-daily-mix") {
     renderDailyMix(ctx, s, uploaded, size, face);
+    return;
+  }
+  if (s.mode === "spotify-radio") {
+    renderRadio(ctx, s, uploaded, size, artists, face);
     return;
   }
   if (s.mode === "spotify-this-is") {
@@ -267,7 +315,7 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
     ctx.fillRect(0, bandY, size, band);
     ctx.fillStyle = s.textColor;
     const titleBox = bandTitleBox(size, band, s.spotifyTitlePosition, pad);
-    spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y: titleBox.y, height: titleBox.height }, s.spotifyFontSize, align, titleBox.vertical, 2, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
+    spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y: titleBox.y, height: titleBox.height }, s.spotifyFontSize, align, titleBox.vertical, 2, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap, spotifyLetterSpacingFor(s.mode, s.spotifyLetterSpacing));
     return;
   }
   // Full photo: the background (photo, gradient, color, or solid) is drawn by renderCover; only the photo is drawn here.
@@ -275,7 +323,7 @@ function renderSpotify(ctx: CanvasRenderingContext2D, s: CoverSettings, uploaded
   ctx.fillStyle = s.textColor;
   const height = size * .45;
   const y = s.spotifyTitlePosition === "top" ? 40 : size - 40 - height;
-  spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap);
+  spotifyTitle(ctx, face, s.spotifyTitle, { ...logoInset(s.spotifyTitlePosition), y, height }, s.spotifyFontSize, align, s.spotifyTitlePosition, 3, s.spotifyShowSubtitle ? s.spotifySubtitle : "", s.spotifySubtitleFontSize, s.spotifySubtitleGap, spotifyLetterSpacingFor(s.mode, s.spotifyLetterSpacing));
 }
 
 /** Daily Mix. Classic: the photo through a wavy window in a nearly opaque color, and the title with its number at the bottom-left.
@@ -363,7 +411,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   const background = backgroundType === "gradients" ? await loadImage(`/assets/gradients/${s.gradient}.png`) : null;
   const uploaded = photo ? await loadImage(photo) : null;
   const classicEssentials = s.mode === "essentials" && s.essentialsDesign === "classic";
-  const artists = s.mode === "similar-artists" ? await Promise.all(artistPhotos.slice(0, s.artistCount - 1).map(src => src ? loadImage(src) : null)) : [];
+  const artists = hasArtistBubbles(s.mode) ? await Promise.all(artistPhotos.slice(0, s.artistCount - 1).map(src => src ? loadImage(src) : null)) : [];
   await Promise.all([document.fonts.load('600 100px CoverFont'), document.fonts.load('300 100px CoverFont'), document.fonts.load('400 100px CoverFont'), ...(classicEssentials ? [document.fonts.load('800 100px CoverFontMono'), document.fonts.load('700 100px CoverFontBold')] : []), ...(spotify ? [document.fonts.load('700 100px CoverFontBold'), document.fonts.load('900 100px CoverFontWide'), document.fonts.load('700 100px CoverFontSpotifyWide'), document.fonts.load('700 100px CoverFontCondensed'), document.fonts.load('400 100px CoverFontMix')] : [])]);
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d")!;
@@ -379,7 +427,7 @@ export async function renderCover(canvas: HTMLCanvasElement, s: CoverSettings, p
   // The classic Essentials band follows its title; the logo sits just under it.
   let classicBand = 0;
   if (spotify) {
-    renderSpotify(ctx, s, uploaded, size);
+    renderSpotify(ctx, s, uploaded, size, artists);
   } else if (s.mode === "similar-artists") {
     renderArtists(ctx, s, uploaded, artists);
   } else if (classicEssentials) {
